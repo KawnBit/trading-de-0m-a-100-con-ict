@@ -30,12 +30,23 @@ exports.handler = async function (event, context) {
   }
 
   // Build the contents array for the Gemini API call
+  // The Gemini API expects each message to be an object with a role
+  // and a parts array. Each element of parts must itself be an object
+  // with a `text` property containing the string value. Without the
+  // `text` wrapper, the API returns an INVALID_ARGUMENT error. See
+  // https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/gemini#request_body for details.
   const contents = [];
   if (systemInstruction) {
-    contents.push({ role: 'system', parts: [systemInstruction] });
+    contents.push({
+      role: 'system',
+      parts: [{ text: systemInstruction }]
+    });
   }
   if (userPrompt) {
-    contents.push({ role: 'user', parts: [userPrompt] });
+    contents.push({
+      role: 'user',
+      parts: [{ text: userPrompt }]
+    });
   } else {
     return {
       statusCode: 400,
