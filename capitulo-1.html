@@ -672,18 +672,18 @@
     <script>
         async function callGeminiAPI(userPrompt, systemInstruction) {
             try {
-                // Build a request body for POST. Always include the userPrompt.
-                const body = { userPrompt };
+                // Build a URL with query parameters for a GET request.  We encode
+                // both the user prompt and optional system instruction so they
+                // survive transit through the URL.  Using GET avoids the
+                // "Forbidden: Only GET requests are allowed" error that occurs
+                // when Netlify blocks POST requests to serverless functions.
+                const params = new URLSearchParams();
+                params.append('userPrompt', userPrompt);
                 if (systemInstruction) {
-                    body.systemInstruction = systemInstruction;
+                    params.append('systemInstruction', systemInstruction);
                 }
-                // Send a POST request to the Netlify function. POST requests
-                // are allowed by Netlify and simplify CORS handling.
-                const resp = await fetch('/.netlify/functions/gemini-proxy', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
+                const url = '/.netlify/functions/gemini-proxy?' + params.toString();
+                const resp = await fetch(url);
                 const result = await resp.json();
                 let text = '';
                 if (result.candidates && result.candidates.length > 0) {
