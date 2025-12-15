@@ -483,14 +483,15 @@
              * simplificar: el servidor concatena systemInstruction y userPrompt, por lo
              * que resulta más fiable contener todas las instrucciones en el userPrompt.
              */
-            const context = getChapterContext();
+            // Para evitar problemas con límites de contexto y tiempos de respuesta, no enviamos el texto
+            // completo del capítulo. En su lugar, especificamos los conceptos clave del capítulo para
+            // que el modelo genere preguntas generales sobre el tema.
             const prompt =
-                `Genera un cuestionario de tres preguntas de opción múltiple basadas en el siguiente texto:\n\n` +
-                `${context}\n\n` +
+                `Genera un cuestionario de tres preguntas de opción múltiple sobre trading basadas en los siguientes conceptos: Smart Money, Liquidez, Stop Hunt, Fase de Acumulación, Order Block y Market Maker.\n\n` +
                 `Devuelve solamente un arreglo JSON de tres objetos. Cada objeto debe contener:\n` +
                 `- q: La pregunta.\n` +
                 `- options: Un arreglo de cuatro opciones en español.\n` +
-                `- a: El índice (0 a 3) de la opción correcta.\n` +
+                `- a: El índice (0 a 3) de la respuesta correcta.\n` +
                 `El JSON no debe incluir comentarios ni texto adicional.`;
 
             let response;
