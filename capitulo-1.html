@@ -666,26 +666,25 @@
         }
     </script>
     <!-- La función callGeminiAPI original permanece intacta para usar la simulación local.
-         Se eliminó la anulación que intentaba llamar a una función de Netlify que no
-         está disponible en un despliegue estático. -->
-    <!-- Anular callGeminiAPI para usar la función de Netlify real -->
+         Aquí anulamos callGeminiAPI para invocar la función serverless de Netlify
+         utilizando una solicitud POST con cuerpo JSON. El payload incluye tanto el
+         prompt del usuario como las instrucciones del sistema y se envía con
+         encabezados apropiados. -->
     <script>
         async function callGeminiAPI(userPrompt, systemInstruction) {
             try {
-                // Build a URL with query parameters for a GET request.  We encode
-                // both the user prompt and optional system instruction so they
-                // survive transit through the URL.  Using GET avoids the
-                // "Forbidden: Only GET requests are allowed" error that occurs
-                // when Netlify blocks POST requests to serverless functions.
-                const params = new URLSearchParams();
-                params.append('userPrompt', userPrompt);
-                if (systemInstruction) {
-                    params.append('systemInstruction', systemInstruction);
-                }
-                const url = '/.netlify/functions/gemini-proxy?' + params.toString();
-                const resp = await fetch(url);
+                // Construir el objeto de carga útil. La API de Gemini espera un
+                // objeto JSON con las claves userPrompt y systemInstruction.
+                const payload = { userPrompt, systemInstruction };
+                // Llamar a la función serverless mediante POST con un cuerpo JSON.
+                const resp = await fetch('/.netlify/functions/gemini-proxy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
                 const result = await resp.json();
                 let text = '';
+                // Extraer el texto de la respuesta si está disponible
                 if (result.candidates && result.candidates.length > 0) {
                     const parts = result.candidates[0].content?.parts;
                     if (parts && parts.length > 0) {
