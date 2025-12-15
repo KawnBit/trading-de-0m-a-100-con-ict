@@ -506,13 +506,44 @@
 
             let questions;
             try {
-                questions = JSON.parse(response);
+                let text = response;
+                // Si la respuesta es una cadena, limpiamos código markdown y backticks
+                if (typeof text === 'string') {
+                    text = text.trim();
+                    // Eliminar delimitadores de bloque de código como ```json\n y ```
+                    text = text.replace(/```json\n?|```/gi, '').trim();
+                    // Intentar analizar toda la cadena como JSON
+                    try {
+                        questions = JSON.parse(text);
+                    } catch (e1) {
+                        // Si falla, buscar la primera aparición de '[' y la última ']'
+                        const start = text.indexOf('[');
+                        const end = text.lastIndexOf(']');
+                        if (start !== -1 && end !== -1) {
+                            questions = JSON.parse(text.substring(start, end + 1));
+                        }
+                    }
+                    // Si el resultado no es un arreglo, puede que esté envuelto en un objeto
+                    if (!Array.isArray(questions) && questions) {
+                        if (Array.isArray(questions.preguntas)) {
+                            questions = questions.preguntas.map(q => ({
+                                q: q.pregunta || q.q,
+                                options: q.opciones || q.options,
+                                a: q.respuesta_correcta !== undefined ? q.respuesta_correcta : q.a
+                            }));
+                        } else if (questions.cuestionario && Array.isArray(questions.cuestionario.preguntas)) {
+                            questions = questions.cuestionario.preguntas.map(q => ({
+                                q: q.pregunta,
+                                options: q.opciones,
+                                a: q.respuesta_correcta
+                            }));
+                        }
+                    }
+                }
             } catch (e) {
-                console.warn('No se pudo analizar la respuesta JSON', response);
-                btn.innerText = 'Error - Reintentar';
-                btn.disabled = false;
-                return;
+                console.warn('Error al procesar la respuesta del quiz', e);
             }
+            // Verificar que questions sea un arreglo
             if (!Array.isArray(questions)) {
                 console.warn('Respuesta de quiz no es un arreglo', questions);
                 btn.innerText = 'Error - Reintentar';
