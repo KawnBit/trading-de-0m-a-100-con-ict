@@ -15,8 +15,10 @@ exports.handler = async function(event, context) {
         parts: [{ text: userPrompt }]
       });
     }
-    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-    const GEMINI_BASE_URL = process.env.GOOGLE_GEMINI_BASE_URL;
+    // Use Gemini API key or fallback to Netlify AI gateway key
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY;
+    // Use Google Gemini base URL or fallback to Netlify AI gateway base URL or default
+    const GEMINI_BASE_URL = process.env.GOOGLE_GEMINI_BASE_URL || process.env.NETLIFY_AI_GATEWAY_BASE_URL || 'https://generativelanguage.googleapis.com';
     const url = `${GEMINI_BASE_URL}/v1beta/models/gemini-2.5-pro:generateContent`;
     const response = await fetch(url, {
       method: 'POST',
@@ -29,14 +31,13 @@ exports.handler = async function(event, context) {
     const data = await response.json();
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     };
   } catch (error) {
-    console.error('Gemini proxy error', error);
+    console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Error calling Gemini API' })
+      body: JSON.stringify({ error: error.message || 'Error calling Gemini API' })
     };
   }
 };
