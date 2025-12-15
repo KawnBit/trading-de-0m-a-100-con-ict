@@ -465,31 +465,82 @@
             }
         }
 
-        // B. Generador de Quiz (ROBUSTECIDO)
+        // B. Generador de Quiz (MEJORADO)
         async function generateQuiz() {
             const btn = document.getElementById('btn-quiz');
             const container = document.getElementById('quiz-container');
-            btn.disabled = true; btn.innerHTML = `Generando preguntas... <span class="typing-dot inline-block">.</span>`;
-            
-            const response = await callGeminiAPI("Genera quiz del texto");
-            
-            // Verificación de seguridad
-            if (!Array.isArray(response)) {
-                console.warn("Respuesta de quiz inválida", response);
-                btn.innerText = "Error - Reintentar";
+            // Mostrar estado de carga en el botón
+            btn.disabled = true;
+            btn.innerHTML = `Generando preguntas... <span class="typing-dot inline-block"></span>`;
+
+            /*
+             * Enviamos un prompt detallado a la función de IA. Le pedimos que cree un
+             * cuestionario de tres preguntas de opción múltiple basadas en el texto del
+             * capítulo. Para garantizar una respuesta estructurada, solicitamos que
+             * devuelva exclusivamente un arreglo JSON donde cada elemento tenga las
+             * claves "q" (pregunta), "options" (arreglo de 4 opciones) y "a" (índice de
+             * la respuesta correcta de 0 a 3). No incluimos systemInstruction para
+             * simplificar: el servidor concatena systemInstruction y userPrompt, por lo
+             * que resulta más fiable contener todas las instrucciones en el userPrompt.
+             */
+            const context = getChapterContext();
+            const prompt =
+                `Genera un cuestionario de tres preguntas de opción múltiple basadas en el siguiente texto:\n\n` +
+                `${context}\n\n` +
+                `Devuelve solamente un arreglo JSON de tres objetos. Cada objeto debe contener:\n` +
+                `- q: La pregunta.\n` +
+                `- options: Un arreglo de cuatro opciones en español.\n` +
+                `- a: El índice (0 a 3) de la opción correcta.\n` +
+                `El JSON no debe incluir comentarios ni texto adicional.`;
+
+            let response;
+            try {
+                response = await callGeminiAPI(prompt);
+            } catch (err) {
+                console.warn('Error al solicitar el quiz', err);
+                btn.innerText = 'Error - Reintentar';
                 btn.disabled = false;
                 return;
             }
-            const questions = response;
 
-            container.classList.remove('hidden'); container.innerHTML = '';
+            let questions;
+            try {
+                questions = JSON.parse(response);
+            } catch (e) {
+                console.warn('No se pudo analizar la respuesta JSON', response);
+                btn.innerText = 'Error - Reintentar';
+                btn.disabled = false;
+                return;
+            }
+            if (!Array.isArray(questions)) {
+                console.warn('Respuesta de quiz no es un arreglo', questions);
+                btn.innerText = 'Error - Reintentar';
+                btn.disabled = false;
+                return;
+            }
+
+            // Limpiar contenedor y mostrar preguntas
+            container.classList.remove('hidden');
+            container.innerHTML = '';
             questions.forEach((q, idx) => {
                 const qDiv = document.createElement('div');
-                qDiv.className = "bg-white p-6 rounded-lg shadow-sm border border-slate-200";
-                qDiv.innerHTML = `<p class="font-bold text-slate-800 mb-4">${idx + 1}. ${q.q}</p><div class="space-y-2">${q.options.map((opt, optIdx) => `<button onclick="checkAnswer(this, ${optIdx === q.a})" class="w-full text-left px-4 py-2 rounded border border-slate-200 hover:bg-slate-50 transition-colors text-sm text-slate-600">${opt}</button>`).join('')}</div><div class="mt-3 hidden feedback text-sm font-bold"></div>`;
+                qDiv.className = 'bg-white p-6 rounded-lg shadow-sm border border-slate-200';
+                // Construir las opciones con botones que llamen a checkAnswer
+                const optionsHtml = q.options
+                    .map((opt, optIdx) => {
+                        const correct = optIdx === q.a;
+                        return `<button onclick="checkAnswer(this, ${correct})" class="w-full text-left px-4 py-2 rounded border border-slate-200 hover:bg-slate-50 transition-colors text-sm text-slate-600">${opt}</button>`;
+                    })
+                    .join('');
+                qDiv.innerHTML =
+                    `<p class="font-bold text-slate-800 mb-4">${idx + 1}. ${q.q}</p>` +
+                    `<div class="space-y-2">${optionsHtml}</div>` +
+                    `<div class="mt-3 hidden feedback text-sm font-bold"></div>`;
                 container.appendChild(qDiv);
             });
-            btn.innerHTML = "Generar Nuevas Preguntas ✨"; btn.disabled = false;
+            // Actualizar botón para permitir generar nuevas preguntas
+            btn.innerHTML = 'Generar Nuevas Preguntas ✨';
+            btn.disabled = false;
         }
 
         function checkAnswer(btn, isCorrect) {
