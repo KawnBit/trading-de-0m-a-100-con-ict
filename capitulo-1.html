@@ -671,14 +671,19 @@
     <!-- Anular callGeminiAPI para usar la función de Netlify real -->
     <script>
         async function callGeminiAPI(userPrompt, systemInstruction) {
-            // Build a query string for GET requests. Use encodeURIComponent via URLSearchParams for safety.
             try {
-                const params = new URLSearchParams();
-                if (userPrompt) params.set('userPrompt', userPrompt);
-                if (systemInstruction) params.set('systemInstruction', systemInstruction);
-                const url = `/.netlify/functions/gemini-proxy?${params.toString()}`;
-                // Perform a GET request to the Netlify function. No body is sent for GET.
-                const resp = await fetch(url);
+                // Build a request body for POST. Always include the userPrompt.
+                const body = { userPrompt };
+                if (systemInstruction) {
+                    body.systemInstruction = systemInstruction;
+                }
+                // Send a POST request to the Netlify function. POST requests
+                // are allowed by Netlify and simplify CORS handling.
+                const resp = await fetch('/.netlify/functions/gemini-proxy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
                 const result = await resp.json();
                 let text = '';
                 if (result.candidates && result.candidates.length > 0) {
