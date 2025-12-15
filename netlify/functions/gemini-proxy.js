@@ -29,31 +29,31 @@ exports.handler = async function (event, context) {
     }
   }
 
-  // Build the contents array for the Gemini API call
-  // The Gemini API expects each message to be an object with a role
-  // and a parts array. Each element of parts must itself be an object
-  // with a `text` property containing the string value. Without the
-  // `text` wrapper, the API returns an INVALID_ARGUMENT error. See
-  // https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/gemini#request_body for details.
-  const contents = [];
-  if (systemInstruction) {
-    contents.push({
-      role: 'system',
-      parts: [{ text: systemInstruction }]
-    });
-  }
-  if (userPrompt) {
-    contents.push({
-      role: 'user',
-      parts: [{ text: userPrompt }]
-    });
-  } else {
+  // Build the contents array for the Gemini API call.
+  // The Gemini Chat API only accepts roles "user" and "model". It does not
+  // support a separate "system" role like some other chat APIs. To include
+  // an instructional prefix, concatenate the systemInstruction and the
+  // userPrompt into a single `user` message. The `parts` array must
+  // contain objects with a `text` property.
+  if (!userPrompt) {
+    // the user prompt is required. Without it there is nothing to send to the model
     return {
       statusCode: 400,
       headers: { 'Access-Control-Allow-Origin': '*' },
       body: JSON.stringify({ error: 'Missing userPrompt' })
     };
   }
+  let combinedPrompt = userPrompt;
+  if (systemInstruction) {
+    // separate the system instruction and user prompt with a newline
+    combinedPrompt = `${systemInstruction}\n${userPrompt}`;
+  }
+  const contents = [
+    {
+      role: 'user',
+      parts: [ { text: combinedPrompt } ]
+    }
+  ];
 
   // Retrieve API key and base URL from environment variables or fall back
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.NETLIFY_AI_GATEWAY_KEY;
