@@ -1268,7 +1268,8 @@
                 const response = await fetchWithTimeout(gasEndpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt: `Eres un mentor experto en Trading Institucional (Smart Money Concepts). Responde brevemente: ${text}` })
+                    // Use the field name `userPrompt` expected by the Netlify function
+                    body: JSON.stringify({ userPrompt: `Eres un mentor experto en Trading Institucional (Smart Money Concepts). Responde brevemente: ${text}` })
                 });
                 const data = await response.json();
                 document.getElementById(loadingId).remove();
@@ -1289,8 +1290,9 @@
                 const response = await fetchWithTimeout(gasEndpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
+                    // The serverless function expects `userPrompt` instead of `prompt`
                     body: JSON.stringify({ 
-                        prompt: "Genera un tema de estudio avanzado y su pregunta guía basándose en el Capítulo 1 sobre Smart Money.",
+                        userPrompt: "Genera un tema de estudio avanzado y su pregunta guía basándose en el Capítulo 1 sobre Smart Money.",
                         systemInstruction: "Genera UN tema de reflexión ORIGINAL en formato JSON estricto: { \"tema\": \"...\", \"analogia\": \"...\" }",
                         generationConfig: { responseMimeType: "application/json" }
                     })
@@ -1331,7 +1333,8 @@
                 const response = await fetchWithTimeout(gasEndpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ prompt: `Escenario: ${scenarioText}. Describe la estrategia de manipulación del smart money.`, systemInstruction: "Eres un diseñador de trampas de trading institucional. Breve estrategia de manipulación." })
+                    // Send the scenario as `userPrompt` as required by the proxy
+                    body: JSON.stringify({ userPrompt: `Escenario: ${scenarioText}. Describe la estrategia de manipulación del smart money.`, systemInstruction: "Eres un diseñador de trampas de trading institucional. Breve estrategia de manipulación." })
                 });
                 const data = await response.json();
                 const reply = data.text || data.candidates?.[0]?.content?.parts?.[0]?.text || "Error al obtener respuesta.";

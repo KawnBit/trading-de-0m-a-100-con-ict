@@ -794,8 +794,9 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000); 
 
+            // Construct the payload using the field name expected by the Netlify Gemini proxy.
             const body = {
-                prompt: prompt,
+                userPrompt: prompt,
                 systemInstruction: systemInstruction
             };
 
