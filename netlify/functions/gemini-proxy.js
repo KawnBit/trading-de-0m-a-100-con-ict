@@ -69,10 +69,25 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ contents })
     });
     const data = await response.json();
+    // Extract a plain-text response from the first candidate if available.  The
+    // Gemini Chat API returns an array of candidates with a nested content
+    // structure.  To make it easier for front-end callers to consume the
+    // response, derive a `text` property by concatenating all text parts in
+    // the first candidate.  If extraction fails, fall back to an empty string.
+    let text = '';
+    try {
+      if (data && Array.isArray(data.candidates) && data.candidates[0] &&
+          data.candidates[0].content && Array.isArray(data.candidates[0].content.parts)) {
+        text = data.candidates[0].content.parts.map(p => p.text || '').join(' ').trim();
+      }
+    } catch (ex) {
+      // ignore extraction errors and leave text as empty
+    }
+    const resultBody = { text, data };
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(resultBody)
     };
   } catch (error) {
     console.error('Gemini API error', error);
