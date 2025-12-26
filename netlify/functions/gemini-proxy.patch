@@ -1,7 +1,0 @@
-*** Begin Patch
-*** Update File: netlify/functions/gemini-proxy.js
-@@ if (event.httpMethod === 'POST') {
--    userPrompt = body.userPrompt || '';
-+    // Accept `userPrompt` or fallback to `prompt` for backward compatibility
-+    userPrompt = body.userPrompt || body.prompt || '';
-*** End Patch
