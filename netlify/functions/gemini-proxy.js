@@ -22,7 +22,11 @@ exports.handler = async function (event, context) {
   } else if (event.httpMethod === 'POST') {
     try {
       const body = JSON.parse(event.body || '{}');
-      userPrompt = body.userPrompt || '';
+      // Acepta `userPrompt` o usa `prompt` como alternativa
+userPrompt = body.userPrompt || body.prompt || '';
+// Acepta `userPrompt` o usa `prompt` como alternativa
+userPrompt = body.userPrompt || body.prompt || '';
+
       systemInstruction = body.systemInstruction || '';
     } catch (e) {
       // ignore JSON parse errors
