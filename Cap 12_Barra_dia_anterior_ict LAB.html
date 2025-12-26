@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 12: Barra del Día Anterior y el Modelo ICT. Domina el Sesgo Diario, la Liquidez y el Desplazamiento.">
+    <title>KawnBit | Cap 12: Barra del Día Anterior</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base y Utilidades */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation CSS */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-top: 4px solid white;
+            border-right: 4px solid white;
+            transform: rotate(-15deg) skew(-10deg);
+            top: 10px;
+            left: 8px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 20px;
+            position: relative;
+            z-index: 2;
+            margin-top: 2px;
+            margin-left: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TOC Activo */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Callouts y Tarjetas */
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            background-color: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-dots:after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+
+            0%,
+            20% {
+                content: ' .';
+            }
+
+            40% {
+                content: ' ..';
+            }
+
+            60% {
+                content: ' ...';
+            }
+
+            80%,
+            100% {
+                content: '';
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Interactive Components */
+        .tab-btn.active {
+            background-color: #14b8a6;
+            color: white;
+            border-color: #14b8a6;
+        }
+
+        /* Quiz Specifics */
+        .quiz-option {
+            transition: all 0.2s;
+        }
+
+        .quiz-feedback {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar Sticky -->
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="kawn-logo-wrapper select-none">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-kawn-base"
+                    aria-label="Menú principal">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SMC Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 12</a>
+                    <a href="#simuladores"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Simuladores</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Ejercicios</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside id="sidebar-toc" class="hidden md:block w-72 flex-shrink-0 transition-transform duration-300">
+                <div class="sticky top-28">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">
+                        Contenido del Capítulo</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Generado dinámicamente por JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        12</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        Barra del Día Anterior y el Modelo ICT
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        Domina el sesgo diario, la lectura de liquidez y el desplazamiento institucional para crear una
+                        hoja de ruta fiable en tu trading.
+                    </p>
+                </section>
+
+                <!-- 1. Introducción al Sesgo Diario -->
+                <section id="intro-sesgo" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="compass" class="text-kawn-base mr-3"></i> Introducción al Sesgo Diario
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">
+                            En el Inner Circle Trader (ICT) se enseña que determinar el <strong>sesgo diario</strong>
+                            (dirección probable del precio para la jornada) es una de las tareas más importantes para un
+                            trader intradía. Un enfoque clave para definir este sesgo es el <strong>modelo de la barra
+                                del día anterior</strong>, una estrategia fundamental de la metodología ICT que analiza
+                            la relación entre la vela diaria actual y la vela del día previo para predecir movimientos
+                            futuros.
+                        </p>
+                        <p class="mb-4">
+                            En otras palabras, se estudia cómo el precio de hoy interactúa con el rango (máximo y
+                            mínimo) del día anterior, pues en esas interacciones el Smart Money deja pistas sobre su
+                            intención.
+                        </p>
+                        <div class="blockquote-custom">
+                            "El sesgo diario no se refiere a adivinar exactamente dónde cerrará el mercado cada día,
+                            sino a identificar movimientos anticipados hacia puntos de interés intradía."
+                        </div>
+                        <p>
+                            Por ejemplo, un trader ICT busca determinar si el precio primero irá a barrer cierta
+                            liquidez (como el máximo o mínimo del día anterior) y luego se desplazará en una dirección
+                            concreta, en vez de simplemente predecir si el día cerrará en positivo o negativo.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 2. Máximos y Mínimos (Liquidez) -->
+                <section id="pdh-pdl-liquidez" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="droplets" class="text-kawn-base mr-3"></i> Máximos y Mínimos: Imanes de Liquidez
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">
+                            Los máximos y mínimos de la sesión previa (PDH/PDL) son niveles de referencia obligados.
+                            Representan los precios más alto y más bajo que el mercado alcanzó el día anterior, y por su
+                            relevancia histórica atraen la atención de muchos participantes del mercado.
+                        </p>
+
+                        <div class="card-concept">
+                            <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="magnet"
+                                    class="w-5 h-5 text-kawn-dark"></i> Concepto Clave: Liquidez</h4>
+                            <p class="text-sm">
+                                <strong>Liquidez Buy-side:</strong> Stops de cortos (órdenes de compra) ubicados por
+                                encima de máximos previos.<br>
+                                <strong>Liquidez Sell-side:</strong> Stops de largos (órdenes de venta) ubicados por
+                                debajo de mínimos previos.<br><br>
+                                <em>"El mercado tiende a dirigirse hacia esos pools de órdenes, porque allí las
+                                    instituciones saben que podrán ejecutar sus propias posiciones de gran volumen con
+                                    menor deslizamiento."</em>
+                            </p>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-800 mt-6 mb-3">La Rutina Diaria</h3>
+                        <p class="mb-4">Marcar el máximo y mínimo del día anterior sirve para:</p>
+                        <ul class="list-disc pl-5 space-y-2 mb-4">
+                            <li><strong>Gauging (Medición):</strong> La fuerza o debilidad intrínseca. Si el precio se
+                                mantiene sobre el máximo de ayer, es fortaleza.</li>
+                            <li><strong>Soporte/Resistencia Intradía:</strong> Zonas donde el precio a menudo reacciona.
+                            </li>
+                            <li><strong>Puntos de Reversión:</strong> Un patrón de giro en el PDH o PDL tiene mayor
+                                significado que en medio del rango.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 3. Los Cuatro Escenarios + INTERACTIVO 1 -->
+                <section id="cuatro-escenarios" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="bar-chart-2" class="text-kawn-base mr-3"></i> Los 4 Escenarios de Relación
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        El modelo identifica cuatro posibles relaciones entre la vela actual y la anterior para inferir
+                        qué hará la <strong>tercera vela</strong> (el día siguiente).
+                    </p>
+
+                    <!-- COMPONENTE INTERACTIVO 1: VISUALIZADOR DE ESCENARIOS -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 overflow-hidden mb-8">
+                        <div class="bg-slate-50 border-b border-slate-200 p-4 flex flex-wrap gap-2 justify-center">
+                            <button onclick="updateScenario('inside')"
+                                class="scenario-btn active px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 hover:bg-kawn-light hover:text-kawn-deep hover:border-kawn-base transition-all focus:ring-2 focus:ring-kawn-base shadow-sm">Consolidación
+                                (Inside)</button>
+                            <button onclick="updateScenario('up')"
+                                class="scenario-btn px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 hover:bg-green-50 hover:text-green-800 hover:border-green-500 transition-all shadow-sm">Ruptura
+                                Alcista</button>
+                            <button onclick="updateScenario('down')"
+                                class="scenario-btn px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 hover:bg-red-50 hover:text-red-800 hover:border-red-500 transition-all shadow-sm">Ruptura
+                                Bajista</button>
+                            <button onclick="updateScenario('both')"
+                                class="scenario-btn px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 hover:bg-purple-50 hover:text-purple-800 hover:border-purple-500 transition-all shadow-sm">Ambos
+                                Lados (Outside)</button>
+                        </div>
+
+                        <div class="p-6 flex flex-col md:flex-row gap-6 items-center">
+                            <div
+                                class="w-full md:w-1/2 h-64 relative bg-slate-900 rounded-lg flex items-center justify-center p-4">
+                                <canvas id="scenarioCanvas"></canvas>
+                            </div>
+                            <div class="w-full md:w-1/2">
+                                <h3 id="scenario-title" class="text-xl font-bold text-slate-800 mb-2">Selecciona un
+                                    escenario</h3>
+                                <p id="scenario-desc" class="text-slate-600 text-sm leading-relaxed">
+                                    Haz clic en los botones superiores para visualizar cómo interactúa la vela actual
+                                    con el rango del día anterior y qué sesgo implica.
+                                </p>
+                                <div id="scenario-bias"
+                                    class="mt-4 inline-block px-3 py-1 rounded bg-slate-200 text-slate-700 text-xs font-bold uppercase tracking-wide">
+                                    Sesgo: Esperando selección
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Desplazamiento (Validación) -->
+                <section id="desplazamiento" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="move" class="text-kawn-base mr-3"></i> El Concepto de Desplazamiento
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">
+                            En terminología ICT, se denomina <strong>desplazamiento</strong> a la rapidez y fuerza con
+                            la que el precio atraviesa un nivel clave. Básicamente, evalúa la calidad del rompimiento:
+                            <em>¿El precio pasó ese umbral “como cuchillo en mantequilla”, de forma decidida, o lo hizo
+                                con dificultad?</em>
+                        </p>
+                        <ul class="space-y-4 my-6">
+                            <li class="flex items-start bg-green-50 p-4 rounded-lg border border-green-100">
+                                <i data-lucide="check-circle" class="text-green-600 mt-1 mr-3 shrink-0"></i>
+                                <div>
+                                    <span class="font-bold text-green-800 block">Con Desplazamiento =
+                                        Continuación</span>
+                                    <span class="text-sm text-green-700">Vela amplia, cierre lejos del nivel. Indica
+                                        intención real del Smart Money. Anticipar que la tendencia seguirá.</span>
+                                </div>
+                            </li>
+                            <li class="flex items-start bg-red-50 p-4 rounded-lg border border-red-100">
+                                <i data-lucide="x-circle" class="text-red-600 mt-1 mr-3 shrink-0"></i>
+                                <div>
+                                    <span class="font-bold text-red-800 block">Sin Desplazamiento = Reversión
+                                        (Trampa)</span>
+                                    <span class="text-sm text-red-700">Mechas largas, cuerpo pequeño o reversión
+                                        inmediata. Indica toma de liquidez. Anticipar movimiento contrario.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 5. Toma de Liquidez y Turtle Soup + INTERACTIVO 2 -->
+                <section id="turtle-soup" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="zap" class="text-kawn-base mr-3"></i> Toma de Liquidez y Turtle Soup
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        Cuando no hay desplazamiento, estamos ante una <strong>Toma de Liquidez</strong>. El patrón
+                        clásico es la "Sopa de Tortuga" (Turtle Soup): una falsa ruptura de un máximo/mínimo anterior
+                        seguida de un giro violento.
+                    </p>
+
+                    <!-- COMPONENTE INTERACTIVO 2: SIMULADOR DE MERCADO (PLOTLY) -->
+                    <div id="simuladores" class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700">
+                        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                            <div>
+                                <h3 class="text-white font-bold text-lg">Simulador de Intención Institucional</h3>
+                                <p class="text-slate-400 text-xs">Observa la diferencia gráfica entre un rompimiento
+                                    real y una trampa.</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button id="btn-breakout"
+                                    class="bg-green-600 hover:bg-green-500 text-white text-xs px-4 py-2 rounded-full font-bold transition-colors">
+                                    Simular Breakout Real
+                                </button>
+                                <button id="btn-fakeout"
+                                    class="bg-red-600 hover:bg-red-500 text-white text-xs px-4 py-2 rounded-full font-bold transition-colors">
+                                    Simular Turtle Soup
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="plotlySimulator"
+                            class="w-full h-80 bg-slate-800 rounded-lg overflow-hidden border border-slate-600"></div>
+
+                        <div id="sim-feedback"
+                            class="mt-4 p-3 bg-slate-800 text-slate-300 text-sm rounded border border-slate-600 italic text-center">
+                            Selecciona una simulación para ver la acción del precio.
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mt-8">
+                        <div class="card-concept mt-0">
+                            <h4 class="font-bold text-slate-800 mb-2">Turtle Soup Alcista</h4>
+                            <p class="text-sm text-slate-600">Falsa ruptura bajista. El precio barre el mínimo anterior
+                                (Sell Stops), no desplaza, y gira al alza. Los vendedores quedan atrapados.</p>
+                        </div>
+                        <div class="card-concept mt-0">
+                            <h4 class="font-bold text-slate-800 mb-2">Turtle Soup Bajista</h4>
+                            <p class="text-sm text-slate-600">Falsa ruptura alcista. El precio barre el máximo anterior
+                                (Buy Stops), no desplaza, y gira a la baja. Los compradores quedan atrapados.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Fair Value Gaps (FVG) -->
+                <section id="fvg-confirmacion" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> FVG y Confirmación
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">
+                            Los <strong>Fair Value Gaps (FVG)</strong> son huecos o ineficiencias donde el precio saltó
+                            sin transaccionar completamente. En el contexto de la barra diaria:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Imanes:</strong> El precio tiende a volver a ellos para reequilibrar.</li>
+                            <li><strong>Entrada:</strong> Son puntos ideales de entrada tras un cambio de estructura
+                                (BOS).</li>
+                            <li><strong>Validación:</strong> Un movimiento real DEBE dejar FVGs. Si el precio rompe un
+                                máximo y no deja FVG en temporalidad menor, sospecha de una trampa.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 7. Análisis Multi-Temporal -->
+                <section id="multi-temporal" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clock" class="text-kawn-base mr-3"></i> Análisis Multi-Temporal (Top-Down)
+                    </h2>
+                    <p class="mb-4 text-slate-600">
+                        Ningún día opera en el vacío. "Lo que ocurre en un timeframe superior siempre prevalece sobre lo
+                        que ocurre en uno inferior".
+                    </p>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-4">Jerarquía de Análisis</h4>
+                        <ol class="relative border-l border-slate-300 ml-3 space-y-6">
+                            <li class="mb-2 ml-6">
+                                <span
+                                    class="absolute flex items-center justify-center w-8 h-8 bg-kawn-deep rounded-full -left-4 ring-4 ring-white text-white text-xs font-bold">M</span>
+                                <h5 class="font-bold text-slate-900">Mensual / Semanal</h5>
+                                <p class="text-sm text-slate-500">Define la tendencia macro y los ciclos mayores.</p>
+                            </li>
+                            <li class="mb-2 ml-6">
+                                <span
+                                    class="absolute flex items-center justify-center w-8 h-8 bg-kawn-base rounded-full -left-4 ring-4 ring-white text-white text-xs font-bold">D</span>
+                                <h5 class="font-bold text-slate-900">Diario</h5>
+                                <p class="text-sm text-slate-500">Establece el sesgo operativo (Bias) y la estructura de
+                                    corto plazo.</p>
+                            </li>
+                            <li class="mb-2 ml-6">
+                                <span
+                                    class="absolute flex items-center justify-center w-8 h-8 bg-kawn-light text-kawn-deep rounded-full -left-4 ring-4 ring-white text-xs font-bold">H1</span>
+                                <h5 class="font-bold text-slate-900">Intradía (4H, 1H, 15m)</h5>
+                                <p class="text-sm text-slate-500">Precisión en la entrada, gestión de riesgo y ejecución
+                                    (Killzones).</p>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- 8. Casos de Estudio -->
+                <section id="casos-estudio" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Casos de Estudio Reales</h2>
+
+                    <div class="space-y-6">
+                        <!-- Caso 1 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 border-red-500">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-slate-800">Caso Intradía: Reversión Bajista
+                                        (EUR/USD)</h3>
+                                    <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded">Turtle
+                                        Soup</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-3"><strong>Contexto:</strong> Tendencia semanal
+                                    bajista. Precio cerca de resistencia 1.1000.</p>
+                                <div class="text-sm text-slate-700 space-y-2">
+                                    <p>1. <strong>London Open:</strong> Rompe el máximo de ayer (1.0980) sin volumen ni
+                                        desplazamiento.</p>
+                                    <p>2. <strong>NY Open:</strong> Revierte violentamente a la baja, reingresando al
+                                        rango previo.</p>
+                                    <p>3. <strong>Confirmación:</strong> Deja FVG bajista en M15. Entrada en corto al
+                                        retestear el FVG.</p>
+                                    <p>4. <strong>Resultado:</strong> Precio cae hasta el mínimo del día anterior
+                                        (Liquidez opuesta).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Caso 2 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden border-l-4 border-green-500">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-slate-800">Caso Swing: Continuación Alcista (Stock
+                                        XYZ)</h3>
+                                    <span
+                                        class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">Breakout
+                                        Válido</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-3"><strong>Contexto:</strong> Semanal alcista. Vela
+                                    diaria previa rompió resistencia con cuerpo grande.</p>
+                                <div class="text-sm text-slate-700 space-y-2">
+                                    <p>1. <strong>Análisis:</strong> Ruptura con desplazamiento claro. Sesgo:
+                                        Continuación.</p>
+                                    <p>2. <strong>Ejecución:</strong> Esperar retroceso matutino. El precio sostiene por
+                                        encima del máximo previo (fortaleza).</p>
+                                    <p>3. <strong>Entrada:</strong> En formación de Order Block alcista en H1.</p>
+                                    <p>4. <strong>Resultado:</strong> El precio expande hacia el siguiente FVG semanal
+                                        proyectado.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. Comparativa + INTERACTIVO 3 -->
+                <section id="comparativa" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="git-compare" class="text-kawn-base mr-3"></i> Comparativa de Métodos
+                    </h2>
+
+                    <!-- COMPONENTE INTERACTIVO 3: COMPARADOR DE PESTAÑAS -->
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="switchTab('clasico')"
+                                class="tab-btn active flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Análisis
+                                Clásico</button>
+                            <button onclick="switchTab('wyckoff')"
+                                class="tab-btn flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Wyckoff</button>
+                            <button onclick="switchTab('ict')"
+                                class="tab-btn flex-1 py-4 text-sm font-bold text-kawn-base border-b-2 border-kawn-base transition-colors bg-white">Modelo
+                                ICT</button>
+                        </div>
+
+                        <div class="p-8 min-h-[200px]">
+                            <!-- Contenido Clásico -->
+                            <div id="content-clasico" class="tab-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-700 mb-2">Breakouts Tradicionales</h3>
+                                <p class="text-slate-600 mb-4">Interpreta la ruptura del máximo como señal de compra
+                                    inmediata.</p>
+                                <ul class="list-disc pl-5 text-sm text-slate-600 space-y-2">
+                                    <li>Stop Loss: Debajo del mínimo reciente (vulnerable a barridas).</li>
+                                    <li>Debilidad: No distingue entre ruptura real y trampa (falso breakout).</li>
+                                    <li>Filosofía: "Si rompe resistencia, se vuelve soporte".</li>
+                                </ul>
+                            </div>
+
+                            <!-- Contenido Wyckoff -->
+                            <div id="content-wyckoff" class="tab-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-700 mb-2">Springs & Upthrusts</h3>
+                                <p class="text-slate-600 mb-4">Se enfoca en ciclos de Acumulación y Distribución.</p>
+                                <ul class="list-disc pl-5 text-sm text-slate-600 space-y-2">
+                                    <li>Spring = Turtle Soup Alcista (Trampa bajista).</li>
+                                    <li>UTAD = Turtle Soup Bajista (Trampa alcista).</li>
+                                    <li>Enfoque: Más cualitativo y estructural, menos reglas específicas de entrada
+                                        intradía que ICT.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Contenido ICT -->
+                            <div id="content-ict" class="tab-content animate-fade-in">
+                                <h3 class="text-xl font-bold text-kawn-deep mb-2">Precisión Institucional</h3>
+                                <p class="text-slate-600 mb-4">Revela la intencionalidad detrás del movimiento.</p>
+                                <ul class="list-disc pl-5 text-sm text-slate-600 space-y-2">
+                                    <li><strong>Liquidez:</strong> Ve los máximos/mínimos como piscinas de liquidez, no
+                                        solo líneas.</li>
+                                    <li><strong>Desplazamiento:</strong> Filtra la calidad de la ruptura para evitar
+                                        trampas.</li>
+                                    <li><strong>Timing:</strong> Usa Killzones y FVGs para entradas quirúrgicas.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 10. Consejos y Errores -->
+                <section id="consejos-errores" class="mb-16">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900 mb-4 text-green-700">Mejores Prácticas</h2>
+                            <ul class="space-y-3 text-sm text-slate-600">
+                                <li class="flex gap-2"><i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                                    Analiza la vela anterior antes de que abra el mercado.</li>
+                                <li class="flex gap-2"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> Marca
+                                    siempre PDH y PDL en tu gráfico.</li>
+                                <li class="flex gap-2"><i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                                    Confirma con temporalidad semanal (HTF es rey).</li>
+                                <li class="flex gap-2"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> Espera
+                                    desplazamiento antes de confirmar un breakout.</li>
+                                <li class="flex gap-2"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> Usa
+                                    stops lógicos fuera de zonas de liquidez.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900 mb-4 text-red-700">Errores Comunes</h2>
+                            <ul class="space-y-3 text-sm text-slate-600">
+                                <li class="flex gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i> Confundir
+                                    sesgo con certeza absoluta.</li>
+                                <li class="flex gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i> Operar
+                                    rompimientos ciegamente sin ver la reacción.</li>
+                                <li class="flex gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i> Ignorar el
+                                    contexto macro (ir contra tendencia fuerte).</li>
+                                <li class="flex gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i> Stops
+                                    demasiado ajustados (ser liquidez).</li>
+                                <li class="flex gap-2"><i data-lucide="x" class="w-5 h-5 text-red-500"></i>
+                                    Sobre-interpretar cada mecha pequeña en M1.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 11. Conclusión -->
+                <section id="conclusion" class="mb-16">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Conclusiones</h2>
+                    <p class="text-slate-600 leading-7">
+                        El modelo de la Barra del Día Anterior transforma líneas estáticas en narrativas dinámicas. Al
+                        entender si el Smart Money busca continuación (desplazamiento) o liquidez (trampa), dejas de ser
+                        una víctima del mercado para convertirte en un operador informado. Recuerda: el mercado es un
+                        escenario donde conviven manipulación y oportunidad. Aprende a leer el guion.
+                    </p>
+                </section>
+
+                <!-- 12. Ejercicios y Validación -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="edit-3" class="text-kawn-base mr-3"></i> Validación del Conocimiento
+                    </h2>
+
+                    <!-- Área de Reflexión -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <h3 class="font-bold text-slate-800 mb-4">Ejercicio de Reflexión: Plan de Trading</h3>
+                        <p class="text-sm text-slate-600 mb-4">Analiza el gráfico de tu par favorito (ej. EURUSD) de
+                            ayer. ¿Qué relación tuvo la vela diaria con la anterior? ¿Hubo desplazamiento? Escribe tu
+                            sesgo para mañana:</p>
+                        <textarea id="reflection-area"
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none transition-all"
+                            rows="3"
+                            placeholder="Ej: Ayer fue Inside Day. Hoy rompió el máximo de ayer con fuerza (desplazamiento)..."></textarea>
+                    </div>
+
+                    <!-- QUIZ -->
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Quiz Integral de Validación (20 Preguntas)</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/0</span>
+                        </div>
+
+                        <div id="quiz-container" class="space-y-6">
+                            <!-- El JS inyectará las preguntas aquí -->
+                        </div>
+
+                        <div id="quiz-complete" class="hidden text-center mt-6">
+                            <p class="text-2xl font-bold mb-2">¡Completado!</p>
+                            <p class="text-sm opacity-80 mb-4" id="final-msg">Has repasado los fundamentos del sesgo
+                                diario.</p>
+                            <button onclick="resetQuiz()"
+                                class="bg-white text-kawn-deep px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">Reiniciar
+                                Test</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Float -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor SMC IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light" aria-label="Cerrar chat"><i data-lucide="x"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col chat-container">
+            <div class="ai-msg message-bubble shadow-sm">
+                Hola. Soy tu especialista en el Modelo de Barra del Día Anterior. ¿Dudas sobre Turtle Soup o
+                Desplazamiento?
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base focus:ring-1 focus:ring-kawn-base transition-all"
+                    placeholder="Pregunta sobre ICT...">
+                <button id="send-ai"
+                    class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors disabled:opacity-50"
+                    aria-label="Enviar mensaje">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full shadow-lg loading-dots">
+                Procesando
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo sobre Trading Institucional.<br>No constituye
+                    asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Funcionalidad Robustos -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 0. Robust Library Check
+            const checkLibs = () => {
+                if (typeof lucide === 'undefined') console.warn('Lucide Icons not loaded');
+                else lucide.createIcons();
+
+                if (typeof Plotly === 'undefined') console.warn('Plotly not loaded');
+            };
+            checkLibs();
+
+            // Utilidad de Debounce para Optimización
+            const debounce = (func, wait) => {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            };
+
+            // Año Actual
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // -------------------------------------------------------------------------
+            // 1. TOC DINÁMICO & ACTIVE STATE
+            // -------------------------------------------------------------------------
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+
+            if (tocContainer) {
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        link.textContent = h2.innerText.replace(/\n/g, '').trim();
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all`;
+
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                            // Cerrar menú móvil si está abierto
+                            const sidebar = document.getElementById('sidebar-toc');
+                            if (window.innerWidth < 768 && sidebar && !sidebar.classList.contains('hidden')) {
+                                sidebar.classList.add('hidden');
+                                sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                            }
+                        });
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                            const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(section => observer.observe(section));
+            }
+
+            // Mobile Menu Logic (Robust closing)
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar-toc');
+
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = sidebar.classList.contains('hidden');
+
+                    if (isHidden) {
+                        sidebar.classList.remove('hidden');
+                        sidebar.classList.add('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+
+                        // Agregar botón de cierre si no existe
+                        if (!sidebar.querySelector('.close-mobile')) {
+                            const closeBtn = document.createElement('button');
+                            closeBtn.className = 'close-mobile absolute top-4 right-4 text-slate-500 font-bold p-2';
+                            closeBtn.innerHTML = '<i data-lucide="x"></i>';
+                            closeBtn.onclick = () => {
+                                sidebar.classList.add('hidden');
+                                sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                            };
+                            sidebar.prepend(closeBtn);
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                    } else {
+                        sidebar.classList.add('hidden');
+                        sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                    }
+                });
+
+                // Close on click outside (overlay effect)
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth < 768 && !sidebar.classList.contains('hidden')) {
+                        if (!sidebar.contains(e.target) && e.target !== mobileMenuBtn) {
+                            sidebar.classList.add('hidden');
+                            sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                        }
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 2. REFLECTION PERSISTENCE (LocalStorage)
+            // -------------------------------------------------------------------------
+            const reflectionArea = document.getElementById('reflection-area');
+            if (reflectionArea) {
+                const savedRef = localStorage.getItem('kawnReflection');
+                if (savedRef) reflectionArea.value = savedRef;
+
+                reflectionArea.addEventListener('input', (e) => {
+                    localStorage.setItem('kawnReflection', e.target.value);
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 3. INTERACTIVO 1: CHART.JS (4 Escenarios - Canvas Nativo)
+            // -------------------------------------------------------------------------
+            const ctxScenario = document.getElementById('scenarioCanvas');
+            let currentScenario = 'inside';
+
+            const scenarioData = {
+                'inside': {
+                    data: [[100, 150, 90, 120], [125, 135, 110, 130]],
+                    colors: ['#cbd5e1', '#eab308'],
+                    title: "Consolidación (Inside Day)",
+                    desc: "La vela actual (amarilla) permanece totalmente dentro del rango de la anterior (gris). Denota indecisión.",
+                    bias: "NEUTRO"
+                },
+                'up': {
+                    data: [[100, 140, 90, 120], [125, 160, 115, 155]],
+                    colors: ['#cbd5e1', '#22c55e'],
+                    title: "Ruptura por Arriba (Breakout Alcista)",
+                    desc: "La vela actual rompe y cierra por encima del máximo anterior. Sugiere fortaleza.",
+                    bias: "ALCISTA"
+                },
+                'down': {
+                    data: [[120, 140, 90, 100], [95, 105, 70, 75]],
+                    colors: ['#cbd5e1', '#ef4444'],
+                    title: "Ruptura por Abajo (Breakout Bajista)",
+                    desc: "La vela actual rompe y cierra por debajo del mínimo anterior. Sugiere debilidad.",
+                    bias: "BAJISTA"
+                },
+                'both': {
+                    data: [[110, 130, 90, 110], [105, 145, 80, 110]],
+                    colors: ['#cbd5e1', '#a855f7'],
+                    title: "Ruptura Ambos Lados (Outside)",
+                    desc: "Barre el máximo y el mínimo. Alta volatilidad, posible manipulación o trampa.",
+                    bias: "INDECISIÓN / TRAMPA"
+                }
+            };
+
+            function drawCandle(ctx, x, open, high, low, close, width, color) {
+                const yOpen = 250 - open;
+                const yHigh = 250 - high;
+                const yLow = 250 - low;
+                const yClose = 250 - close;
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, yHigh);
+                ctx.lineTo(x, yLow);
+                ctx.stroke();
+
+                ctx.fillStyle = color;
+                const bodyHeight = Math.abs(yOpen - yClose);
+                const bodyY = Math.min(yOpen, yClose);
+                ctx.fillRect(x - width / 2, bodyY, width, Math.max(bodyHeight, 2));
+            }
+
+            window.updateScenario = function (type) {
+                currentScenario = type;
+                // Update UI Buttons
+                document.querySelectorAll('.scenario-btn').forEach(b => {
+                    b.classList.remove('ring-2', 'ring-kawn-base', 'bg-slate-100');
+                    if (b.onclick.toString().includes(type)) b.classList.add('ring-2', 'ring-kawn-base', 'bg-slate-100');
+                });
+
+                // Update Text (Safe check)
+                const info = scenarioData[type];
+                const titleEl = document.getElementById('scenario-title');
+                const descEl = document.getElementById('scenario-desc');
+                const biasEl = document.getElementById('scenario-bias');
+
+                if (titleEl) titleEl.textContent = info.title;
+                if (descEl) descEl.textContent = info.desc;
+                if (biasEl) biasEl.textContent = `SESGO: ${info.bias}`;
+
+                // Draw Canvas
+                if (ctxScenario) {
+                    const ctx = ctxScenario.getContext('2d');
+                    const canvas = ctxScenario;
+
+                    // Responsive sizing
+                    canvas.width = canvas.parentElement.clientWidth;
+                    canvas.height = canvas.parentElement.clientHeight;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    const center = canvas.width / 2;
+                    const scaleFactor = canvas.height / 200;
+
+                    // Draw Previous Candle
+                    drawCandle(ctx, center - 50, info.data[0][0], info.data[0][1], info.data[0][2], info.data[0][3], 40, info.colors[0]);
+
+                    // Draw Current Candle
+                    drawCandle(ctx, center + 50, info.data[1][0], info.data[1][1], info.data[1][2], info.data[1][3], 40, info.colors[1]);
+
+                    // Draw Labels
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '12px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Día Anterior', center - 50, canvas.height - 10);
+                    ctx.fillText('Día Actual', center + 50, canvas.height - 10);
+                }
+            };
+
+            // Init Canvas with Debounce Resize
+            setTimeout(() => window.updateScenario('inside'), 100);
+            window.addEventListener('resize', debounce(() => window.updateScenario(currentScenario), 100));
+
+
+            // -------------------------------------------------------------------------
+            // 4. INTERACTIVO 2: PLOTLY SIMULATOR (Robust)
+            // -------------------------------------------------------------------------
+            const plotlyDiv = document.getElementById('plotlySimulator');
+            const feedbackDiv = document.getElementById('sim-feedback');
+
+            if (typeof Plotly !== 'undefined' && plotlyDiv) {
+                const baseLayout = {
+                    dragmode: false,
+                    showlegend: false,
+                    xaxis: { visible: false, rangeslider: { visible: false } },
+                    yaxis: { visible: true, gridcolor: '#334155' },
+                    paper_bgcolor: '#0f172a',
+                    plot_bgcolor: '#0f172a',
+                    font: { color: '#94a3b8' },
+                    margin: { l: 40, r: 20, t: 20, b: 20 },
+                    shapes: [{
+                        type: 'line', x0: 0, x1: 1, xref: 'paper', y0: 1.1000, y1: 1.1000,
+                        line: { color: '#94a3b8', width: 2, dash: 'dash' }
+                    }]
+                };
+
+                const xBase = ['T1', 'T2', 'T3', 'T4'];
+                const openBase = [1.0950, 1.0960, 1.0980, 1.0990];
+                const highBase = [1.0960, 1.0985, 1.0995, 1.0998];
+                const lowBase = [1.0940, 1.0955, 1.0970, 1.0985];
+                const closeBase = [1.0960, 1.0980, 1.0990, 1.0995];
+
+                function plotSim(type) {
+                    let xFinal, openFinal, highFinal, lowFinal, closeFinal, msg;
+
+                    if (type === 'breakout') {
+                        xFinal = [...xBase, 'T5 (Breakout)'];
+                        openFinal = [...openBase, 1.0995];
+                        highFinal = [...highBase, 1.1040];
+                        lowFinal = [...lowBase, 1.0990];
+                        closeFinal = [...closeBase, 1.1035];
+                        msg = "<span class='text-green-400 font-bold'>Ruptura con Desplazamiento:</span> El cuerpo cierra lejos del nivel. Intención real.";
+                    } else {
+                        xFinal = [...xBase, 'T5 (Fakeout)'];
+                        openFinal = [...openBase, 1.0995];
+                        highFinal = [...highBase, 1.1015];
+                        lowFinal = [...lowBase, 1.0970];
+                        closeFinal = [...closeBase, 1.0975];
+                        msg = "<span class='text-red-400 font-bold'>Turtle Soup (Sin Desplazamiento):</span> Mecha larga superior, cierre bajo el nivel. Trampa de liquidez.";
+                    }
+
+                    const trace = {
+                        x: xFinal,
+                        open: openFinal, high: highFinal, low: lowFinal, close: closeFinal,
+                        type: 'candlestick',
+                        increasing: { line: { color: '#14b8a6' } },
+                        decreasing: { line: { color: '#ef4444' } }
+                    };
+
+                    Plotly.newPlot(plotlyDiv, [trace], baseLayout, { staticPlot: true, responsive: true });
+                    feedbackDiv.innerHTML = msg;
+                }
+
+                Plotly.newPlot(plotlyDiv, [{
+                    x: xBase, open: openBase, high: highBase, low: lowBase, close: closeBase,
+                    type: 'candlestick', increasing: { line: { color: '#14b8a6' } }, decreasing: { line: { color: '#ef4444' } }
+                }], baseLayout, { staticPlot: true, responsive: true });
+
+                const btnBreak = document.getElementById('btn-breakout');
+                const btnFake = document.getElementById('btn-fakeout');
+
+                if (btnBreak) btnBreak.onclick = () => plotSim('breakout');
+                if (btnFake) btnFake.onclick = () => plotSim('fakeout');
+            }
+
+            // -------------------------------------------------------------------------
+            // 5. COMPARADOR DE PESTAÑAS
+            // -------------------------------------------------------------------------
+            window.switchTab = function (tabName) {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'border-kawn-base', 'text-kawn-base', 'bg-white');
+                    btn.classList.add('text-slate-600');
+                });
+
+                const activeBtn = document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active', 'border-kawn-base', 'text-kawn-base', 'bg-white');
+                    activeBtn.classList.remove('text-slate-600');
+                }
+
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                const target = document.getElementById(`content-${tabName}`);
+                if (target) target.classList.remove('hidden');
+            }
+            window.switchTab('ict');
+
+            // -------------------------------------------------------------------------
+            // 6. QUIZ LOGIC (Persistent Score)
+            // -------------------------------------------------------------------------
+            const quizData = [
+                {
+                    q: "¿Qué indica una ruptura del máximo del día anterior SIN desplazamiento?",
+                    opts: ["Continuación alcista fuerte", "Toma de liquidez (Posible Turtle Soup)", "Consolidación indefinida"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Toma de liquidez.</strong><br>En la metodología ICT, el desplazamiento (fuerza y velocidad) es la firma institucional. Si el precio rompe un máximo pero carece de esta energía (dejando mechas o retrocediendo inmediatamente), se interpreta como una manipulación para activar los Buy Stops de los minoristas y atraparlos antes de girar el mercado."
+                },
+                {
+                    q: "¿Cuál es el propósito principal de marcar el PDH y PDL (Máximo/Mínimo día previo)?",
+                    opts: ["Predecir el cierre exacto del día", "Identificar zonas de liquidez y medir fuerza relativa", "Calcular medias móviles"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Identificar zonas de liquidez.</strong><br>El PDH y PDL actúan como imanes. Si el precio se mantiene cómodamente sobre el PDH, indica fortaleza real. Si falla en sostenerse, indica debilidad."
+                },
+                {
+                    q: "¿Qué escenario de vela sugiere indecisión o posible acumulación?",
+                    opts: ["Ruptura Alcista", "Inside Day (Consolidación)", "Ruptura Bajista"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Inside Day.</strong><br>Cuando la vela actual no logra romper ni el máximo ni el mínimo de la anterior, el mercado se encuentra en contracción. Esto suele preceder a una expansión de volatilidad."
+                },
+                {
+                    q: "¿Qué confirma la validez de un movimiento según ICT?",
+                    opts: ["El uso de indicadores RSI", "La presencia de Fair Value Gaps (FVG) tras el movimiento", "El volumen bajo"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: La presencia de Fair Value Gaps (FVG).</strong><br>Un movimiento institucional genuino es agresivo y desequilibrado, lo que deja huellas en forma de ineficiencias (FVG)."
+                },
+                {
+                    q: "¿Cómo se debe integrar el análisis diario con temporalidades mayores?",
+                    opts: ["Ignorando el semanal", "Operando en contra de la tendencia mensual", "Alineando el sesgo diario con la estructura Semanal/Mensual"],
+                    a: 2,
+                    exp: "<strong>La respuesta correcta es: Alineando con estructura mayor.</strong><br>El principio 'Higher Time Frame is King' es innegociable. Un sesgo diario bajista en medio de una tendencia semanal alcista tiene bajas probabilidades de éxito."
+                },
+                {
+                    q: "Si la vela actual cierra con fuerza por encima del máximo de la anterior (Ruptura Alcista), ¿qué sesgo proyectamos para mañana?",
+                    opts: ["Reversión Bajista", "Continuación Alcista", "Rango Lateral"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Continuación Alcista.</strong><br>Cuando hay una ruptura con cierre sólido cerca de los máximos (desplazamiento), asumimos que el momentum continuará al día siguiente."
+                },
+                {
+                    q: "¿Cuál es la anatomía exacta de una 'Turtle Soup Alcista'?",
+                    opts: ["Ruptura de máximo + Desplazamiento", "Ruptura de mínimo previo + Sin desplazamiento + Reversión rápida", "Inside bar en zona de soporte"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Ruptura de mínimo + Sin desplazamiento + Reversión.</strong><br>Este patrón es una trampa bajista. El precio perfora el mínimo para activar Sell Stops (liquidez), pero al no tener fuerza para seguir bajando, gira violentamente al alza atrapando a los vendedores."
+                },
+                {
+                    q: "¿Por qué es crucial que el precio entre en un FVG tras una toma de liquidez?",
+                    opts: ["Porque el FVG actúa como resistencia impenetrable", "Porque confirma que el precio alcanzó una zona de mitigación institucional", "No es importante"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Confirma mitigación institucional.</strong><br>La toma de liquidez es la 'gasolina', y el FVG es el 'destino'. Si el precio barre un nivel y entra en un FVG de temporalidad mayor, significa que el Smart Money ha logrado dos objetivos: capturar liquidez y rebalancear una ineficiencia previa."
+                },
+                {
+                    q: "¿Dónde NO se debe colocar el Stop Loss tras entrar en una operación de reversión?",
+                    opts: ["Justo en el extremo de la mecha de entrada (muy ajustado)", "Por encima/debajo de la estructura que invalidaría la tesis", "En un número redondo lejano"],
+                    a: 0,
+                    exp: "<strong>La respuesta correcta es: Justo en el extremo de la mecha.</strong><br>Colocar el stop pegado al precio (tick perfect) es peligroso porque la volatilidad residual puede sacarte antes de que se dé el movimiento. El stop debe ir en un nivel estructural (Invalidation Point)."
+                },
+                {
+                    q: "¿Por qué las tomas de liquidez ocurren frecuentemente en las 'Kill Zones' (Londres/NY)?",
+                    opts: ["Porque los algoritmos descansan", "Porque hay mayor inyección de volumen y volatilidad", "Es pura coincidencia"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Mayor inyección de volumen.</strong><br>Las instituciones necesitan mucha liquidez para entrar o salir de sus posiciones gigantes. Las aperturas de sesión (Open) son los momentos donde se concentra la mayor actividad."
+                },
+                {
+                    q: "¿Cuál es la diferencia crítica entre 'Sesgo Diario' y 'Predicción de Cierre'?",
+                    opts: ["Son lo mismo", "El sesgo busca la dirección del flujo de liquidez; la predicción adivina el precio final", "El sesgo es para largo plazo"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: El sesgo busca el flujo de liquidez.</strong><br>Como traders ICT, no nos importa si la vela cierra verde o roja al final del día. Nos importa saber si el precio va a subir PRIMERO a tomar liquidez de un máximo antes de caer."
+                },
+                {
+                    q: "¿Qué implica una vela 'Outside Bar' (rompe máximo y mínimo del día anterior)?",
+                    opts: ["Tendencia muy clara", "Indecisión y alta volatilidad (posible trampa bilateral)", "Baja volatilidad"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Indecisión y alta volatilidad.</strong><br>Una Outside Bar ha barrido ambos lados del mercado, eliminando a compradores y vendedores tempranos. A menudo se le llama 'Megáfono' en temporalidades menores."
+                },
+                {
+                    q: "En el modelo Power of 3 (AMD), ¿a qué fase corresponde usualmente la falsa ruptura del mínimo del día anterior?",
+                    opts: ["Acumulación", "Manipulación", "Distribución"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Manipulación.</strong><br>El ciclo clásico es: Acumulación (Rango asiático) -> Manipulación (Barrida del mínimo del día anterior/apertura) -> Distribución (Expansión real)."
+                },
+                {
+                    q: "Para un Swing Trader, ¿cuántas temporalidades deberían alinearse idealmente antes de operar?",
+                    opts: ["Solo una (M5)", "Al menos 4 de 5 (ej. Mensual, Semanal, Diario, H4)", "No importa la alineación"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Al menos 4 de 5.</strong><br>Operar Swing requiere sostener posiciones por días. Si el gráfico Mensual y Semanal son bajistas, comprar por una señal en H1 es suicida."
+                },
+                {
+                    q: "Si el precio rompe el máximo de ayer pero empieza a formar velas con largas mechas superiores en H1, ¿qué indica?",
+                    opts: ["Fortaleza inmensa", "Absorción de compras y debilidad (posible giro)", "Indiferencia"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Absorción de compras y debilidad.</strong><br>Las mechas superiores (wicks) indican rechazo. Significa que cada vez que el precio intenta subir, entra venta institucional agresiva que lo empuja hacia abajo."
+                },
+                {
+                    q: "¿Por qué el precio de cierre de la vela diaria es vital para el análisis del día siguiente?",
+                    opts: ["Confirma si hubo desplazamiento real o solo rechazo", "No es relevante", "Solo importa la apertura"],
+                    a: 0,
+                    exp: "<strong>La respuesta correcta es: Confirma desplazamiento vs rechazo.</strong><br>Durante el día, una vela puede parecer muy alcista, pero si al cierre retrocede y deja una mecha enorme, la historia cambia totalmente (de ruptura a rechazo)."
+                },
+                {
+                    q: "¿Cómo valida un Order Block la dirección tras una ruptura?",
+                    opts: ["Si el precio lo rompe fácilmente", "Si el precio lo respeta como soporte en el retroceso", "Los Order Blocks no funcionan"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Si el precio lo respeta en el retroceso.</strong><br>Tras una ruptura válida (con desplazamiento), el precio suele retroceder para 're-testear'. Si rebota con precisión en un Order Block alcista previo, confirma que las instituciones están defendiendo sus posiciones de compra."
+                },
+                {
+                    q: "¿Qué emoción primaria explota el Smart Money al crear una 'Ruptura sin Desplazamiento'?",
+                    opts: ["Paciencia", "FOMO (Miedo a perderse algo) y Pánico", "Alegría"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: FOMO y Pánico.</strong><br>Al romper un nivel clave, inducen FOMO en los traders de ruptura (que compran tarde y mal) y Pánico en los que tenían posiciones contrarias (activando sus stops)."
+                },
+                {
+                    q: "Si un FVG alcista es roto a la baja con fuerza y cuerpo de vela, ¿en qué se convierte?",
+                    opts: ["Deja de servir", "En una Resistencia (Inversion FVG)", "En un soporte más fuerte"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: En una Resistencia (Inversion FVG).</strong><br>Cuando una zona de demanda (FVG alcista) falla y es violada, la polaridad cambia. Ahora actúa como zona de oferta (resistencia)."
+                },
+                {
+                    q: "¿Cómo afectan las noticias de alto impacto (NFP, CPI) al modelo de barra del día anterior?",
+                    opts: ["No afectan en nada", "Pueden generar barridas masivas que invalidan temporalmente los niveles técnicos", "Hacen el mercado más lento"],
+                    a: 1,
+                    exp: "<strong>La respuesta correcta es: Generan barridas masivas.</strong><br>Durante noticias fundamentales, la volatilidad es extrema y los algoritmos buscan liquidez en ambos extremos (Seek and Destroy)."
+                }
+            ];
+
+            let score = 0;
+            const quizContainer = document.getElementById('quiz-container');
+            const scoreDisplay = document.getElementById('quiz-score');
+
+            window.renderQuiz = function () {
+                if (!quizContainer) return;
+
+                // Retrieve persisted score if available
+                const savedScore = localStorage.getItem('kawnQuizScore');
+                if (savedScore) {
+                    score = parseInt(savedScore);
+                } else {
+                    score = 0;
+                }
+
+                quizContainer.innerHTML = '';
+                if (scoreDisplay) scoreDisplay.textContent = `Score: ${score}/${quizData.length}`;
+
+                quizData.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = "bg-white/10 p-6 rounded-xl border border-white/10";
+                    div.innerHTML = `
+                        <p class="font-bold text-lg mb-4 text-kawn-light">${idx + 1}. ${item.q}</p>
+                        <div class="space-y-3">
+                            ${item.opts.map((opt, optIdx) => `
+                                <button onclick="checkAnswer(${idx}, ${optIdx}, this)" class="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-transparent hover:border-kawn-base/50 text-sm quiz-option" data-correct="${optIdx === item.a}">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div id="feedback-${idx}" class="hidden mt-4 p-4 rounded bg-slate-900 border-l-4 border-kawn-base quiz-feedback animate-fade-in-up">
+                            <p class="text-sm text-slate-300 leading-relaxed">${item.exp}</p>
+                        </div>
+                    `;
+                    quizContainer.appendChild(div);
+                });
+            }
+
+            window.checkAnswer = function (qIdx, optIdx, btn) {
+                const parent = btn.parentElement;
+                const buttons = parent.querySelectorAll('button');
+                buttons.forEach(b => b.disabled = true); // Disable all
+
+                const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+                if (isCorrect) {
+                    btn.classList.add('bg-green-600', 'border-green-500');
+                    btn.innerHTML += ' ✅';
+                    if (!localStorage.getItem(`q${qIdx}_answered`)) {
+                        score++;
+                        localStorage.setItem(`q${qIdx}_answered`, 'true');
+                        localStorage.setItem('kawnQuizScore', score);
+                    }
+                } else {
+                    btn.classList.add('bg-red-600', 'border-red-500');
+                    btn.innerHTML += ' ❌';
+                    // Highlight correct one
+                    buttons.forEach(b => {
+                        if (b.getAttribute('data-correct') === 'true') b.classList.add('ring-2', 'ring-green-500');
+                    });
+                }
+
+                if (scoreDisplay) scoreDisplay.textContent = `Score: ${score}/${quizData.length}`;
+                document.getElementById(`feedback-${qIdx}`).classList.remove('hidden');
+
+                // Check completion
+                const totalAnswered = document.querySelectorAll('.quiz-option:disabled').length / 3;
+                if (totalAnswered >= quizData.length) {
+                    document.getElementById('quiz-complete').classList.remove('hidden');
+                }
+            }
+
+            window.resetQuiz = function () {
+                localStorage.removeItem('kawnQuizScore');
+                for (let i = 0; i < quizData.length; i++) localStorage.removeItem(`q${i}_answered`);
+                document.getElementById('quiz-complete').classList.add('hidden');
+                renderQuiz();
+            }
+
+            renderQuiz();
+
+            // -------------------------------------------------------------------------
+            // 7. IA CHAT (Gemini Proxy - Robust Error Handling)
+            // -------------------------------------------------------------------------
+            const aiModal = document.getElementById('ai-modal');
+            const aiToggle = document.getElementById('ai-toggle');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            if (aiToggle && aiModal) aiToggle.addEventListener('click', () => aiModal.classList.remove('hidden'));
+            if (closeAi && aiModal) closeAi.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+            async function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                // User Msg
+                const userDiv = document.createElement('div');
+                userDiv.className = `message-bubble user-msg fade-in-up`;
+                userDiv.innerText = text;
+                chatHistory.appendChild(userDiv);
+
+                userInput.value = '';
+                if (aiLoading) aiLoading.classList.remove('hidden');
+                if (sendAi) sendAi.disabled = true;
+
+                try {
+                    const response = await fetch('/.netlify/functions/gemini-proxy', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{
+                                    text: `Actúa como un mentor experto en ICT y Smart Money Concepts. Responde brevemente a: ${text}`
+                                }]
+                            }]
+                        })
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                    const data = await response.json();
+                    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "Lo siento, no pude procesar tu solicitud.";
+
+                    // AI Msg
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = `message-bubble ai-msg fade-in-up`;
+                    aiDiv.innerText = replyText;
+                    chatHistory.appendChild(aiDiv);
+
+                } catch (error) {
+                    console.error(error);
+                    const errDiv = document.createElement('div');
+                    errDiv.className = `message-bubble ai-msg fade-in-up bg-red-100 text-red-800`;
+                    errDiv.innerText = "Error de conexión con el servidor. Por favor verifica tu red.";
+                    chatHistory.appendChild(errDiv);
+                } finally {
+                    if (aiLoading) aiLoading.classList.add('hidden');
+                    if (sendAi) sendAi.disabled = false;
+                    if (chatHistory) chatHistory.scrollTop = chatHistory.scrollHeight;
+                }
+            }
+
+            if (sendAi) sendAi.addEventListener('click', sendMessage);
+            if (userInput) userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage() });
+
+        });
+    </script>
+</body>
+
+</html>

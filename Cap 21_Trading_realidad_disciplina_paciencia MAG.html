@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KawnBit Magazine | Cap. 21: Psicología Avanzada y Disciplina</title>
+    <meta name="description"
+        content="Recapitulación: La importancia de la disciplina, la paciencia y el aprendizaje continuo en el trading profesional.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js for Pro Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Confetti for Gamification -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500 (Base del logo)
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                            accent: '#0d9488', // Teal 600
+                            soft: '#f0fdfa'   // Fondo suave
+                        },
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        p,
+        li,
+        td {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.75;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #115e59 100%);
+        }
+
+        .visual-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .magazine-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        .magazine-table th {
+            background-color: #134e4a;
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        .magazine-table td {
+            background-color: white;
+            padding: 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            vertical-align: top;
+            transition: background-color 0.2s;
+        }
+
+        .magazine-table tr:hover td {
+            background-color: #f0fdfa;
+        }
+
+        .magazine-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight-quote {
+            border-left: 4px solid #14b8a6;
+            background-color: #f0fdfa;
+            padding: 2rem;
+            font-style: italic;
+            color: #134e4a;
+            border-radius: 0 1rem 1rem 0;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .highlight-quote::before {
+            content: '"';
+            position: absolute;
+            top: 0;
+            left: 10px;
+            font-size: 4rem;
+            color: #14b8a6;
+            opacity: 0.2;
+            font-family: serif;
+        }
+
+        .custom-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: start;
+        }
+
+        .custom-list li i {
+            margin-right: 1rem;
+            margin-top: 0.25rem;
+            color: #14b8a6;
+            flex-shrink: 0;
+        }
+
+        /* Interactive Elements */
+        .checklist-item {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 3px solid transparent;
+        }
+
+        .checklist-item:hover {
+            background-color: #f8fafc;
+            transform: translateX(5px);
+        }
+
+        .checklist-item.checked {
+            background-color: #f0fdfa;
+            border-left-color: #14b8a6;
+        }
+
+        .checklist-item.checked .check-box {
+            background-color: #14b8a6;
+            border-color: #14b8a6;
+            transform: scale(1.1);
+        }
+
+        .checklist-item.checked span {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        /* AI Chat */
+        .ai-message {
+            margin-bottom: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            font-size: 0.95rem;
+            max-width: 85%;
+            line-height: 1.5;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .ai-message.user {
+            background-color: #334155;
+            color: white;
+            border-bottom-right-radius: 0;
+            margin-left: auto;
+        }
+
+        .ai-message.bot {
+            background-color: #ffffff;
+            color: #334155;
+            border-bottom-left-radius: 0;
+            margin-right: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Range Input */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+            height: 8px;
+            border-radius: 5px;
+            background: #cbd5e1;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #0f766e;
+            cursor: pointer;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.2);
+            transition: transform 0.1s;
+            margin-top: -8px;
+            /* Correct placement */
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        /* Probability Grid Animation */
+        .prob-cell {
+            transition: all 0.3s ease;
+            transform: scale(0);
+        }
+
+        .prob-cell.popped {
+            transform: scale(1);
+        }
+
+        /* Animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="text-slate-600 antialiased">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center flex-shrink-0 mr-6 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div
+                        class="h-10 w-10 bg-gradient-to-br from-kawn-deep to-kawn-base rounded-lg shadow-sm flex items-center justify-center text-white font-bold text-xl font-display transform hover:rotate-12 transition-transform">
+                        K</div>
+                    <span
+                        class="ml-3 font-display font-bold text-slate-800 text-xl hidden md:block tracking-tight">KAWNBIT</span>
+                </div>
+
+                <div class="hidden md:flex space-x-6 lg:space-x-8">
+                    <a href="#intro"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-xs uppercase tracking-wider py-2">Intro</a>
+                    <a href="#disciplina"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-xs uppercase tracking-wider font-bold py-2">Disciplina</a>
+                    <a href="#gestion-emocional"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-xs uppercase tracking-wider font-bold py-2">Psicología
+                        AI</a>
+                    <a href="#accion"
+                        class="bg-kawn-soft text-kawn-dark hover:bg-kawn-base hover:text-white px-4 py-2 rounded-full font-bold transition-all text-xs uppercase tracking-wider flex items-center shadow-sm">
+                        <i data-lucide="rocket" class="w-4 h-4 mr-2"></i> Plan de Acción
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient relative text-white py-24 md:py-32 overflow-hidden">
+        <div class="absolute inset-0 bg-slate-900 opacity-20 pattern-grid-lg"></div>
+        <!-- Decorative blobs -->
+        <div
+            class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-kawn-base rounded-full blur-3xl opacity-20 animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-blue-500 rounded-full blur-3xl opacity-10">
+        </div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-fade-in-up">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-kawn-light/10 text-kawn-light text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm border border-kawn-light/30 shadow-lg">
+                Psicología y Gestión
+            </span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6 font-display">
+                Capítulo 21: <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-kawn-light to-white">Disciplina</span>,
+                Paciencia y Probabilidades
+            </h1>
+            <p class="text-xl text-slate-200 font-light max-w-2xl mx-auto leading-relaxed">
+                El mercado es el mejor profesor, pero cobra una matrícula cara. Descubre los pilares invisibles que
+                separan al 1% rentable del resto.
+            </p>
+            <div class="mt-10">
+                <a href="#intro"
+                    class="inline-flex items-center text-white border border-white/30 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-full transition-all backdrop-blur-sm">
+                    <i data-lucide="arrow-down" class="w-5 h-5 mr-2 animate-bounce"></i> Comenzar Lectura
+                </a>
+            </div>
+    </section>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- INTRODUCCION -->
+        <section id="intro" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-6">
+                <div class="p-3 bg-kawn-soft rounded-xl mr-4 shadow-sm">
+                    <i data-lucide="map" class="w-8 h-8 text-kawn-base"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 font-display">Introducción: El Viaje del Trader Profesional
+                </h2>
+            </div>
+
+            <p class="mb-4 text-lg font-medium text-slate-700 leading-relaxed">
+                Hemos llegado al final de este recorrido por los <strong>Smart Money Concepts (SMC)</strong>, pero en
+                realidad este capítulo marca el verdadero comienzo de tu travesía como trader profesional.
+            </p>
+            <p class="mb-6 text-slate-600">
+                Si has absorbido todos los conceptos técnicos –desde cómo la liquidez es manipulada hasta sofisticados
+                modelos operativos– ya cuentas con un arsenal de <strong>conocimiento teórico</strong>. Sin embargo, el
+                trading <strong>no es</strong> solo aplicar patrones en una pantalla; es un proceso de transformación
+                personal profundo. Pon a prueba cada faceta de tu psicología: tu capacidad de mantener la calma bajo
+                presión, de aceptar la incertidumbre y de perseverar ante la adversidad.
+            </p>
+
+            <!-- Interactive Chart Section -->
+            <div
+                class="visual-container bg-slate-50 border-l-4 border-kawn-base flex flex-col md:flex-row items-center gap-8 group hover:shadow-xl transition-all">
+                <div class="w-full md:w-1/3 flex justify-center relative">
+                    <!-- Chart.js Canvas -->
+                    <div class="relative h-48 w-48">
+                        <canvas id="profitabilityChart"></canvas>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                            <span class="text-4xl font-black text-slate-800" id="percent-display">0%</span>
+                            <span class="text-[0.6rem] font-bold uppercase text-slate-400">Rentables</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <h4 class="font-bold text-xl text-slate-900 mb-2 font-display">La Realidad Estadística</h4>
+                    <p class="text-sm text-slate-600 mb-3 leading-relaxed">
+                        Las estadísticas son frías pero necesarias. Solo alrededor del <strong
+                            class="text-kawn-dark">13%</strong> de los day traders logra mantenerse consistentemente
+                        rentable por al menos seis meses.
+                    </p>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Apenas el <strong class="text-kawn-dark">1%</strong> sobrevive y prospera tras cinco años. La
+                        gran mayoría termina sus años operativos en números rojos por falta de gestión emocional, no por
+                        falta de técnica.
+                    </p>
+                </div>
+            </div>
+
+            <p class="mb-4 mt-6 text-slate-600">
+                Los conceptos técnicos son tus herramientas, pero los pilares de tu éxito a largo plazo serán <strong>la
+                    disciplina, la paciencia y el aprendizaje continuo</strong>. El mercado es el mejor profesor que
+                jamás tendrás, pero cobra matrícula cara a quienes no respetan sus lecciones.
+            </p>
+        </section>
+
+        <hr class="border-slate-200 my-16 opacity-50">
+
+        <!-- DISCIPLINA -->
+        <section id="disciplina" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div
+                    class="bg-gradient-to-br from-kawn-light to-kawn-soft p-3 rounded-xl mr-5 text-kawn-deep shadow-sm">
+                    <i data-lucide="shield" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-kawn-base uppercase tracking-wider">Pilar 1</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-display">Disciplina: La Columna
+                        Vertebral</h2>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-kawn-dark mb-4 flex items-center">
+                <i data-lucide="brain" class="w-5 h-5 mr-2"></i> La naturaleza de la disciplina
+            </h3>
+            <p class="mb-4 text-slate-600">
+                La disciplina no es solo "seguir reglas"; es un <strong>compromiso inquebrantable con tu
+                    proceso</strong> incluso cuando cada fibra de tu ser quiera hacer lo contrario. Piensa en la
+                disciplina como el guardián que protege tu capital de tu peor enemigo: tú mismo.
+            </p>
+            <p class="mb-8 text-slate-600">
+                Muchos confunden disciplina con no sentir tentación. En realidad, la disciplina es la <strong>gestión
+                    exitosa de la tentación constante</strong>. Es ver un setup perfecto en zona <em>premium</em> cuando
+                solo debes operar en <em>discount</em> y tener la fuerza para NO hacer clic.
+            </p>
+
+            <!-- Interactive Checklist -->
+            <div class="visual-container bg-white !p-0 overflow-hidden border-0 shadow-lg ring-1 ring-slate-200">
+                <div class="bg-slate-50 p-6 border-b border-slate-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-800 flex items-center text-lg">
+                            <i data-lucide="list-checks" class="w-6 h-6 mr-3 text-kawn-base"></i> Checklist Pre-Mercado
+                        </h4>
+                        <p class="text-sm text-slate-500 mt-1">Tu piloto automático para el éxito.</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold uppercase text-slate-400">Progreso</span>
+                        <div class="w-32 h-2 bg-slate-200 rounded-full mt-1 overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-kawn-base transition-all duration-500 ease-out w-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-1 p-4" id="discipline-checklist">
+                    <div class="checklist-item flex items-center p-4 rounded-lg group" onclick="toggleCheck(this)">
+                        <div
+                            class="check-box w-6 h-6 rounded-full border-2 border-slate-300 mr-4 flex items-center justify-center transition-all text-white group-hover:border-kawn-base">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold block text-slate-800">Horario y Rutina</span>
+                            <span class="text-xs text-slate-500">Despertar a la misma hora, evitar prisas y
+                                distracciones.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item flex items-center p-4 rounded-lg group" onclick="toggleCheck(this)">
+                        <div
+                            class="check-box w-6 h-6 rounded-full border-2 border-slate-300 mr-4 flex items-center justify-center transition-all text-white group-hover:border-kawn-base">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold block text-slate-800">Contexto Macro</span>
+                            <span class="text-xs text-slate-500">Revisar Forex Factory/Investing para noticias de alto
+                                impacto.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item flex items-center p-4 rounded-lg group" onclick="toggleCheck(this)">
+                        <div
+                            class="check-box w-6 h-6 rounded-full border-2 border-slate-300 mr-4 flex items-center justify-center transition-all text-white group-hover:border-kawn-base">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold block text-slate-800">Análisis Top-Down</span>
+                            <span class="text-xs text-slate-500">Identificar liquidez externa (HTF) y definir el Bias
+                                diario.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item flex items-center p-4 rounded-lg group" onclick="toggleCheck(this)">
+                        <div
+                            class="check-box w-6 h-6 rounded-full border-2 border-slate-300 mr-4 flex items-center justify-center transition-all text-white group-hover:border-kawn-base">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold block text-slate-800">Gestión de Riesgo</span>
+                            <span class="text-xs text-slate-500">Calculadora de lotaje lista. Stop Loss y TP
+                                definidos.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-kawn-soft p-3 text-center border-t border-kawn-light/50 hidden"
+                    id="checklist-complete-msg">
+                    <p class="text-xs font-bold text-kawn-dark flex items-center justify-center animate-pulse">
+                        <i data-lucide="party-popper" class="w-4 h-4 mr-2"></i> ¡Estás mentalmente preparado para
+                        operar!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Risk Management Section -->
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-slate-900 mb-4">Gestión de Riesgo: Matemáticas de la Supervivencia
+                </h3>
+                <p class="mb-6 text-slate-600">
+                    La regla de oro: <strong>"Nunca arriesgues más del 1% o 2% de tu cuenta por trade"</strong>. Ninguna
+                    estrategia te salvará si no tienes disciplina para gestionar el riesgo. Los datos muestran que el
+                    82% de los traders pierden dinero a pesar de tener más operaciones ganadoras que perdedoras,
+                    simplemente porque sus pérdidas promedio son catastróficas.
+                </p>
+
+                <div class="bg-slate-900 text-white p-6 md:p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+                    <!-- Background decoration -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-kawn-base rounded-full blur-[100px] opacity-10">
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                            <div>
+                                <h4 class="font-bold text-2xl text-white flex items-center font-display">
+                                    <i data-lucide="activity" class="mr-3 text-kawn-base"></i> Simulador de Equity
+                                </h4>
+                                <p class="text-slate-400 text-sm mt-1">Visualiza cómo el riesgo afecta tu cuenta tras
+                                    100 operaciones (Winrate 40% - RR 1:2.5)</p>
+                            </div>
+                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700 min-w-[200px]">
+                                <div class="flex justify-between text-xs mb-2 text-slate-300">
+                                    <span>Riesgo por trade</span>
+                                    <span id="risk-val" class="font-bold text-kawn-base text-lg">1.0%</span>
+                                </div>
+                                <input type="range" min="0.5" max="10" value="1" step="0.5" id="risk-slider"
+                                    class="w-full">
+                                <div class="flex justify-between text-[10px] text-slate-500 mt-2 font-mono">
+                                    <span>SAFE (0.5%)</span>
+                                    <span>REKT (10%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Canvas for Risk Chart -->
+                        <div class="h-[300px] w-full bg-slate-800/50 rounded-xl p-2 border border-slate-700">
+                            <canvas id="riskChart"></canvas>
+                        </div>
+
+                        <div id="risk-feedback"
+                            class="mt-4 p-4 rounded-lg bg-kawn-deep/30 border border-kawn-dark/50 flex items-start">
+                            <i data-lucide="info" class="w-5 h-5 text-kawn-base mr-3 mt-0.5 flex-shrink-0"></i>
+                            <div>
+                                <p class="font-bold text-kawn-light text-sm">Zona Profesional</p>
+                                <p class="text-xs text-slate-300 mt-1">Con este riesgo, una racha de pérdidas es solo un
+                                    bache, no la quiebra. Puedes operar tranquilo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="mt-16">
+                <h3 class="text-xl font-bold text-slate-900 mb-6">Traders Rentables vs. El Resto</h3>
+                <div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+                    <table class="magazine-table m-0">
+                        <thead>
+                            <tr>
+                                <th class="w-1/4">Hábito</th>
+                                <th class="w-1/3 bg-kawn-deep text-kawn-light">Top 1% (Rentables)</th>
+                                <th class="w-1/3 bg-slate-800 text-slate-300">El Resto (No Rentables)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-slate-700 border-r border-slate-100">Gestión de Riesgo</td>
+                                <td class="border-r border-slate-100 text-sm">Arriesgan 1-2% fijo. Usan Stop Loss
+                                    siempre y <strong>nunca</strong> lo mueven en contra.</td>
+                                <td class="text-sm bg-slate-50">Arriesgan grandes montos para "recuperar". Quitan el
+                                    Stop Loss esperando rebotes.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700 border-r border-slate-100">Toma de Ganancias</td>
+                                <td class="border-r border-slate-100 text-sm">Dejan correr al ganador hasta el objetivo.
+                                    Escalan dentro de posiciones ganadoras.</td>
+                                <td class="text-sm bg-slate-50">Cierran ganancias mínimas por miedo (take profit
+                                    prematuro). No tienen plan de salida.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700 border-r border-slate-100">Frecuencia</td>
+                                <td class="border-r border-slate-100 text-sm text-kawn-dark font-semibold">Sniper: Menos
+                                    trades, solo alta probabilidad.</td>
+                                <td class="text-sm bg-slate-50 text-red-800 font-semibold">Metralleta: Overtrading por
+                                    aburrimiento o FOMO.</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-slate-700 border-r border-slate-100">Mentalidad</td>
+                                <td class="border-r border-slate-100 text-sm">Humildes, buscan feedback, llevan diario
+                                    detallado.</td>
+                                <td class="text-sm bg-slate-50">Culpan al mercado o al broker. No reflexionan. Sufren
+                                    burnout.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-400 mt-2 text-center italic">Tabla basada en datos de comportamiento de 25k
+                    cuentas.</p>
+            </div>
+        </section>
+
+        <!-- [NUEVO] PENSAMIENTO PROBABILÍSTICO -->
+        <section id="probabilidades" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 p-3 rounded-xl mr-5 text-white shadow-sm">
+                    <i data-lucide="dices" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Concepto Avanzado</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-display">Pensamiento Probabilístico
+                    </h2>
+                </div>
+            </div>
+
+            <p class="mb-4 text-slate-600">
+                Muchos traders fallan porque piensan en términos <strong>deterministas</strong> (<i>"Este trade tiene
+                    que ganar porque el patrón es perfecto"</i>) en lugar de <strong>probabilísticos</strong>. Como
+                explica Mark Douglas en <em>"Trading in the Zone"</em>, un análisis técnico no predice el futuro; solo
+                indica que, bajo ciertas condiciones, un resultado es más probable que otro.
+            </p>
+            <p class="mb-8 text-slate-600">
+                La <strong>falacia del resultado individual</strong> ocurre cuando juzgas tu estrategia por el resultado
+                de UN solo trade. Debes pensar en bloques de 20 operaciones.
+            </p>
+
+            <!-- Probability Simulator Widget -->
+            <div class="visual-container bg-white border border-slate-200">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <h4 class="font-bold text-lg text-slate-800 flex items-center">
+                        <i data-lucide="shuffle" class="w-5 h-5 mr-2 text-indigo-600"></i>
+                        Simulador de Distribución Aleatoria
+                    </h4>
+                    <div class="flex items-center gap-2 mt-4 md:mt-0">
+                        <span class="text-sm font-medium text-slate-600">Tu Win Rate (%):</span>
+                        <input type="number" id="winrate-input" value="60" min="1" max="99"
+                            class="w-16 border border-slate-300 rounded px-2 py-1 text-center font-bold text-indigo-700">
+                        <button onclick="runProbabilitySim()"
+                            class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-700 transition">
+                            Simular 50 Trades
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 text-center">
+                    <p class="text-xs text-slate-500 mb-4">Cada cuadro es una operación. Observa cómo las pérdidas
+                        (Rojo) se agrupan incluso con estrategias ganadoras.</p>
+                    <div id="prob-grid" class="grid grid-cols-10 gap-2 max-w-lg mx-auto">
+                        <!-- Grid cells will be injected here -->
+                    </div>
+                    <div id="prob-stats" class="mt-6 text-sm text-slate-600 hidden">
+                        <span class="mr-4"><span class="inline-block w-3 h-3 bg-green-500 rounded-sm mr-1"></span>Win:
+                            <b id="sim-wins">0</b></span>
+                        <span><span class="inline-block w-3 h-3 bg-red-500 rounded-sm mr-1"></span>Loss: <b
+                                id="sim-losses">0</b></span>
+                        <p class="mt-2 text-xs italic text-slate-400">Nota: ¿Ves esas 3 o 4 pérdidas seguidas? Eso es
+                            matemático, no un error tuyo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- PACIENCIA -->
+        <section id="paciencia" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div
+                    class="bg-gradient-to-br from-kawn-light to-kawn-soft p-3 rounded-xl mr-5 text-kawn-deep shadow-sm">
+                    <i data-lucide="clock" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-kawn-base uppercase tracking-wider">Pilar 2</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-display">Paciencia: El Santo Grial
+                    </h2>
+                </div>
+            </div>
+
+            <div class="highlight-quote transform hover:scale-[1.02] transition-transform duration-500 cursor-default">
+                <p class="mb-3 font-display font-bold text-xl leading-relaxed">"El mercado de valores es un mecanismo
+                    para transferir dinero de los impacientes a los pacientes."</p>
+                <footer class="text-sm font-bold text-kawn-deep flex items-center">
+                    <span class="w-8 h-0.5 bg-kawn-deep mr-2"></span> Warren Buffett
+                </footer>
+            </div>
+
+            <p class="mb-6 text-slate-600">
+                La paradoja del trading intradía es que, aunque es rápido, requiere una espera lenta. La paciencia es
+                una <strong>selectividad activa</strong>. Es ver el quiebre de estructura y el FVG, pero esperar a la
+                confirmación final según tu plan, aunque sientas la urgencia de entrar.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6 my-10">
+                <!-- Card 1: Sniper -->
+                <div
+                    class="group visual-container m-0 bg-white border border-kawn-light hover:border-kawn-base flex flex-col items-center text-center p-8 transition-all hover:-translate-y-2">
+                    <div
+                        class="w-24 h-24 bg-red-50 rounded-full flex items-center justify-center mb-6 shadow-inner text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="crosshair" class="w-12 h-12"></i>
+                    </div>
+                    <h4 class="font-black text-xl text-slate-800 mb-2">El Francotirador</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Espera días por un solo tiro perfecto. Conserva munición (capital). Se mantiene oculto hasta que
+                        la probabilidad está a su favor.
+                    </p>
+                    <span
+                        class="mt-4 px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">Rentable</span>
+                </div>
+
+                <!-- Card 2: Rookie -->
+                <div
+                    class="group visual-container m-0 bg-slate-50 border border-slate-200 hover:border-slate-400 flex flex-col items-center text-center p-8 transition-all hover:-translate-y-2 grayscale hover:grayscale-0">
+                    <div
+                        class="w-24 h-24 bg-slate-200 rounded-full flex items-center justify-center mb-6 shadow-inner text-slate-500 group-hover:bg-slate-800 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="zap-off" class="w-12 h-12"></i>
+                    </div>
+                    <h4 class="font-black text-xl text-slate-800 mb-2">El Soldado Novato</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Dispara a cualquier sombra. Revela su posición y pierde munición. Entra por miedo a perderse
+                        algo (FOMO).
+                    </p>
+                    <span class="mt-4 px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full">Cuenta
+                        Quemada</span>
+                </div>
+            </div>
+
+            <p class="mb-4 text-slate-600">
+                <strong>El costo oculto de la impaciencia:</strong> Entrar antes de tiempo suele llevar a un stop loss,
+                lo que genera frustración, lo que lleva a un "revenge trade", creando un ciclo vicioso. Los traders del
+                top 1% toman <em>menos</em> trades pero de mayor calidad.
+            </p>
+
+            <div class="bg-kawn-soft border-l-4 border-kawn-base p-6 rounded-r-lg shadow-sm flex items-start">
+                <i data-lucide="lightbulb" class="text-kawn-base w-6 h-6 mr-3 mt-1 flex-shrink-0"></i>
+                <div>
+                    <h4 class="font-bold text-kawn-dark mb-1">Consejo Práctico: El Filtro de Cantidad</h4>
+                    <p class="text-sm text-slate-700">
+                        Imponte un máximo de <strong>1 trade al día</strong> o <strong>3 a la semana</strong> durante tu
+                        entrenamiento. Esto te obligará mentalmente a no "gastar tu bala" en una configuración mediocre.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- [NUEVO] GESTIÓN EMOCIONAL / TILT -->
+        <section id="gestion-emocional" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div class="bg-gradient-to-br from-orange-500 to-red-600 p-3 rounded-xl mr-5 text-white shadow-sm">
+                    <i data-lucide="thermometer" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wider">Psicología Profunda</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-display">El "Tilt": Secuestro
+                        Emocional</h2>
+                </div>
+            </div>
+
+            <p class="mb-6 text-slate-600">
+                El "Tilt" es un término prestado del póker que describe un estado de confusión mental o frustración en
+                el que un trader adopta una estrategia subóptima. Fisiológicamente, es un <strong>secuestro de la
+                    amígdala</strong>: tu cerebro racional se apaga y el cerebro reptiliano (lucha o huida) toma el
+                control.
+            </p>
+
+            <!-- TILT-O-METER WIDGET -->
+            <div class="visual-container transition-colors duration-500 mb-8" id="tilt-container">
+                <h4 class="font-bold text-lg text-slate-800 mb-2">El Tilt-O-Metro Manual</h4>
+                <p class="text-sm text-slate-500 mb-6">Desliza para identificar cómo te sientes ahora mismo y recibe un
+                    protocolo de acción.</p>
+
+                <div class="relative pt-6 pb-2">
+                    <input type="range" min="0" max="100" value="0"
+                        class="w-full h-3 bg-gradient-to-r from-green-400 via-yellow-400 to-red-600 rounded-lg appearance-none cursor-pointer"
+                        id="tilt-slider">
+                </div>
+
+                <div class="mt-6 p-4 rounded-xl bg-white/50 border border-slate-200 backdrop-blur-sm shadow-sm transition-all"
+                    id="tilt-feedback-box">
+                    <div class="flex items-center mb-2">
+                        <div id="tilt-icon" class="p-2 rounded-full bg-green-100 text-green-600 mr-3">
+                            <i data-lucide="smile" class="w-6 h-6"></i>
+                        </div>
+                        <h5 class="font-bold text-lg" id="tilt-title">Estado: Zona Zen</h5>
+                    </div>
+                    <p class="text-sm text-slate-700" id="tilt-desc">Estás en control total. Tu corteza prefrontal está
+                        activa y lista para tomar decisiones lógicas. Es el momento ideal para analizar el mercado.</p>
+                </div>
+            </div>
+
+            <!-- [NUEVO] ANALIZADOR DE DIARIO (GEMINI) -->
+            <div id="diario-inteligente"
+                class="bg-gradient-to-br from-indigo-50 to-white p-8 rounded-2xl border border-indigo-100 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <i data-lucide="brain" class="w-32 h-32"></i>
+                </div>
+
+                <div class="relative z-10">
+                    <h4 class="font-bold text-xl text-indigo-900 mb-2 flex items-center">
+                        <i data-lucide="sparkles" class="w-5 h-5 mr-2 text-indigo-600"></i>
+                        Laboratorio de Diario Inteligente ✨
+                    </h4>
+                    <p class="text-sm text-slate-600 mb-4">¿No sabes si estás en Tilt? Pega aquí tus pensamientos
+                        post-trade o describe tu última pérdida. La IA analizará tu estado emocional subyacente y
+                        actualizará tu medidor de Tilt automáticamente.</p>
+
+                    <textarea id="journal-input" rows="4"
+                        class="w-full p-4 rounded-xl border border-indigo-200 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm text-slate-700 shadow-inner resize-none transition-all"
+                        placeholder="Ej: Me siento estúpido por haber movido el stop loss. Sabía que no debía hacerlo, pero tenía miedo de que me sacara y luego fuera a mi favor..."></textarea>
+
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-xs text-indigo-400 font-medium flex items-center">
+                            <i data-lucide="shield-check" class="w-3 h-3 mr-1"></i> Modo Seguro + Fallback
+                        </span>
+                        <button onclick="analyzeJournal()" id="analyze-btn"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-md flex items-center gap-2">
+                            <i data-lucide="scan-face" class="w-4 h-4"></i> Analizar Emociones
+                        </button>
+                    </div>
+
+                    <!-- AI Analysis Result -->
+                    <div id="ai-analysis-result"
+                        class="hidden mt-6 bg-white rounded-xl p-5 border-l-4 border-indigo-500 shadow-sm animate-fade-in-up">
+                        <h5 class="font-bold text-indigo-900 text-sm mb-2 flex justify-between">
+                            <span>Análisis Psicológico:</span>
+                            <span id="ai-tilt-score"
+                                class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">Tilt:
+                                Calculando...</span>
+                        </h5>
+                        <p id="ai-feedback-text" class="text-sm text-slate-700 italic mb-3">"..."</p>
+                        <div class="bg-indigo-50 p-3 rounded-lg">
+                            <p class="text-xs font-bold text-indigo-800 uppercase mb-1">Consejo Estoico:</p>
+                            <p id="ai-advice-text" class="text-sm text-indigo-900">...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- APRENDIZAJE -->
+        <section id="aprendizaje" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div
+                    class="bg-gradient-to-br from-kawn-light to-kawn-soft p-3 rounded-xl mr-5 text-kawn-deep shadow-sm">
+                    <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-kawn-base uppercase tracking-wider">Pilar 3</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-display">Aprendizaje Continuo</h2>
+                </div>
+            </div>
+
+            <p class="mb-6 text-slate-600">
+                El mercado es un organismo vivo. Lo que funciona hoy puede requerir ajustes mañana. Pero cuidado:
+                aprender continuamente no significa saltar de estrategia en estrategia (la trampa de la amplitud), sino
+                profundizar en la maestría de una sola (profundidad).
+            </p>
+
+            <div
+                class="visual-container bg-slate-900 text-white relative overflow-hidden rounded-2xl shadow-2xl !p-10 text-center">
+                <div class="absolute top-0 right-0 p-8 opacity-5 transform rotate-12 scale-150 pointer-events-none">
+                    <i data-lucide="layers" class="w-64 h-64"></i>
+                </div>
+                <blockquote class="relative z-10 text-xl md:text-2xl font-display font-medium leading-relaxed italic">
+                    "Yo no temo al hombre que ha practicado 10.000 patadas diferentes una vez cada una; temo al hombre
+                    que ha practicado una patada 10.000 veces."
+                </blockquote>
+                <div class="w-16 h-1 bg-kawn-base mx-auto my-6"></div>
+                <footer class="mt-4 font-bold text-kawn-light tracking-widest uppercase text-sm">— Bruce Lee</footer>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-4 mt-8">Domina UN Solo Modelo</h3>
+            <p class="mb-4 text-slate-600">
+                En lugar de ser un "todólogo", busca ser especialista. Si eliges el modelo <strong>ICT 2022</strong>,
+                dedícale 3 a 6 meses de exclusividad.
+            </p>
+            <ul class="space-y-3 mb-6">
+                <li class="flex items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm">
+                    <i data-lucide="check-circle-2" class="text-kawn-base mr-3 w-5 h-5"></i>
+                    <span class="text-sm text-slate-700">Documenta cada configuración (operada o no).</span>
+                </li>
+                <li class="flex items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm">
+                    <i data-lucide="check-circle-2" class="text-kawn-base mr-3 w-5 h-5"></i>
+                    <span class="text-sm text-slate-700">Entiende sus matices: ¿Cómo funciona en NFP? ¿En rangos?</span>
+                </li>
+                <li class="flex items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm">
+                    <i data-lucide="check-circle-2" class="text-kawn-base mr-3 w-5 h-5"></i>
+                    <span class="text-sm text-slate-700">Desarrolla intuición: Reconoce el patrón casi
+                        automáticamente.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- AI LAB -->
+        <section id="ai-lab" class="mb-20 scroll-mt-24 reveal-on-scroll">
+            <div class="flex items-center mb-8">
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 p-2 rounded-lg mr-4 text-white shadow-lg">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900 font-display">AI Coach: Psicología ✨</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Chat Interface -->
+                <div
+                    class="lg:col-span-2 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[500px]">
+                    <div class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800">
+                        <div class="flex items-center text-white">
+                            <div class="relative">
+                                <div class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center mr-3">
+                                    <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div
+                                    class="absolute bottom-0 right-2 w-3 h-3 bg-green-500 border-2 border-slate-900 rounded-full">
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Mentor KawnBit</h3>
+                                <p class="text-[10px] text-slate-400">Powered by Gemini AI • Robust Mode</p>
+                            </div>
+                        </div>
+                        <button class="text-slate-400 hover:text-white transition" title="Reset Chat"
+                            onclick="resetChat()">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-slate-50 space-y-4">
+                        <div class="ai-message bot shadow-sm">
+                            Hola. Soy tu coach de psicología de trading impulsado por Gemini. Puedo analizar situaciones
+                            de mercado o emociones complejas. ¿Qué te preocupa hoy?
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white border-t border-slate-200">
+                        <form id="chat-form" class="relative">
+                            <input type="text" id="user-input"
+                                class="w-full bg-slate-100 border-0 rounded-full px-6 py-4 pr-14 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all text-sm shadow-inner"
+                                placeholder="Escribe aquí... (Ej: No puedo dejar de mirar el P&L mientras opero)">
+                            <button type="submit" id="chat-submit-btn"
+                                class="absolute right-2 top-2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition-colors shadow-md">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Quiz Interface -->
+                <div
+                    class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl shadow-lg border border-indigo-100 flex flex-col">
+                    <h3 class="font-bold text-indigo-900 mb-2 flex items-center text-lg">
+                        <i data-lucide="award" class="mr-2 text-indigo-600"></i> Desafío Mental
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-6">Demuestra que has interiorizado los pilares.</p>
+
+                    <div id="quiz-container" class="flex-1 flex flex-col justify-center">
+                        <div class="text-center p-6 bg-white rounded-xl border border-indigo-50 shadow-sm mb-4">
+                            <i data-lucide="brain-circuit" class="w-12 h-12 text-indigo-200 mx-auto mb-3"></i>
+                            <p class="text-sm text-indigo-900 font-medium">¿Listo para probar tu conocimiento?</p>
+                        </div>
+                        <button onclick="startQuiz()"
+                            class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                            Generar Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTION PLAN -->
+        <section id="accion"
+            class="mb-16 scroll-mt-24 bg-slate-900 text-white rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl reveal-on-scroll">
+            <!-- Background fx -->
+            <div
+                class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-kawn-base rounded-full blur-[80px] opacity-20 animate-pulse">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-indigo-600 rounded-full blur-[80px] opacity-20">
+            </div>
+
+            <div class="relative z-10">
+                <div class="flex items-center mb-10">
+                    <div class="bg-white/10 p-3 rounded-xl mr-4 backdrop-blur-sm">
+                        <i data-lucide="rocket" class="w-8 h-8 text-kawn-base"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold font-display">Tu Plan de Acción Inmediato</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-x-12 gap-y-10">
+                    <div class="flex group">
+                        <div class="mr-6 flex flex-col items-center">
+                            <span
+                                class="bg-kawn-base text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">1</span>
+                            <div class="h-full w-0.5 bg-slate-700 my-2"></div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl text-white mb-2 group-hover:text-kawn-light transition-colors">
+                                Elige y Domina Tu Modelo</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Escoge UNA estrategia. Comprométete a
+                                operarla exclusivamente por 3 meses. Documenta todo y no cambies de rumbo.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex group">
+                        <div class="mr-6 flex flex-col items-center">
+                            <span
+                                class="bg-kawn-base text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">2</span>
+                            <div class="h-full w-0.5 bg-slate-700 my-2"></div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl text-white mb-2 group-hover:text-kawn-light transition-colors">
+                                La Constitución del Trader</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Escribe tus reglas de riesgo (pérdida
+                                máxima diaria, stop loss fijo). Imprímelas y pégalas físicamente frente a tu monitor.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex group">
+                        <div class="mr-6 flex flex-col items-center">
+                            <span
+                                class="bg-kawn-base text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">3</span>
+                            <div class="h-full w-0.5 bg-slate-700 my-2"></div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl text-white mb-2 group-hover:text-kawn-light transition-colors">
+                                Diario Científico</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">No solo números. Registra "Entré por
+                                impaciencia" o "Sentí miedo". Sé tu propio científico de datos emocionales.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex group">
+                        <div class="mr-6 flex flex-col items-center">
+                            <span
+                                class="bg-kawn-base text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">4</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-xl text-white mb-2 group-hover:text-kawn-light transition-colors">
+                                Equilibrio Vida-Trading</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Desconecta al terminar. Cultiva hobbies.
+                                Si tu felicidad no depende del gráfico, operarás con mayor claridad.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 text-center border-t border-slate-700/50 pt-10">
+                    <p class="font-display font-bold text-2xl mb-6 italic text-slate-300">"El paso más importante no es
+                        el primero ni el último, sino el siguiente."</p>
+                    <button onclick="confettiEffect()"
+                        class="bg-white text-slate-900 px-10 py-4 rounded-full font-bold hover:bg-kawn-light transition-all shadow-xl transform hover:-translate-y-1 hover:shadow-kawn-base/50 ring-4 ring-white/10">
+                        Comenzar Ahora
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <div
+                    class="h-12 w-12 bg-gradient-to-br from-kawn-dark to-kawn-base rounded-lg opacity-90 flex items-center justify-center text-white font-bold text-2xl">
+                    K</div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none font-display">KAWNBIT</span>
+                    <span
+                        class="text-[0.65rem] font-bold text-kawn-base uppercase tracking-[0.3em] leading-none mt-2">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <p class="text-sm text-center md:text-right leading-relaxed">
+                © <span id="current-year"></span> KawnBit Magazine.<br>
+                <span class="text-xs opacity-50 block mt-1">Material educativo con fines ilustrativos. El trading
+                    conlleva riesgo.</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- LOGIC SCRIPT (ROBUST & OPTIMIZED) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init Basic UI Elements
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            lucide.createIcons();
+
+            // --- 0. ROBUST AI INTEGRATION (FALLBACK SYSTEM) ---
+            const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+            async function callGeminiAPI(userPrompt, systemInstruction) {
+                // Fallback Logic: Pre-canned responses for simulation mode
+                const fallbackResponse = (prompt) => {
+                    const p = prompt.toLowerCase();
+                    if (p.includes('perdi') || p.includes('pérdida')) return "Una pérdida es solo el costo de hacer negocios. Si seguiste tu plan, no cometiste un error, solo experimentaste una probabilidad estadística.";
+                    if (p.includes('miedo') || p.includes('ansiedad')) return "El miedo suele ser síntoma de un lotaje excesivo. Reduce tu riesgo a la mitad en la próxima operación.";
+                    if (p.includes('json')) return JSON.stringify({ score: 75, analysis: "Se detecta frustración moderada y deseo de recuperar pérdidas (revenge trading).", advice: "Cierra la sesión inmediatamente. Tu juicio está comprometido." });
+                    return "La disciplina es el puente entre tus metas y tus logros. Revisa tu checklist y respira profundamente.";
+                };
+
+                try {
+                    const response = await fetch(proxyUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: userPrompt }] }],
+                            systemInstruction: { parts: [{ text: systemInstruction }] }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error(`Error en el Proxy: ${response.status}`);
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || fallbackResponse(userPrompt);
+                } catch (error) {
+                    console.error("Gemini Connection Failed. Switching to Fallback Mode.", error);
+                    return fallbackResponse(userPrompt);
+                }
+            }
+
+            // --- 1. ANIMATION OBSERVER ---
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        if (entry.target.id === 'intro') initProfitChart();
+                    }
+                });
+            }, observerOptions);
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+            // --- 2. CHART MANAGEMENT (MEMORY SAFE) ---
+            let profitChartInstance = null;
+            let riskChartInstance = null;
+
+            function initProfitChart() {
+                if (profitChartInstance) return;
+
+                const ctx = document.getElementById('profitabilityChart').getContext('2d');
+                let counter = 0;
+                const counterEl = document.getElementById('percent-display');
+                const interval = setInterval(() => {
+                    if (counter >= 13) clearInterval(interval);
+                    else { counter++; counterEl.textContent = counter + "%"; }
+                }, 100);
+
+                profitChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Rentables', 'No Rentables'],
+                        datasets: [{
+                            data: [13, 87],
+                            backgroundColor: ['#14b8a6', '#e2e8f0'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        cutout: '80%',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                        animation: { animateScale: true, animateRotate: true, duration: 2000 }
+                    }
+                });
+            }
+
+            function initRiskChart() {
+                const ctx = document.getElementById('riskChart').getContext('2d');
+                if (riskChartInstance) riskChartInstance.destroy(); // Prevent memory leaks
+
+                riskChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: 50 }, (_, i) => i + 1),
+                        datasets: [{
+                            label: 'Simulación de Capital',
+                            data: [],
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' }, beginAtZero: false },
+                            x: { display: false }
+                        },
+                        animation: { duration: 0 }
+                    }
+                });
+                updateRiskSimulation(1);
+            }
+
+            // --- 3. RISK LOGIC ---
+            function updateRiskSimulation(riskPercent) {
+                let equity = 10000;
+                const dataPoints = [equity];
+                const pattern = [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0];
+                const trades = [...pattern, ...pattern];
+
+                trades.forEach(isWin => {
+                    const riskAmount = equity * (riskPercent / 100);
+                    if (isWin) equity += riskAmount * 2.5;
+                    else equity -= riskAmount;
+                    dataPoints.push(equity);
+                });
+
+                if (riskChartInstance) {
+                    riskChartInstance.data.datasets[0].data = dataPoints;
+                    if (equity < 5000) riskChartInstance.data.datasets[0].borderColor = '#ef4444';
+                    else riskChartInstance.data.datasets[0].borderColor = '#14b8a6';
+                    riskChartInstance.update();
+                }
+
+                const riskFeedback = document.getElementById('risk-feedback');
+                if (riskPercent <= 2) {
+                    riskFeedback.innerHTML = `<i data-lucide="shield-check" class="w-5 h-5 text-kawn-base mr-3 mt-0.5"></i><div><p class="font-bold text-kawn-light text-sm">Zona Profesional</p><p class="text-xs text-slate-300">Crecimiento sostenible. Drawdown controlado.</p></div>`;
+                } else if (riskPercent <= 5) {
+                    riskFeedback.innerHTML = `<i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i><div><p class="font-bold text-yellow-400 text-sm">Zona de Peligro</p><p class="text-xs text-slate-300">Volatilidad alta. Tu psicología sufrirá.</p></div>`;
+                } else {
+                    riskFeedback.innerHTML = `<i data-lucide="skull" class="w-5 h-5 text-red-500 mr-3 mt-0.5"></i><div><p class="font-bold text-red-500 text-sm">Zona de Ruina</p><p class="text-xs text-slate-300">Matemáticamente garantizado a quemar la cuenta.</p></div>`;
+                }
+                lucide.createIcons();
+            }
+
+            document.getElementById('risk-slider').addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value);
+                document.getElementById('risk-val').textContent = val + "%";
+                updateRiskSimulation(val);
+            });
+
+            initRiskChart(); // Load initially
+
+            // --- 4. JOURNAL ANALYZER (ROBUST JSON PARSING) ---
+            window.analyzeJournal = async function () {
+                const text = document.getElementById('journal-input').value;
+                const btn = document.getElementById('analyze-btn');
+                const resultBox = document.getElementById('ai-analysis-result');
+
+                if (!text) return;
+
+                btn.disabled = true;
+                btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Analizando...`;
+                lucide.createIcons();
+
+                // Robust prompt instructing JSON only
+                const prompt = `Analiza el texto de este trader. Responde ÚNICAMENTE con un JSON válido (sin markdown, sin texto extra) con este formato: {"score": (0-100), "analysis": "breve análisis", "advice": "consejo corto"}. Texto: "${text}"`;
+
+                const rawResponse = await callGeminiAPI(prompt, "Eres un sistema experto JSON.");
+
+                try {
+                    // ROBUST PARSING: Extract anything that looks like a JSON object {}
+                    const jsonMatch = rawResponse.match(/\{[\s\S]*\}/);
+                    if (!jsonMatch) throw new Error("No JSON found");
+
+                    const data = JSON.parse(jsonMatch[0]);
+
+                    // Safe UI Update
+                    updateTiltUI(data.score || 50);
+                    document.getElementById('ai-tilt-score').textContent = `Tilt Detectado: ${data.score || 0}%`;
+                    document.getElementById('ai-feedback-text').textContent = `"${data.analysis || 'Análisis no disponible'}"`;
+                    document.getElementById('ai-advice-text').textContent = data.advice || 'Mantén la calma.';
+
+                    resultBox.classList.remove('hidden');
+                } catch (e) {
+                    console.error("JSON Parsing failed on response:", rawResponse);
+                    // Fallback UI for parsing error
+                    updateTiltUI(50);
+                    resultBox.classList.remove('hidden');
+                    document.getElementById('ai-feedback-text').textContent = "No se pudo generar un análisis detallado, pero te recomendamos pausar.";
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="scan-face" class="w-4 h-4"></i> Analizar Emociones`;
+                lucide.createIcons();
+            }
+
+            // --- 5. CHATBOT LOGIC ---
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('user-input');
+            const chatBox = document.getElementById('chat-messages');
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const text = chatInput.value.trim();
+                if (!text) return;
+
+                addMessage(text, 'user');
+                chatInput.value = '';
+
+                const typingId = showTyping();
+                const replyText = await callGeminiAPI(text, "Eres un coach de trading estoico.");
+
+                removeTyping(typingId);
+                addMessage(replyText, 'bot');
+            });
+
+            function addMessage(text, sender) {
+                const div = document.createElement('div');
+                div.className = `ai-message ${sender} animate-fade-in-up`;
+                div.textContent = text;
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            function showTyping() {
+                const id = 'typing-' + Date.now();
+                const div = document.createElement('div');
+                div.id = id;
+                div.className = 'ai-message bot text-slate-400 italic text-xs';
+                div.innerHTML = '<span class="animate-pulse">Escribiendo...</span>';
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                return id;
+            }
+
+            function removeTyping(id) {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            }
+
+            // --- 6. PROBABILITY SIM & UTILS ---
+            window.runProbabilitySim = function () {
+                const input = document.getElementById('winrate-input');
+                // Validate Input
+                let winRate = parseInt(input.value);
+                if (winRate < 1) winRate = 1;
+                if (winRate > 99) winRate = 99;
+                input.value = winRate;
+
+                const grid = document.getElementById('prob-grid');
+                const stats = document.getElementById('prob-stats');
+                grid.innerHTML = '';
+                stats.classList.remove('hidden');
+
+                let wins = 0, losses = 0;
+                for (let i = 0; i < 50; i++) {
+                    const isWin = Math.random() * 100 <= winRate;
+                    const cell = document.createElement('div');
+                    cell.className = 'w-full h-8 rounded-md flex items-center justify-center text-white text-xs font-bold prob-cell';
+                    if (isWin) { cell.classList.add('bg-green-500'); cell.textContent = "W"; wins++; }
+                    else { cell.classList.add('bg-red-500'); cell.textContent = "L"; losses++; }
+                    grid.appendChild(cell);
+                    setTimeout(() => cell.classList.add('popped'), i * 20);
+                }
+                document.getElementById('sim-wins').textContent = wins;
+                document.getElementById('sim-losses').textContent = losses;
+            }
+
+            // Auto run first sim
+            setTimeout(window.runProbabilitySim, 1000);
+
+            // Tilt-o-meter manual slider logic
+            const tiltSlider = document.getElementById('tilt-slider');
+            function updateTiltUI(val) {
+                const container = document.getElementById('tilt-container');
+                const title = document.getElementById('tilt-title');
+                const desc = document.getElementById('tilt-desc');
+                const icon = document.getElementById('tilt-icon');
+
+                tiltSlider.value = val;
+                let state, descText, iconName, iconClass;
+
+                if (val < 30) {
+                    state = "Zona Zen"; descText = "Control total."; iconName = "smile"; iconClass = "bg-green-100 text-green-600";
+                    container.style.borderColor = "#e2e8f0"; container.style.backgroundColor = "white";
+                } else if (val < 70) {
+                    state = "Alerta"; descText = "Cuidado, juicio nublado."; iconName = "alert-circle"; iconClass = "bg-yellow-100 text-yellow-600";
+                    container.style.borderColor = "#fcd34d"; container.style.backgroundColor = "#fffbeb";
+                } else {
+                    state = "PELIGRO (TILT)"; descText = "¡DETENTE! Amígdala activada."; iconName = "skull"; iconClass = "bg-red-100 text-red-600";
+                    container.style.borderColor = "#ef4444"; container.style.backgroundColor = "#fef2f2";
+                }
+
+                title.textContent = `Estado: ${state} (${val}%)`;
+                desc.textContent = descText;
+                icon.className = `p-2 rounded-full mr-3 ${iconClass}`;
+                icon.innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6"></i>`;
+                lucide.createIcons();
+            }
+            tiltSlider.addEventListener('input', (e) => updateTiltUI(parseInt(e.target.value)));
+
+            // Global helpers
+            window.toggleCheck = function (el) {
+                el.classList.toggle('checked');
+                const all = document.querySelectorAll('.checklist-item');
+                const checked = document.querySelectorAll('.checklist-item.checked');
+                document.getElementById('progress-bar').style.width = (checked.length / all.length * 100) + "%";
+                if (checked.length === all.length) {
+                    document.getElementById('checklist-complete-msg').classList.remove('hidden');
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#14b8a6'] });
+                }
+            }
+
+            window.resetChat = function () {
+                chatBox.innerHTML = '<div class="ai-message bot shadow-sm">Hola. Soy tu coach de psicología. ¿Qué te preocupa hoy?</div>';
+            }
+
+            window.confettiEffect = function () {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#14b8a6', '#0f766e'] });
+            }
+
+            // --- QUIZ LOGIC (Simplified for brevity) ---
+            window.startQuiz = function () {
+                const container = document.getElementById('quiz-container');
+                container.innerHTML = '';
+                const quizData = [
+                    { q: "¿Riesgo máximo por trade?", opts: ["10%", "1-2%", "Todo"], a: 1 },
+                    { q: "¿Pensamiento probabilístico?", opts: ["Predecir", "Aceptar incertidumbre"], a: 1 }
+                ];
+                quizData.forEach((item, idx) => {
+                    const card = document.createElement('div');
+                    card.className = 'mb-4 bg-white p-4 rounded-xl border border-indigo-50 shadow-sm';
+                    card.innerHTML = `<p class="font-bold text-sm mb-2">${item.q}</p>`;
+                    item.opts.forEach((opt, optIdx) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'w-full text-left px-3 py-2 text-xs border rounded mb-1 hover:bg-slate-50';
+                        btn.textContent = opt;
+                        btn.onclick = () => {
+                            if (optIdx === item.a) { btn.className += ' bg-green-100 border-green-500'; confetti({ particleCount: 20, spread: 40 }); }
+                            else btn.className += ' bg-red-100 border-red-500';
+                        };
+                        card.appendChild(btn);
+                    });
+                    container.appendChild(card);
+                });
+            }
+
+            // Navbar
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) { nav.classList.add('shadow-md'); nav.classList.replace('bg-white/95', 'bg-white/98'); }
+                else { nav.classList.remove('shadow-md'); nav.classList.replace('bg-white/98', 'bg-white/95'); }
+            });
+        });
+    </script>
+</body>
+
+</html>

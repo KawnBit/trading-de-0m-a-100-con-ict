@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KawnBit Magazine | Metodología ICT y Lean Startup</title>
+    <meta name="description"
+        content="Capítulo 14: Guía completa sobre la Metodología ICT (Identificar, Crear, Testear) para la innovación y el emprendimiento ágil.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (Versión fijada para estabilidad) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+
+    <!-- Librerías Externas (Versiones fijadas) -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.2/lib/marked.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                            accent: '#0d9488' // Teal 600
+                        },
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base */
+        body {
+            background-color: #f8fafc;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        th {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        p,
+        li,
+        td {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.75;
+        }
+
+        /* Hero Section Gradient */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);
+        }
+
+        /* Contenedores Visuales */
+        .visual-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .visual-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #0f766e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Efectos Interactivos */
+        .card-hover-effect {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #14b8a6;
+        }
+
+        /* Listas Personalizadas */
+        .custom-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: start;
+        }
+
+        .custom-list li i {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            color: #14b8a6;
+        }
+
+        /* Citas Destacadas */
+        .highlight-quote {
+            border-left: 4px solid #14b8a6;
+            background-color: #f0fdfa;
+            padding: 1.5rem;
+            font-style: italic;
+            color: #134e4a;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 2rem 0;
+        }
+
+        /* Chat Styles */
+        .ai-message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .ai-message.user {
+            background-color: #f1f5f9;
+            color: #334155;
+            border-bottom-right-radius: 0;
+            margin-left: 2rem;
+        }
+
+        .ai-message.bot {
+            background-color: #ccfbf1;
+            color: #0f766e;
+            border-bottom-left-radius: 0;
+            margin-right: 2rem;
+            border: 1px solid #99f6e4;
+        }
+
+        /* Typing Animation */
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #0f766e;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+            margin: 0 2px;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #f8fafc;
+            border-color: #14b8a6;
+        }
+
+        .quiz-option.correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+
+        .quiz-option.wrong {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        /* Canvas Grid Styles */
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            height: 400px;
+        }
+
+        .canvas-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .canvas-box:hover {
+            background-color: #f0fdfa;
+            border-color: #14b8a6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .canvas-box h6 {
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+        }
+
+        .canvas-icon {
+            color: #14b8a6;
+            margin-bottom: 4px;
+        }
+
+        /* Flip Card Styles */
+        .flip-card {
+            background-color: transparent;
+            height: 200px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .flip-card-front {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .flip-card-back {
+            background-color: #0f766e;
+            color: white;
+            transform: rotateY(180deg);
+            border: 1px solid #0f766e;
+        }
+
+        /* 5 Whys Styles */
+        .why-step {
+            transition: all 0.4s ease;
+            opacity: 0.5;
+            transform: translateX(-10px);
+            filter: blur(1px);
+        }
+
+        .why-step.active {
+            opacity: 1;
+            transform: translateX(0);
+            filter: blur(0);
+        }
+
+        .why-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .why-step.active .why-arrow {
+            transform: rotate(90deg);
+            color: #14b8a6;
+        }
+
+        /* Funnel Styles */
+        .funnel-layer {
+            transition: all 0.3s ease;
+            clip-path: polygon(5% 0, 95% 0, 90% 100%, 10% 100%);
+            margin-bottom: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .funnel-layer:hover {
+            transform: scaleX(1.02);
+            filter: brightness(1.1);
+        }
+
+        .funnel-info {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .funnel-layer:hover .funnel-info {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="text-slate-600 antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center flex-shrink-0 mr-6">
+                    <div
+                        class="h-12 w-12 bg-gradient-to-br from-kawn-dark to-kawn-base rounded-lg shadow-sm flex items-center justify-center text-white font-bold text-xl font-display">
+                        K</div>
+                    <span class="ml-3 font-display font-bold text-slate-800 text-xl hidden md:block">KAWNBIT</span>
+                </div>
+
+                <div class="hidden md:flex space-x-8">
+                    <a href="#intro"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-sm uppercase tracking-wider">Intro</a>
+                    <a href="#fase-identificar"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-sm uppercase tracking-wider text-kawn-deep font-bold">1.
+                        Identificar</a>
+                    <a href="#fase-crear"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-sm uppercase tracking-wider text-kawn-deep font-bold">2.
+                        Crear</a>
+                    <a href="#fase-testear"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-sm uppercase tracking-wider text-kawn-deep font-bold">3.
+                        Testear</a>
+                    <a href="#ai-lab"
+                        class="text-kawn-base hover:text-kawn-dark font-bold transition-colors text-sm uppercase tracking-wider flex items-center"><i
+                            data-lucide="sparkles" class="w-4 h-4 mr-1"></i> AI Lab</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-gradient relative text-white py-24 overflow-hidden">
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay">
+        </div>
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-kawn-light/20 text-kawn-light text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">Edición
+                Especial: Emprendimiento Ágil</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6">
+                Capítulo 14: Metodología <span class="text-kawn-light">ICT</span>
+            </h1>
+            <p class="text-2xl text-slate-200 font-light max-w-3xl mx-auto leading-relaxed mb-4">
+                Innovación Centrada en el Usuario, Creación Ágil y Testeo Rápido.
+            </p>
+            <p class="text-sm text-slate-400 font-mono">
+                Innovación centrada en el usuario.
+            </p>
+        </div>
+    </section>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <section id="intro" class="mb-16 scroll-mt-24">
+            <div class="flex items-center mb-8">
+                <i data-lucide="lightbulb" class="w-8 h-8 text-kawn-base mr-4"></i>
+                <h2 class="text-3xl font-bold text-slate-900">El Fundamento de ICT: Innovar de Forma Sistemática</h2>
+            </div>
+
+            <p class="mb-4 text-lg leading-relaxed font-medium text-slate-700">
+                En la economía actual, innovar con éxito se ha vuelto imprescindible para emprendedores e inversores que
+                buscan nuevas oportunidades de crecimiento.
+            </p>
+            <p class="mb-4">
+                Sin embargo, la innovación sin método conlleva riesgos elevados: más del 90% de las startups fracasan en
+                sus primeros años, y solo 1 de cada 10 sobrevive más de tres años. ¿La razón principal? En muchos casos,
+                desarrollan productos o servicios que el mercado realmente no necesita.
+            </p>
+
+            <!-- IMPROVED CHART SECTION -->
+            <div class="visual-container bg-slate-50">
+                <div class="visual-title">
+                    <i data-lucide="pie-chart" class="w-5 h-5 mr-2"></i> La Realidad del Emprendimiento (Datos
+                    Interactivos)
+                </div>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <!-- Doughnut Chart Canvas -->
+                    <div class="relative w-64 h-64 flex-shrink-0">
+                        <canvas id="failureChart"></canvas>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                            <span class="text-3xl font-bold text-slate-800">90%</span>
+                            <span class="text-[10px] uppercase font-bold text-red-500">Fracasan</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 w-full">
+                        <h4 class="font-bold text-slate-800 mb-2">Principales Causas de Muerte:</h4>
+                        <div class="h-48 w-full">
+                            <canvas id="reasonsChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1 text-right">Datos basados en análisis post-mortem.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-4">
+                Para evitar ese destino, resulta fundamental adoptar una metodología sistemática que guíe el proceso de
+                innovación desde la idea inicial hasta un negocio validado. Aquí es donde presentamos la
+                <strong>Metodología ICT</strong>, un enfoque estructurado orientado a <strong>Identificar</strong>
+                necesidades reales, <strong>Crear</strong> soluciones de forma ágil, y <strong>Testear</strong>
+                rápidamente con usuarios para aprender e iterar sobre la marcha.
+            </p>
+
+            <!-- NEW INTERACTIVE CYCLE VISUAL -->
+            <div class="my-8 flex justify-center">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-100 max-w-lg w-full">
+                    <h4 class="text-center font-bold text-slate-800 mb-6">El Ciclo ICT</h4>
+                    <div class="flex justify-between items-center text-center gap-2">
+                        <div
+                            class="group cursor-pointer p-4 rounded-lg hover:bg-kawn-light/30 transition-colors flex-1 border border-transparent hover:border-kawn-base/30">
+                            <div
+                                class="bg-kawn-deep text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-lg font-bold">
+                                1</div>
+                            <div class="font-bold text-kawn-deep text-sm">IDENTIFICAR</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Necesidad real</div>
+                        </div>
+                        <i data-lucide="arrow-right" class="text-slate-300"></i>
+                        <div
+                            class="group cursor-pointer p-4 rounded-lg hover:bg-kawn-light/30 transition-colors flex-1 border border-transparent hover:border-kawn-base/30">
+                            <div
+                                class="bg-kawn-base text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-lg font-bold">
+                                2</div>
+                            <div class="font-bold text-kawn-deep text-sm">CREAR</div>
+                            <div class="text-[10px] text-slate-500 mt-1">MVP Ágil</div>
+                        </div>
+                        <i data-lucide="arrow-right" class="text-slate-300"></i>
+                        <div
+                            class="group cursor-pointer p-4 rounded-lg hover:bg-kawn-light/30 transition-colors flex-1 border border-transparent hover:border-kawn-base/30">
+                            <div
+                                class="bg-kawn-light text-kawn-deep w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-lg font-bold border border-kawn-base">
+                                3</div>
+                            <div class="font-bold text-kawn-deep text-sm">TESTEAR</div>
+                            <div class="text-[10px] text-slate-500 mt-1">Validar datos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-6">
+                Este método integra lo mejor de las metodologías de innovación actuales –design thinking, lean startup,
+                desarrollo ágil– en un marco práctico para emprender con menos riesgo y mayor probabilidad de éxito.
+            </p>
+
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Emprendimiento Científico</h3>
+            <p class="mb-4">
+                Emprender no es cuestión de adivinar qué funcionará, sino de descubrir sistemáticamente qué es lo que el
+                cliente realmente valora. Estudios de casos de fracaso masivo muestran que "el principal motivo de
+                fracaso de las startups es claro: simplemente no ofrecen el producto o servicio que el mercado demanda".
+            </p>
+            <p class="mb-4">
+                De hecho, un 42% de las startups reconocen cerrar porque no resolvían una necesidad real del mercado.
+                Este dato subraya la importancia de una innovación centrada en el usuario: si nuestro producto no
+                soluciona un problema importante para alguien, estamos destinados al fracaso.
+            </p>
+            <p class="mb-6">
+                La metodología ICT pone al cliente en el centro desde el inicio, asegurando que cada idea se base en
+                necesidades concretas y verificadas. Esto se alinea con la filosofía del design thinking y el enfoque
+                lean startup.
+            </p>
+
+            <div class="highlight-quote">
+                <p class="mb-2">
+                    "Lean Startup es una metodología... que permite validar rápidamente las ideas de negocio, minimizar
+                    riesgos y construir empresas con crecimiento sostenible."
+                </p>
+                <footer class="text-sm font-bold text-kawn-deep">— Eric Ries</footer>
+            </div>
+
+            <p class="mb-4">
+                En lugar de apostar todos los recursos en una gran apuesta ciega, ICT propone experimentos rápidos y
+                baratos para probar cada suposición clave. Este enfoque científico de “construir-medir-aprender” reduce
+                drásticamente el desperdicio de tiempo y dinero.
+            </p>
+        </section>
+
+        <section id="fase-identificar" class="mb-16 scroll-mt-24">
+            <div class="flex items-center mb-8">
+                <span
+                    class="bg-kawn-light text-kawn-dark w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl font-bold border border-kawn-base">1</span>
+                <h2 class="text-3xl font-bold text-slate-900">Fase 1: Identificar – Descubrimiento de Necesidades</h2>
+            </div>
+
+            <p class="mb-6">
+                Toda innovación de éxito comienza con la identificación de un problema u oportunidad real. En la fase
+                Identificar de la metodología ICT, el objetivo es comprender profundamente el contexto, a los
+                potenciales clientes y sus necesidades insatisfechas.
+            </p>
+
+            <!-- NEW CONCEPT: 5 Whys (Interactive) -->
+            <div class="visual-container bg-amber-50 border-l-4 border-amber-400 mb-8">
+                <div class="visual-title text-amber-800">
+                    <i data-lucide="help-circle" class="w-5 h-5 mr-2"></i> Técnica: Los 5 Porqués (Causa Raíz)
+                </div>
+                <p class="text-sm mb-4">Haz clic en cada paso para profundizar. Ejemplo: "Los usuarios se dan de baja".
+                </p>
+
+                <div class="space-y-2 relative">
+                    <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-amber-200"></div>
+
+                    <div class="why-step active pl-10 relative cursor-pointer" onclick="toggleWhy(1)">
+                        <div class="absolute left-2 top-1 bg-amber-400 w-4 h-4 rounded-full border-2 border-white z-10">
+                        </div>
+                        <h5 class="font-bold text-sm flex items-center">1. ¿Por qué se dan de baja? <i
+                                data-lucide="chevron-right" class="why-arrow w-4 h-4 ml-2"></i></h5>
+                        <p class="text-xs text-slate-600 mt-1">Porque dicen que el producto es "lento".</p>
+                    </div>
+
+                    <div id="why-2" class="why-step pl-10 relative cursor-pointer hidden" onclick="toggleWhy(2)">
+                        <div class="absolute left-2 top-1 bg-amber-400 w-4 h-4 rounded-full border-2 border-white z-10">
+                        </div>
+                        <h5 class="font-bold text-sm flex items-center">2. ¿Por qué es lento? <i
+                                data-lucide="chevron-right" class="why-arrow w-4 h-4 ml-2"></i></h5>
+                        <p class="text-xs text-slate-600 mt-1">Porque las imágenes tardan en cargar.</p>
+                    </div>
+
+                    <div id="why-3" class="why-step pl-10 relative cursor-pointer hidden" onclick="toggleWhy(3)">
+                        <div class="absolute left-2 top-1 bg-amber-400 w-4 h-4 rounded-full border-2 border-white z-10">
+                        </div>
+                        <h5 class="font-bold text-sm flex items-center">3. ¿Por qué tardan en cargar? <i
+                                data-lucide="chevron-right" class="why-arrow w-4 h-4 ml-2"></i></h5>
+                        <p class="text-xs text-slate-600 mt-1">Porque se suben en alta resolución sin comprimir.</p>
+                    </div>
+
+                    <div id="why-4" class="why-step pl-10 relative cursor-pointer hidden" onclick="toggleWhy(4)">
+                        <div class="absolute left-2 top-1 bg-amber-400 w-4 h-4 rounded-full border-2 border-white z-10">
+                        </div>
+                        <h5 class="font-bold text-sm flex items-center">4. ¿Por qué no se comprimen? <i
+                                data-lucide="chevron-right" class="why-arrow w-4 h-4 ml-2"></i></h5>
+                        <p class="text-xs text-slate-600 mt-1">Porque el equipo de desarrollo no configuró un
+                            optimizador automático.</p>
+                    </div>
+
+                    <div id="why-5" class="why-step pl-10 relative cursor-pointer hidden">
+                        <div
+                            class="absolute left-2 top-1 bg-red-500 w-4 h-4 rounded-full border-2 border-white z-10 animate-pulse">
+                        </div>
+                        <h5 class="font-bold text-sm text-red-600">5. Causa Raíz (Solución)</h5>
+                        <p class="text-xs text-slate-800 font-bold mt-1">Implementar compresión automática de imágenes
+                            en el servidor.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-kawn-base mb-8">
+                <h4 class="font-bold text-lg text-kawn-deep mb-4"><i data-lucide="search"
+                        class="inline w-5 h-5 mr-2"></i> Herramientas de Identificación (Interactivas)</h4>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start card-hover-effect p-3 rounded-lg bg-slate-50 cursor-default">
+                            <div class="bg-white p-2 rounded mr-3 shadow-sm"><i data-lucide="users"
+                                    class="w-5 h-5 text-kawn-base"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-slate-800">Investigación de Usuarios</h5>
+                                <p class="text-xs text-slate-600">Salir al campo, entrevistar y empatizar. Mapas de
+                                    empatía.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start card-hover-effect p-3 rounded-lg bg-slate-50 cursor-default">
+                            <div class="bg-white p-2 rounded mr-3 shadow-sm"><i data-lucide="frown"
+                                    class="w-5 h-5 text-kawn-base"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-slate-800">Pain Points (Dolores)</h5>
+                                <p class="text-xs text-slate-600">¿Qué tareas resultan engorrosas o costosas para el
+                                    usuario?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start card-hover-effect p-3 rounded-lg bg-slate-50 cursor-default">
+                            <div class="bg-white p-2 rounded mr-3 shadow-sm"><i data-lucide="map"
+                                    class="w-5 h-5 text-kawn-base"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-slate-800">Estrategia Océano Azul</h5>
+                                <p class="text-xs text-slate-600">Buscar espacios de mercado sin explotar en lugar de
+                                    competir en saturación.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start card-hover-effect p-3 rounded-lg bg-slate-50 cursor-default">
+                            <div class="bg-white p-2 rounded mr-3 shadow-sm"><i data-lucide="file-text"
+                                    class="w-5 h-5 text-kawn-base"></i></div>
+                            <div>
+                                <h5 class="font-bold text-sm text-slate-800">Business Model Canvas</h5>
+                                <p class="text-xs text-slate-600">Plasmar propuesta de valor y segmento de clientes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW CONCEPT: Business Model Canvas Deep Dive (Interactive) -->
+            <div class="visual-container bg-slate-50 mb-8">
+                <div class="visual-title justify-between">
+                    <div class="flex items-center">
+                        <i data-lucide="grid-3x3" class="w-5 h-5 mr-2"></i> Business Model Canvas: Explorador
+                    </div>
+                    <span class="text-[10px] bg-slate-200 px-2 py-1 rounded text-slate-600 font-normal">Pasa el ratón
+                        para ver detalles</span>
+                </div>
+
+                <div class="canvas-grid" id="bmc-grid">
+                    <!-- Key Partners -->
+                    <div class="canvas-box row-span-2 col-span-1 border-l-4 border-l-blue-500"
+                        data-desc="¿Quiénes son nuestros socios clave? ¿Qué proveedores necesitamos?">
+                        <i data-lucide="link" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Asociaciones Clave</h6>
+                    </div>
+                    <!-- Key Activities -->
+                    <div class="canvas-box row-span-1 col-span-1"
+                        data-desc="¿Qué actividades clave requiere nuestra propuesta de valor? (Producción, resolución de problemas, plataforma...)">
+                        <i data-lucide="check-square" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Actividades Clave</h6>
+                    </div>
+                    <!-- Value Proposition -->
+                    <div class="canvas-box row-span-2 col-span-1 border-t-4 border-t-kawn-base bg-kawn-light/10"
+                        data-desc="El CORAZÓN del modelo. ¿Qué valor entregamos al cliente? ¿Qué problema resolvemos?">
+                        <i data-lucide="gift" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Propuesta de Valor</h6>
+                    </div>
+                    <!-- Customer Relationships -->
+                    <div class="canvas-box row-span-1 col-span-1"
+                        data-desc="¿Qué tipo de relación espera cada segmento? (Asistencia personal, autoservicio, comunidades...)">
+                        <i data-lucide="heart" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Relación con Clientes</h6>
+                    </div>
+                    <!-- Customer Segments -->
+                    <div class="canvas-box row-span-2 col-span-1 border-r-4 border-r-green-500"
+                        data-desc="¿Para quién creamos valor? ¿Quiénes son nuestros clientes más importantes?">
+                        <i data-lucide="users" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Segmentos de Clientes</h6>
+                    </div>
+                    <!-- Key Resources -->
+                    <div class="canvas-box row-span-1 col-span-1"
+                        data-desc="¿Qué recursos clave requiere nuestra propuesta? (Físicos, intelectuales, humanos, financieros)">
+                        <i data-lucide="truck" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Recursos Clave</h6>
+                    </div>
+                    <!-- Channels -->
+                    <div class="canvas-box row-span-1 col-span-1"
+                        data-desc="¿A través de qué canales quieren ser contactados nuestros segmentos de clientes?">
+                        <i data-lucide="share-2" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Canales</h6>
+                    </div>
+                    <!-- Cost Structure -->
+                    <div class="canvas-box row-span-1 col-span-2.5" style="grid-column: span 2.5;"
+                        data-desc="¿Cuáles son los costes más importantes inherentes a nuestro modelo de negocio?">
+                        <i data-lucide="tag" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Estructura de Costes</h6>
+                    </div>
+                    <!-- Revenue Streams -->
+                    <div class="canvas-box row-span-1 col-span-2.5" style="grid-column: span 2.5;"
+                        data-desc="¿Por qué valor están realmente dispuestos a pagar nuestros clientes? (Venta, suscripción, publicidad...)">
+                        <i data-lucide="dollar-sign" class="w-4 h-4 canvas-icon"></i>
+                        <h6>Fuentes de Ingresos</h6>
+                    </div>
+                </div>
+                <div id="bmc-description"
+                    class="mt-4 p-3 bg-white border border-slate-200 rounded text-sm text-slate-600 italic h-16 flex items-center justify-center text-center shadow-inner">
+                    Pasa el ratón sobre los bloques para ver su definición teórica.
+                </div>
+            </div>
+
+            <p class="mb-4">
+                Se trata de actuar como un detective de oportunidades: observar, preguntar y analizar hasta detectar
+                dónde duele realmente. Antes de pensar en qué producto construir, debemos clarificar qué problema
+                significativo vamos a resolver y para quién.
+            </p>
+            <p class="mb-4">
+                Un <em>outcome</em> o resultado deseado de esta fase es la formulación de <strong>hipótesis
+                    claras</strong>. En lugar de asumir el éxito, redactamos supuestos testeables, por ejemplo: "Los
+                profesionales independientes necesitan hospedaje económico".
+            </p>
+
+            <div class="bg-slate-100 p-6 rounded-lg mb-6 border border-slate-200">
+                <h3 class="font-bold text-slate-900 mb-2">Ejemplo Práctico: Airbnb</h3>
+                <p class="text-sm italic mb-2"> El origen de una solución global.</p>
+                <p class="text-sm text-slate-700">
+                    Los fundadores identificaron una necesidad latente durante una conferencia en San Francisco: no
+                    había hoteles asequibles. Detectaron el <em>pain point</em> y plantearon la hipótesis: "¿Y si la
+                    gente alquilara un espacio libre en su casa?". Definieron problema (falta de alojamiento) y cliente
+                    (asistentes a congresos) antes de construir la plataforma masiva [cite: 52-54].
+                </p>
+            </div>
+
+            <p>
+                Invertir tiempo en entender el problema es el mejor seguro contra el fracaso: "enamórate del problema,
+                no de tu solución".
+            </p>
+        </section>
+
+        <section id="fase-crear" class="mb-16 scroll-mt-24">
+            <div class="flex items-center mb-8">
+                <span
+                    class="bg-kawn-light text-kawn-dark w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl font-bold border border-kawn-base">2</span>
+                <h2 class="text-3xl font-bold text-slate-900">Fase 2: Crear – Soluciones Ágiles y MVP</h2>
+            </div>
+
+            <p class="mb-6">
+                Una vez identificado un problema validado, pasamos a idear y crear la solución. En la fase Crear, el
+                enfoque está en diseñar prototipos de forma ágil, recordando el principio de "fracasar rápido, fracasar
+                barato".
+            </p>
+            <p class="mb-8">
+                El concepto central es el <strong>Producto Mínimo Viable (MVP)</strong>: esa versión de un nuevo
+                producto que permite recolectar la máxima cantidad de aprendizaje validado con el mínimo esfuerzo.
+            </p>
+
+            <div class="visual-container">
+                <div class="visual-title">
+                    <i data-lucide="layers" class="w-5 h-5 mr-2"></i> Tipos de MVP: De Baja a Alta Fidelidad
+                </div>
+                <!-- Interactive Grid -->
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+
+                    <div
+                        class="p-6 border border-slate-200 rounded-xl hover:border-kawn-base bg-white transition-all card-hover-effect group cursor-pointer relative overflow-hidden">
+                        <div
+                            class="absolute top-0 left-0 w-1 h-full bg-blue-500 transform -translate-x-full group-hover:translate-x-0 transition-transform">
+                        </div>
+                        <div
+                            class="h-14 w-14 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="video" class="w-7 h-7"></i>
+                        </div>
+                        <h5 class="font-bold text-base mb-2 text-slate-800">Video Explicativo</h5>
+                        <p class="text-sm text-slate-500 mb-3">Simulación de cómo funcionaría el producto.</p>
+                        <div
+                            class="text-[10px] font-bold bg-blue-100 text-blue-700 py-1 px-3 rounded-full inline-block">
+                            Caso Dropbox</div>
+                    </div>
+
+                    <div
+                        class="p-6 border border-slate-200 rounded-xl hover:border-kawn-base bg-white transition-all card-hover-effect group cursor-pointer relative overflow-hidden">
+                        <div
+                            class="absolute top-0 left-0 w-1 h-full bg-purple-500 transform -translate-x-full group-hover:translate-x-0 transition-transform">
+                        </div>
+                        <div
+                            class="h-14 w-14 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="layout" class="w-7 h-7"></i>
+                        </div>
+                        <h5 class="font-bold text-base mb-2 text-slate-800">Landing Page</h5>
+                        <p class="text-sm text-slate-500 mb-3">Página simple para captar correos e interés.</p>
+                        <div
+                            class="text-[10px] font-bold bg-purple-100 text-purple-700 py-1 px-3 rounded-full inline-block">
+                            Validación de Demanda</div>
+                    </div>
+
+                    <div
+                        class="p-6 border border-slate-200 rounded-xl hover:border-kawn-base bg-white transition-all card-hover-effect group cursor-pointer relative overflow-hidden">
+                        <div
+                            class="absolute top-0 left-0 w-1 h-full bg-orange-500 transform -translate-x-full group-hover:translate-x-0 transition-transform">
+                        </div>
+                        <div
+                            class="h-14 w-14 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="wand-2" class="w-7 h-7"></i>
+                        </div>
+                        <h5 class="font-bold text-base mb-2 text-slate-800">Mago de Oz</h5>
+                        <p class="text-sm text-slate-500 mb-3">Fachada digital, operación manual detrás.</p>
+                        <div
+                            class="text-[10px] font-bold bg-orange-100 text-orange-700 py-1 px-3 rounded-full inline-block">
+                            Caso Zappos</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p class="mb-4">
+                El MVP no es un prototipo de mala calidad; debe ser "mínimo pero lovable". Un ejemplo famoso es
+                <strong>Zappos</strong>: su fundador creó un sitio web sencillo con fotos de zapatos y, al recibir un
+                pedido, iba a la tienda a comprarlos. Simulaba la experiencia completa sin stock [cite: 85-87].
+            </p>
+            <p class="mb-4">
+                También destaca <strong>Instagram</strong>, que eliminó todas las funciones de su app anterior (Burbn)
+                para dejar solo lo esencial: subir fotos cuadradas con filtros. Esa simplicidad fue clave [cite:
+                103-105].
+            </p>
+        </section>
+
+        <section id="fase-testear" class="mb-16 scroll-mt-24">
+            <div class="flex items-center mb-8">
+                <span
+                    class="bg-kawn-light text-kawn-dark w-10 h-10 rounded-full flex items-center justify-center mr-4 text-xl font-bold border border-kawn-base">3</span>
+                <h2 class="text-3xl font-bold text-slate-900">Fase 3: Testear – Aprendizaje Validado</h2>
+            </div>
+
+            <p class="mb-6">
+                Con el MVP en la mano, la idea se encuentra con la realidad. El propósito no es ganar dinero inmediato,
+                sino validar o refutar hipótesis. Entramos en el ciclo <em>Construir-Medir-Aprender</em>.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-8 items-center mb-8">
+                <div class="md:w-1/2">
+                    <h3 class="font-bold text-xl text-kawn-deep mb-3">Métricas que Importan</h3>
+                    <p class="mb-3 text-sm">
+                        Evita las métricas vanidosas (likes, visitas). Concéntrate en métricas accionables:
+                    </p>
+                    <ul class="custom-list text-sm">
+                        <li><i data-lucide="check-circle-2"></i> Tasa de Conversión</li>
+                        <li><i data-lucide="check-circle-2"></i> Retención (¿Vuelven?)</li>
+                        <li><i data-lucide="check-circle-2"></i> Feedback Cualitativo (Entrevistas)</li>
+                    </ul>
+                </div>
+
+                <!-- IMPROVED SIMULATOR UI -->
+                <div class="md:w-1/2 w-full visual-container bg-slate-900 text-white border-none shadow-2xl"
+                    id="startup-sim">
+                    <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                        <span class="font-bold font-display text-kawn-light flex items-center"><i
+                                data-lucide="gamepad-2" class="inline w-4 h-4 mr-2"></i> Startup Sim v2.0</span>
+                        <div class="flex flex-col items-end">
+                            <div class="text-[10px] text-slate-400">Presupuesto</div>
+                            <div class="w-24 bg-slate-700 h-2 rounded-full mt-1 overflow-hidden">
+                                <div id="sim-budget-bar" class="bg-green-500 h-full transition-all duration-500"
+                                    style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sim-screen"
+                        class="h-40 flex flex-col items-center justify-center text-center p-4 bg-white/5 rounded-lg border border-white/10 mb-4 font-mono text-sm relative overflow-hidden">
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-kawn-base to-transparent opacity-50 animate-pulse-slow">
+                        </div>
+                        <p class="mb-2">Tienes una idea brillante.</p>
+                        <p class="text-slate-400 text-xs">El mercado espera...</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3" id="sim-controls">
+                        <button onclick="App.simAction('perfect')"
+                            class="bg-red-500/20 hover:bg-red-500 border border-red-500 text-red-100 hover:text-white py-3 rounded text-xs font-bold transition flex flex-col items-center gap-1 group">
+                            <i data-lucide="rocket" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                            Producto Perfecto ($800)
+                        </button>
+                        <button onclick="App.simAction('mvp')"
+                            class="bg-kawn-base/20 hover:bg-kawn-base border border-kawn-base text-kawn-light hover:text-white py-3 rounded text-xs font-bold transition flex flex-col items-center gap-1 group">
+                            <i data-lucide="zap" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                            Crear MVP Rápido ($200)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW CONCEPT: Pirate Metrics Funnel (Interactive) -->
+            <div class="visual-container bg-slate-50 mb-8">
+                <div class="visual-title">
+                    <i data-lucide="filter" class="w-5 h-5 mr-2"></i> Embudo AARRR (Métricas Piratas)
+                </div>
+                <div class="flex flex-col items-center max-w-md mx-auto">
+                    <div class="w-full text-center funnel-layer bg-kawn-deep text-white p-2 rounded relative"
+                        style="width: 100%">
+                        <span class="font-bold">A - Adquisición</span>
+                        <div
+                            class="funnel-info absolute top-0 left-full ml-2 w-48 bg-white text-slate-800 text-xs p-2 rounded shadow-lg border border-slate-200 z-20">
+                            ¿Cómo nos encuentran? <br><strong>KPI:</strong> CPC, Visitas.
+                        </div>
+                    </div>
+                    <div class="w-full text-center funnel-layer bg-kawn-dark text-white p-2 rounded relative"
+                        style="width: 90%">
+                        <span class="font-bold">A - Activación</span>
+                        <div
+                            class="funnel-info absolute top-0 left-full ml-2 w-48 bg-white text-slate-800 text-xs p-2 rounded shadow-lg border border-slate-200 z-20">
+                            ¿Tienen una buena 1ª experiencia? <br><strong>KPI:</strong> Registros, Onboarding.
+                        </div>
+                    </div>
+                    <div class="w-full text-center funnel-layer bg-kawn-base text-white p-2 rounded relative"
+                        style="width: 80%">
+                        <span class="font-bold">R - Retención</span>
+                        <div
+                            class="funnel-info absolute top-0 left-full ml-2 w-48 bg-white text-slate-800 text-xs p-2 rounded shadow-lg border border-slate-200 z-20">
+                            ¿Vuelven a usar el producto? <br><strong>KPI:</strong> Churn Rate, DAU/MAU.
+                        </div>
+                    </div>
+                    <div class="w-full text-center funnel-layer bg-kawn-accent text-white p-2 rounded relative"
+                        style="width: 70%">
+                        <span class="font-bold">R - Referencia</span>
+                        <div
+                            class="funnel-info absolute top-0 left-full ml-2 w-48 bg-white text-slate-800 text-xs p-2 rounded shadow-lg border border-slate-200 z-20">
+                            ¿Lo recomiendan? <br><strong>KPI:</strong> Coeficiente Viral, NPS.
+                        </div>
+                    </div>
+                    <div class="w-full text-center funnel-layer bg-green-500 text-white p-2 rounded relative"
+                        style="width: 60%">
+                        <span class="font-bold">R - Retorno</span>
+                        <div
+                            class="funnel-info absolute top-0 left-full ml-2 w-48 bg-white text-slate-800 text-xs p-2 rounded shadow-lg border border-slate-200 z-20">
+                            ¿Cómo ganamos dinero? <br><strong>KPI:</strong> LTV, ARPU.
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-center text-slate-500 mt-2">Pasa el cursor para ver la definición y KPI de cada
+                    fase del modelo de Dave McClure.</p>
+            </div>
+
+            <!-- NEW CONCEPT: A/B Testing Simulator -->
+            <div class="visual-container bg-slate-900 text-white mb-8 border border-slate-700">
+                <div class="visual-title text-kawn-light">
+                    <i data-lucide="flask-conical" class="w-5 h-5 mr-2"></i> Simulador: A/B Testing (Split Test)
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 text-center items-center">
+                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <h5 class="text-xs uppercase font-bold text-slate-400 mb-2">Versión A (Control)</h5>
+                        <button onclick="App.abTestClick('A')"
+                            class="bg-slate-500 hover:bg-slate-600 text-white px-6 py-2 rounded font-bold mb-3 transition active:scale-95">Comprar
+                            Ahora</button>
+                        <div class="text-xs">Impresiones: <span id="impA">100</span> | Clics: <span id="clicksA"
+                                class="font-bold text-yellow-400">0</span></div>
+                        <div class="text-lg font-bold mt-1 text-slate-300"><span id="convA">0.0</span>% CTR</div>
+                    </div>
+                    <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                        <h5 class="text-xs uppercase font-bold text-slate-400 mb-2">Versión B (Variante)</h5>
+                        <button onclick="App.abTestClick('B')"
+                            class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded font-bold mb-3 shadow-lg shadow-green-500/20 transition active:scale-95">¡Comprar
+                            Ya!</button>
+                        <div class="text-xs">Impresiones: <span id="impB">100</span> | Clics: <span id="clicksB"
+                                class="font-bold text-green-400">0</span></div>
+                        <div class="text-lg font-bold mt-1 text-slate-300"><span id="convB">0.0</span>% CTR</div>
+                    </div>
+                </div>
+                <p class="text-xs text-center text-slate-400 mt-4 bg-black/20 p-2 rounded">
+                    Concepto: Pequeños cambios (color, texto) pueden alterar drásticamente la conversión. En este demo,
+                    la Versión B tiene una probabilidad oculta mayor de éxito. Haz clic varias veces para simular
+                    tráfico.
+                </p>
+            </div>
+
+            <!-- NEW CONCEPT: Rogers Diffusion Curve -->
+            <div class="visual-container bg-slate-50 mb-8 border-l-4 border-l-purple-500">
+                <div class="visual-title">
+                    <i data-lucide="activity" class="w-5 h-5 mr-2"></i> Teoría: Curva de Difusión de la Innovación
+                    (Rogers)
+                </div>
+                <p class="text-sm mb-4 text-slate-600">
+                    Al testear, no intentes convencer a todos. Busca a los <strong>Early Adopters</strong>. Según
+                    Rogers, la innovación se distribuye así:
+                </p>
+                <div class="h-64 w-full">
+                    <canvas id="adoptionChart"></canvas>
+                </div>
+                <div class="mt-4 text-xs text-center text-slate-500 bg-white p-2 rounded border border-slate-200">
+                    <span class="font-bold text-purple-600">Estrategia:</span> Conquista el 16% inicial (Innovadores +
+                    Early Adopters) para cruzar el abismo.
+                </div>
+            </div>
+
+            <p class="mb-4">
+                Si los datos indican que no hay tracción, tienes la oportunidad de <strong>Pivotar</strong> (cambiar
+                estrategia) o <strong>Perseverar</strong>.
+            </p>
+
+            <!-- NEW CONCEPT: Pivot Types Cards -->
+            <div class="my-8">
+                <h4 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
+                    <i data-lucide="refresh-cw" class="w-5 h-5 mr-2 text-kawn-base"></i> Tipos de Pivote (Concepto
+                    Avanzado)
+                </h4>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="flip-card cursor-pointer">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front shadow-sm">
+                                <i data-lucide="zoom-in" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                <h5 class="font-bold text-slate-800">Zoom-in Pivot</h5>
+                                <p class="text-xs text-slate-500 mt-2">¿Qué es? Pasa el ratón</p>
+                            </div>
+                            <div class="flip-card-back">
+                                <h5 class="font-bold mb-2">Zoom-in</h5>
+                                <p class="text-xs">Lo que antes era una sola característica del producto se convierte en
+                                    el producto completo. (Ej. Instagram solo fotos).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="flip-card cursor-pointer">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front shadow-sm">
+                                <i data-lucide="users" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                <h5 class="font-bold text-slate-800">Customer Pivot</h5>
+                                <p class="text-xs text-slate-500 mt-2">¿Qué es? Pasa el ratón</p>
+                            </div>
+                            <div class="flip-card-back">
+                                <h5 class="font-bold mb-2">Segmento de Cliente</h5>
+                                <p class="text-xs">El producto resuelve un problema real, pero para un tipo de cliente
+                                    diferente al que planeamos originalmente.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="flip-card cursor-pointer">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front shadow-sm">
+                                <i data-lucide="smartphone" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                <h5 class="font-bold text-slate-800">Platform Pivot</h5>
+                                <p class="text-xs text-slate-500 mt-2">¿Qué es? Pasa el ratón</p>
+                            </div>
+                            <div class="flip-card-back">
+                                <h5 class="font-bold mb-2">Plataforma</h5>
+                                <p class="text-xs">Cambio de una aplicación a una plataforma o viceversa. (Ej. Slack
+                                    nació como herramienta interna de un juego).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-4">
+                <strong>Twitter</strong> nació de un pivote: era una plataforma de podcasts fallida (Odeo). Al testear
+                internamente un sistema de mensajes cortos, pivotaron y encontraron el éxito [cite: 140-143].
+            </p>
+            <p>
+                El objetivo final es alcanzar el <strong>Product-Market Fit</strong>: cuando el mercado compra y usa tu
+                producto de forma recurrente.
+            </p>
+
+        </section>
+
+        <section id="ai-lab" class="mb-16 scroll-mt-24">
+            <div class="flex items-center mb-8">
+                <i data-lucide="sparkles" class="w-8 h-8 text-kawn-base mr-4"></i>
+                <h2 class="text-3xl font-bold text-slate-900">Laboratorio de Emprendimiento IA ✨</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+
+                <div
+                    class="lg:col-span-2 bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden flex flex-col h-[500px]">
+                    <div class="bg-gradient-to-r from-kawn-deep to-kawn-dark p-4 flex justify-between items-center">
+                        <div class="flex items-center text-white">
+                            <i data-lucide="bot" class="w-6 h-6 mr-2"></i>
+                            <div>
+                                <h3 class="font-bold text-sm">Consultor ICT Virtual</h3>
+                                <p class="text-[10px] opacity-80">Experto en Lean Startup & Innovación</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] text-white/70 bg-white/10 px-2 py-0.5 rounded">Proxy Mode</span>
+                            <span class="bg-green-400 w-2 h-2 rounded-full animate-pulse"></span>
+                        </div>
+                    </div>
+
+                    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-slate-50">
+                        <div class="ai-message bot">
+                            Hola, soy tu consultor de metodología ICT. ¿Tienes una idea de negocio? Pregúntame cómo
+                            crear tu primer MVP o cómo validar tu hipótesis. 🚀
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white border-t border-slate-200">
+                        <form id="chat-form" class="flex gap-2">
+                            <input type="text" id="user-input"
+                                class="flex-1 border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none"
+                                placeholder="Ej: ¿Qué tipo de MVP puedo hacer para una app de comida?">
+                            <button type="submit" id="chat-submit-btn"
+                                class="bg-kawn-dark text-white p-2 rounded-lg hover:bg-kawn-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                        <p class="text-[10px] text-center text-slate-400 mt-2">Powered by Gemini AI (vía Proxy Seguro)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex-1 flex flex-col">
+                        <h3 class="font-bold text-kawn-deep mb-3 flex items-center"><i data-lucide="microscope"
+                                class="mr-2"></i> Analizador de Ideas</h3>
+                        <p class="text-xs text-slate-500 mb-3">Describe tu idea de negocio y la IA sugerirá cómo
+                            testearla.</p>
+
+                        <textarea id="scenario-input"
+                            class="w-full h-20 border border-slate-200 rounded p-3 text-sm focus:ring-1 focus:ring-kawn-base outline-none resize-none mb-3"
+                            placeholder="Ej: Quiero vender café por suscripción mensual a oficinas..."></textarea>
+
+                        <button id="scenario-btn" onclick="App.analyzeScenario()"
+                            class="w-full py-2 bg-slate-800 text-white rounded font-bold text-sm hover:bg-slate-700 transition flex justify-center items-center gap-2 mb-3 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Analizar MVP
+                        </button>
+
+                        <div id="scenario-result"
+                            class="bg-slate-50 p-3 rounded border border-slate-100 text-xs text-slate-700 h-24 overflow-y-auto custom-scrollbar">
+                            <span class="opacity-50 italic">Esperando idea...</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-gradient-to-br from-kawn-light/30 to-white p-6 rounded-2xl shadow-sm border border-kawn-base/20 flex-1 flex flex-col justify-center">
+                        <h3 class="font-bold text-kawn-deep mb-2 flex items-center"><i data-lucide="award"
+                                class="mr-2"></i> Quiz de Innovación ✨</h3>
+                        <p class="text-xs text-slate-500 mb-4">Prueba tu conocimiento sobre MVPs, Pivots y métricas.</p>
+
+                        <div id="quiz-container">
+                            <button id="quiz-btn" onclick="App.generateQuiz()"
+                                class="w-full py-3 bg-kawn-base text-white rounded-lg font-bold text-sm hover:bg-kawn-dark transition flex justify-center items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="zap" class="w-4 h-4"></i> Generar Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: AI PERSONA GENERATOR -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <h3 class="font-bold text-kawn-deep mb-3 flex items-center"><i data-lucide="user-plus"
+                            class="mr-2"></i> Generador User Persona</h3>
+                    <p class="text-xs text-slate-500 mb-3">Introduce tu idea y la IA creará un perfil de tu cliente
+                        ideal.</p>
+
+                    <input type="text" id="persona-input"
+                        class="w-full border border-slate-200 rounded p-2 text-sm focus:ring-1 focus:ring-kawn-base outline-none mb-3"
+                        placeholder="Ej: App para pasear perros">
+
+                    <button onclick="App.generatePersona()" id="persona-btn"
+                        class="w-full py-2 bg-purple-600 text-white rounded font-bold text-sm hover:bg-purple-700 transition flex justify-center items-center gap-2 mb-3">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Generar Persona
+                    </button>
+
+                    <div id="persona-result"
+                        class="bg-slate-50 p-3 rounded border border-slate-100 text-xs text-slate-700 h-40 overflow-y-auto custom-scrollbar">
+                        <span class="opacity-50 italic">Perfil del cliente aparecerá aquí...</span>
+                    </div>
+                </div>
+
+                <!-- NEW: ELEVATOR PITCH SIMULATOR -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <h3 class="font-bold text-kawn-deep mb-3 flex items-center"><i data-lucide="mic-2" class="mr-2"></i>
+                        Simulador Pitch de Ascensor (Shark Tank IA)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Escribe tu pitch de 30 seg. La IA te evaluará (1-10) y te
+                        dirá cómo mejorarlo.</p>
+
+                    <textarea id="pitch-input"
+                        class="w-full h-24 border border-slate-200 rounded p-3 text-sm focus:ring-1 focus:ring-kawn-base outline-none resize-none mb-3"
+                        placeholder="Hola, mi startup ayuda a..."></textarea>
+
+                    <button onclick="App.evaluatePitch()" id="pitch-btn"
+                        class="w-full md:w-auto px-6 py-2 bg-slate-800 text-white rounded font-bold text-sm hover:bg-slate-700 transition flex justify-center items-center gap-2 mb-3 self-end">
+                        <i data-lucide="gavel" class="w-4 h-4"></i> Evaluar Pitch
+                    </button>
+
+                    <div id="pitch-result" class="hidden bg-slate-50 p-4 rounded border border-slate-100">
+                        <!-- Result populated by JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="bg-slate-50 p-8 rounded-2xl border border-slate-200 mb-16">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Conclusión: Iteración Continua</h3>
+            <p class="mb-6">
+                La metodología ICT no termina al validar la idea; es un ciclo fractal de mejora continua. Empresas como
+                Spotify o Slack siguen ajustando sus modelos hoy en día.
+            </p>
+            <p class="mb-6">
+                Recuerda: identifica oportunidades reales, crea soluciones viables y testea con el mundo real sin temor.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-4 text-center mt-8">
+                <div
+                    class="bg-white p-4 rounded border-t-4 border-kawn-base shadow-sm hover:shadow-md transition-shadow">
+                    <div class="font-bold text-kawn-dark mb-1">IDENTIFICAR</div>
+                    <p class="text-xs text-slate-500">Enamórate del problema, no de la solución.</p>
+                </div>
+                <div
+                    class="bg-white p-4 rounded border-t-4 border-kawn-base shadow-sm hover:shadow-md transition-shadow">
+                    <div class="font-bold text-kawn-dark mb-1">CREAR</div>
+                    <p class="text-xs text-slate-500">MVP: Fracasa rápido, fracasa barato.</p>
+                </div>
+                <div
+                    class="bg-white p-4 rounded border-t-4 border-kawn-base shadow-sm hover:shadow-md transition-shadow">
+                    <div class="font-bold text-kawn-dark mb-1">TESTEAR</div>
+                    <p class="text-xs text-slate-500">Valida con datos, pivota si es necesario.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div
+                    class="h-10 w-10 bg-gradient-to-br from-kawn-dark to-kawn-base rounded-md opacity-80 flex items-center justify-center text-white font-bold font-display">
+                    K</div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black text-white tracking-tight leading-none font-display">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Magazine
+                        Educativo</span>
+                </div>
+            </div>
+            <p class="text-sm text-center md:text-right">
+                © <span id="current-year">2024</span>. Basado en el Capítulo 14: Metodología ICT.<br>
+                <span class="text-xs opacity-50">No constituye asesoramiento financiero. Material educativo.</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Año
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // Inicializar Iconos
+            if (window.lucide) lucide.createIcons();
+
+            // Inicializar Charts solo si existen los canvas
+            initCharts();
+
+            // Inicializar Interacción 5 Whys
+            initWhys();
+
+            // Inicializar Interacción BMC
+            initBMC();
+
+            // Inicializar Chat Listener
+            initChat();
+        });
+
+        // ==========================================
+        // CONFIGURACIÓN CENTRALIZADA Y SEGURIDAD
+        // ==========================================
+        const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+        // Espacio de nombres global para evitar colisiones
+        window.App = {};
+
+        // ==========================================
+        // GRÁFICOS (CHART.JS)
+        // ==========================================
+        function initCharts() {
+            const ctxFail = document.getElementById('failureChart');
+            if (ctxFail) {
+                new Chart(ctxFail.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Fracaso', 'Éxito'],
+                        labels: ['Fracaso', 'Éxito'],
+                        datasets: [{
+                            data: [90, 10],
+                            backgroundColor: ['#ef4444', '#14b8a6'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: { responsive: true, cutout: '70%', plugins: { legend: { display: false } } }
+                });
+            }
+
+            const ctxReasons = document.getElementById('reasonsChart');
+            if (ctxReasons) {
+                new Chart(ctxReasons.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Sin necesidad', 'Sin dinero', 'Equipo mal', 'Competencia', 'Precio'],
+                        datasets: [{
+                            label: '% Startups',
+                            data: [42, 29, 23, 19, 18],
+                            backgroundColor: ['#ef4444', '#cbd5e1', '#cbd5e1', '#cbd5e1', '#cbd5e1'],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { x: { grid: { display: false } }, y: { grid: { display: false } } }
+                    }
+                });
+            }
+
+            const ctxAdoption = document.getElementById('adoptionChart');
+            if (ctxAdoption) {
+                new Chart(ctxAdoption.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Innovators', 'Early Adopters', 'Early Majority', 'Late Majority', 'Laggards'],
+                        datasets: [{
+                            label: 'Cuota Mercado',
+                            data: [2.5, 13.5, 34, 34, 16],
+                            fill: true,
+                            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                            borderColor: '#0f766e',
+                            tension: 0.4,
+                            pointRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { display: false }, x: { grid: { display: false } } }
+                    }
+                });
+            }
+        }
+
+        // ==========================================
+        // INTERACCIONES UI (WHYS, BMC, AB TEST)
+        // ==========================================
+        function initWhys() {
+            window.toggleWhy = (level) => {
+                const nextEl = document.getElementById(`why-${level + 1}`);
+                if (nextEl) nextEl.classList.remove('hidden');
+            };
+        }
+
+        function initBMC() {
+            const boxes = document.querySelectorAll('.canvas-box');
+            const desc = document.getElementById('bmc-description');
+            if (!desc) return;
+
+            boxes.forEach(box => {
+                box.addEventListener('mouseenter', () => {
+                    desc.textContent = box.getAttribute('data-desc');
+                    desc.classList.remove('italic', 'text-slate-600');
+                    desc.classList.add('font-medium', 'text-kawn-deep');
+                });
+                box.addEventListener('mouseleave', () => {
+                    desc.textContent = 'Pasa el ratón sobre los bloques para ver su definición teórica.';
+                    desc.classList.add('italic', 'text-slate-600');
+                    desc.classList.remove('font-medium', 'text-kawn-deep');
+                });
+            });
+        }
+
+        // A/B Test State
+        const abState = { A: { imp: 0, clicks: 0 }, B: { imp: 0, clicks: 0 } };
+
+        App.abTestClick = (variant) => {
+            if (!abState[variant]) return;
+            abState[variant].clicks++;
+
+            // Simular tráfico
+            abState.A.imp += Math.floor(Math.random() * 5) + 1;
+            abState.B.imp += Math.floor(Math.random() * 5) + 1;
+
+            // Actualizar UI con comprobaciones nulas
+            const updateMetric = (ver) => {
+                const impEl = document.getElementById(`imp${ver}`);
+                const clickEl = document.getElementById(`clicks${ver}`);
+                const convEl = document.getElementById(`conv${ver}`);
+
+                if (impEl) impEl.textContent = abState[ver].imp;
+                if (clickEl) clickEl.textContent = abState[ver].clicks;
+                if (convEl) convEl.textContent = ((abState[ver].clicks / abState[ver].imp) * 100).toFixed(1);
+            };
+
+            updateMetric('A');
+            updateMetric('B');
+        };
+
+        // Simulator State
+        let simBudget = 1000;
+
+        App.simAction = (action) => {
+            const screen = document.getElementById('sim-screen');
+            const controls = document.getElementById('sim-controls');
+            const bar = document.getElementById('sim-budget-bar');
+
+            if (!screen || !controls) return;
+
+            let msg = '', cost = 0, nextControls = '';
+
+            if (action === 'perfect') {
+                cost = 800;
+                msg = `<div class="text-red-400 font-bold mb-1">¡CRISIS!</div><p class="text-xs text-white">Gastaste casi todo sin validar.</p>`;
+            } else if (action === 'mvp') {
+                cost = 200;
+                msg = `<div class="text-green-400 font-bold mb-1">¡APRENDIZAJE!</div><p class="text-xs text-white">Lanzamiento barato. Feedback obtenido.</p>`;
+            } else if (action === 'pivot') {
+                cost = 200;
+                msg = `<div class="text-kawn-light font-bold mb-1">PRODUCT MARKET FIT</div><p class="text-xs text-white">¡Éxito! A escalar.</p>`;
+                controls.innerHTML = '<button disabled class="col-span-2 bg-slate-700 text-white py-3 rounded text-xs opacity-50">Fin de Simulación</button>';
+                updateBudgetUI(simBudget - cost, bar);
+                return;
+            }
+
+            simBudget -= cost;
+            screen.innerHTML = msg;
+            updateBudgetUI(simBudget, bar);
+
+            if (simBudget > 0 && action === 'mvp') {
+                controls.innerHTML = `
+                    <button onclick="App.simAction('perfect')" class="bg-red-500/20 hover:bg-red-500 border border-red-500 text-red-100 hover:text-white py-3 rounded text-xs font-bold transition">Escalar (-$600)</button>
+                    <button onclick="App.simAction('pivot')" class="bg-blue-500/20 hover:bg-blue-500 border border-blue-500 text-blue-100 hover:text-white py-3 rounded text-xs font-bold transition">Pivotar (-$200)</button>
+                `;
+            } else if (simBudget <= 0) {
+                controls.innerHTML = '<button disabled class="col-span-2 bg-slate-700 text-white py-3 rounded text-xs">Game Over</button>';
+            }
+        };
+
+        function updateBudgetUI(amount, barEl) {
+            if (!barEl) return;
+            const pct = Math.max(0, (amount / 1000) * 100);
+            barEl.style.width = `${pct}%`;
+            barEl.className = `h-full transition-all duration-500 ${pct < 30 ? 'bg-red-500' : pct < 60 ? 'bg-yellow-500' : 'bg-green-500'}`;
+        }
+
+        // ==========================================
+        // LÓGICA IA ROBUSTA
+        // ==========================================
+
+        async function callGeminiAPI(systemInstruction, userPrompt) {
+            const maxRetries = 2;
+            let retryCount = 0;
+
+            while (retryCount <= maxRetries) {
+                try {
+                    const response = await fetch(proxyUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: userPrompt }] }],
+                            systemInstruction: { parts: [{ text: systemInstruction }] }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error(`Proxy status: ${response.status}`);
+
+                    const data = await response.json();
+
+                    // Extraemos la respuesta de la estructura de Gemini o del campo result del proxy
+                    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+                        return data.candidates[0].content.parts[0].text;
+                    }
+                    return data.result || null;
+
+                } catch (error) {
+                    console.error(`Intento ${retryCount + 1} fallido:`, error);
+                    retryCount++;
+                    if (retryCount > maxRetries) throw error;
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+        }
+
+        // Limpieza de JSON robusta (la IA a veces añade markdown)
+        function parseJSONSafe(text) {
+            try {
+                // Eliminar bloques de código markdown si existen
+                const clean = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(clean);
+            } catch (e) {
+                console.error("Error parseando JSON:", e);
+                return null;
+            }
+        }
+
+        // --- Funciones IA Específicas ---
+
+        function initChat() {
+            const form = document.getElementById('chat-form');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = document.getElementById('user-input');
+                const box = document.getElementById('chat-messages');
+                const msg = input.value.trim();
+
+                if (!msg) return;
+
+                // UI Update
+                input.value = '';
+                input.disabled = true;
+                box.innerHTML += `<div class="ai-message user">${msg}</div>`;
+                box.scrollTop = box.scrollHeight;
+
+                const loader = document.createElement('div');
+                loader.className = 'ai-message bot typing-indicator';
+                loader.innerHTML = '<span></span><span></span><span></span>';
+                box.appendChild(loader);
+
+                // API Call
+                const SYSTEM = "Eres experto en Lean Startup. Responde breve y útilmente.";
+                try {
+                    const reply = await callGeminiAPI(SYSTEM, msg);
+                    loader.remove();
+
+                    if (reply) {
+                        box.innerHTML += `<div class="ai-message bot">${marked.parse(reply)}</div>`;
+                    } else {
+                        // Mensaje Demo si no hay API configurada
+                        box.innerHTML += `<div class="ai-message bot border-yellow-400 bg-yellow-50 text-yellow-800">⚠️ <strong>Modo Demo:</strong> Para activar la IA real, configura la variable <code>CONFIG.proxyUrl</code> en el código.</div>`;
+                    }
+                } catch (err) {
+                    loader.remove();
+                    box.innerHTML += `<div class="ai-message bot text-red-500">Error de conexión.</div>`;
+                }
+
+                input.disabled = false;
+                input.focus();
+                box.scrollTop = box.scrollHeight;
+            });
+        }
+
+        // Expuestas en App para los onclicks
+        App.analyzeScenario = async () => {
+            const input = document.getElementById('scenario-input');
+            const btn = document.getElementById('scenario-btn');
+            const res = document.getElementById('scenario-result');
+
+            if (!input.value.trim()) return;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Analizando...';
+
+            const PROMPT = "Analiza esta idea con metodología ICT (Identificar, Crear, Testear). Sé breve.";
+
+            try {
+                const text = await callGeminiAPI(PROMPT, input.value);
+                if (text) {
+                    res.innerHTML = marked.parse(text);
+                } else {
+                    res.innerHTML = `<span class="text-orange-600 italic">Modo Demo: Configura el Proxy para análisis real. Idea recibida: "${input.value.substring(0, 20)}..."</span>`;
+                }
+            } catch (e) {
+                res.innerHTML = '<span class="text-red-500">Error al analizar.</span>';
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Analizar MVP';
+            if (window.lucide) lucide.createIcons();
+        };
+
+        App.generatePersona = async () => {
+            const input = document.getElementById('persona-input');
+            const btn = document.getElementById('persona-btn');
+            const res = document.getElementById('persona-result');
+
+            if (!input.value.trim()) return;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Generando...';
+
+            const PROMPT = `Genera JSON User Persona: {"nombre":"X","edad":"Y","bio":"Z","dolores":["A"],"metas":["B"]}`;
+
+            try {
+                const text = await callGeminiAPI(PROMPT, input.value);
+                let p = null;
+
+                if (text) {
+                    p = parseJSONSafe(text);
+                } else {
+                    // Fallback Demo Data
+                    await new Promise(r => setTimeout(r, 1000));
+                    p = { nombre: "Demo User", edad: "30", bio: "Usuario simulado.", dolores: ["Falta configuración"], metas: ["Ver IA real"] };
+                }
+
+                if (p) {
+                    res.innerHTML = `
+                        <div class="flex gap-3 mb-2">
+                            <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-lg">${p.nombre.charAt(0)}</div>
+                            <div><p class="font-bold text-slate-800">${p.nombre}, ${p.edad}</p><p class="text-xs text-slate-500 italic">"${p.bio}"</p></div>
+                        </div>
+                        <div class="text-[10px] grid grid-cols-2 gap-2">
+                            <div class="bg-red-50 p-2 rounded text-red-700"><strong>Dolores:</strong><br>${p.dolores.join(', ')}</div>
+                            <div class="bg-green-50 p-2 rounded text-green-700"><strong>Metas:</strong><br>${p.metas.join(', ')}</div>
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                res.innerHTML = '<span class="text-red-500">Error generando persona.</span>';
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Generar Persona';
+            if (window.lucide) lucide.createIcons();
+        };
+
+        App.evaluatePitch = async () => {
+            const input = document.getElementById('pitch-input');
+            const btn = document.getElementById('pitch-btn');
+            const res = document.getElementById('pitch-result');
+
+            if (!input.value.trim()) return;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Evaluando...';
+            res.classList.remove('hidden');
+            res.innerHTML = '...';
+
+            const PROMPT = "Evalúa este pitch (1-10) y mejóralo. Formato Markdown.";
+
+            try {
+                const text = await callGeminiAPI(PROMPT, input.value);
+                res.innerHTML = text ? marked.parse(text) : marked.parse("### 🦈 Demo Feedback\nConfigura la API para recibir feedback real.\n\n**Nota:** ?/10");
+            } catch (e) {
+                res.innerHTML = '<span class="text-red-500">Error de conexión.</span>';
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="gavel" class="w-4 h-4"></i> Evaluar Pitch';
+            if (window.lucide) lucide.createIcons();
+        };
+
+        App.generateQuiz = async () => {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `<div class="text-center py-4 text-xs">Generando...</div>`;
+
+            const PROMPT = `Genera JSON Quiz (3 preguntas): [{"q":"?","options":["A","B"],"a":0}]`;
+
+            try {
+                const text = await callGeminiAPI("Genera solo JSON.", PROMPT);
+                let questions = null;
+
+                if (text) {
+                    questions = parseJSONSafe(text);
+                } else {
+                    await new Promise(r => setTimeout(r, 1000));
+                    questions = [
+                        { "q": "¿Qué significa MVP?", "options": ["Most Valuable Player", "Mínimo Producto Viable"], "a": 1 },
+                        { "q": "¿Causa #1 de fracaso?", "options": ["Dinero", "No hay mercado"], "a": 1 }
+                    ];
+                }
+
+                if (questions) renderQuiz(questions);
+
+            } catch (e) {
+                container.innerHTML = `<div class="text-red-500 text-xs text-center">Error. Intenta de nuevo.</div>`;
+            }
+        };
+
+        function renderQuiz(questions) {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            let score = 0, answered = 0;
+
+            questions.forEach((q, idx) => {
+                const div = document.createElement('div');
+                div.className = 'mb-4 border-b border-slate-100 pb-2';
+                div.innerHTML = `<p class="font-bold text-sm mb-2">${idx + 1}. ${q.q}</p>`;
+
+                const optsDiv = document.createElement('div');
+                q.options.forEach((opt, optIdx) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'quiz-option text-xs text-slate-600 mb-1';
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        if (btn.parentElement.classList.contains('answered')) return;
+                        btn.parentElement.classList.add('answered');
+                        answered++;
+                        if (optIdx === q.a) {
+                            btn.classList.add('correct');
+                            score++;
+                        } else {
+                            btn.classList.add('wrong');
+                            optsDiv.children[q.a].classList.add('correct');
+                        }
+                        if (answered === questions.length) {
+                            const d = document.createElement('div');
+                            d.className = 'p-2 bg-kawn-light/50 border border-kawn-base rounded text-center font-bold text-kawn-deep mt-2';
+                            d.innerText = `Nota: ${score}/${questions.length}`;
+                            container.prepend(d);
+                        }
+                    };
+                    optsDiv.appendChild(btn);
+                });
+                div.appendChild(optsDiv);
+                container.appendChild(div);
+            });
+
+            const reset = document.createElement('button');
+            reset.textContent = 'Nuevo Quiz';
+            reset.className = 'text-xs text-kawn-base underline mt-2 w-full text-center';
+            reset.onclick = App.generateQuiz;
+            container.appendChild(reset);
+        }
+
+    </script>
+</body>
+
+</html>

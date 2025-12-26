@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 18: SMT (Smart Money Tool) - Metodología ICT. Aprende a identificar divergencias institucionales entre activos correlacionados.">
+    <title>KawnBit | Cap 18: SMT (Smart Money Tool)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas con atributos de integridad (opcional) o carga diferida -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base y Utilidades */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation CSS */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Representación abstracta del gráfico en el logo */
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-15deg);
+            top: 10px;
+            left: 10px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TOC Activo */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Callouts y Tarjetas */
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            /* rounded-xl */
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            background: #f0fdfa;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Interactive Components Specifics */
+        .tab-btn.active {
+            background-color: #14b8a6;
+            color: white;
+            border-color: #14b8a6;
+        }
+
+        /* Quiz Specifics */
+        .quiz-option {
+            transition: all 0.2s;
+        }
+
+        .quiz-feedback {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Range Slider Customization */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #14b8a6;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #cbd5e1;
+        }
+
+        /* Disabled State */
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar Sticky -->
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="kawn-logo-wrapper select-none">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="md:hidden p-2 text-slate-600 hover:text-kawn-base focus:outline-none"
+                    aria-label="Menú principal" aria-expanded="false">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SMC Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 18</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Ejercicios</a>
+                    <a href="#glosario"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Glosario</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside id="sidebar-toc" class="hidden md:block w-64 flex-shrink-0 transition-transform duration-300 z-40">
+                <div class="sticky top-28">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">
+                        Contenido del capítulo</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Generado por JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        18</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        SMT (Smart Money Tool) <br><span class="text-kawn-base">Divergencias Institucionales</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        El <strong>Smart Money Tool</strong> representa uno de los conceptos más refinados para
+                        identificar las intenciones reales del dinero institucional. Aprende a leer las huellas
+                        digitales que dejan los grandes fondos al manipular activos correlacionados.
+                    </p>
+                </section>
+
+                <!-- Sección 1: Introducción -->
+                <section id="introduccion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="book-open" class="text-kawn-base mr-3"></i> Introducción al concepto de SMT
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">El <strong>Smart Money Tool</strong>, o SMT como lo conocemos en la metodología
+                            ICT, representa uno de los conceptos más refinados y poderosos para identificar las
+                            intenciones reales del <strong>dinero institucional</strong> en los mercados. Mientras que
+                            la mayoría de traders minoristas observan un solo instrumento de forma aislada, el dinero
+                            inteligente opera con una visión más amplia, utilizando las relaciones entre diferentes
+                            <strong>índices correlacionados</strong> para ejecutar sus estrategias eficientemente.
+                        </p>
+
+                        <div class="card-concept">
+                            <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="lightbulb"
+                                    class="w-5 h-5 text-kawn-dark"></i> Definición Simplificada</h4>
+                            <p class="text-sm">La divergencia SMT ocurre cuando dos activos normalmente sincronizados
+                                <strong>dejan de moverse al unísono</strong>: es decir, un instrumento alcanza un nuevo
+                                máximo o mínimo mientras el otro no lo hace, señal de que <em>algo no cuadra</em> y de
+                                que podría avecinarse una corrección o giro de tendencia.
+                            </p>
+                        </div>
+
+                        <p class="mb-4">Imagina que eres un gran fondo institucional. No puedes simplemente comprar
+                            millones de contratos del S&P 500 sin mover el precio en tu contra. Necesitas formas sutiles
+                            de posicionarte. Los institucionales utilizan las divergencias entre índices correlacionados
+                            para distribuir su riesgo y <strong>ocultar sus verdaderas intenciones</strong>.</p>
+
+                        <div class="blockquote-custom">
+                            "Las divergencias SMT nos dejan ver huellas digitales del dinero institucional que no serían
+                            visibles observando un solo gráfico."
+                        </div>
+
+                        <p class="mb-4"><strong>Analogía de los corredores:</strong> Imagina dos corredores que
+                            normalmente mantienen el mismo ritmo. Si uno acelera y el otro se rezaga, sabemos que algo
+                            extraño sucede. En el mercado, esta divergencia no es accidental; es una pista dejada por
+                            las instituciones que están tomando posiciones de manera asimétrica.</p>
+                    </div>
+                </section>
+
+                <!-- Sección 2: Mecánica Fundamental + INTERACTIVO 1 -->
+                <section id="mecanica-fundamental" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="activity" class="text-kawn-base mr-3"></i> La mecánica fundamental del SMT
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7 mb-8">
+                        <p class="mb-4">Los principales índices estadounidenses, particularmente el <strong>Nasdaq 100
+                                (#NQ)</strong> y el <strong>S&P 500 (#ES)</strong>, están intrínsecamente
+                            correlacionados. En condiciones normales, se mueven sincronizados. Una <strong>divergencia
+                                SMT</strong> ocurre cuando esta correlación se rompe temporalmente.</p>
+                        <p class="mb-4">El principio clave es <strong>"Trampa vs. Verdad"</strong>: el mercado que barre
+                            un máximo o mínimo significativo suele ser el manipulado (la trampa que busca liquidez),
+                            mientras que el mercado que mantiene la estructura y no rompe ese nivel normalmente refleja
+                            la intención real del flujo de órdenes.</p>
+                    </div>
+
+                    <!-- COMPONENTE INTERACTIVO 1: VISUALIZADOR DE CORRELACIÓN -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Visualizador: Correlación vs Divergencia</h3>
+                            <div class="flex gap-2">
+                                <button onclick="window.setChartState('correlation')"
+                                    class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1 rounded font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400">Normal
+                                    (Correlación)</button>
+                                <button onclick="window.setChartState('divergence')"
+                                    class="text-xs bg-kawn-base hover:bg-kawn-dark text-white px-3 py-1 rounded font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-kawn-dark">SMT
+                                    (Divergencia)</button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-4" id="chart-desc">Modo Normal: Ambos activos hacen un alto
+                            más alto al mismo tiempo.</p>
+
+                        <div class="relative h-64 w-full">
+                            <canvas id="correlationChart"></canvas>
+                        </div>
+                        <div class="mt-4 flex gap-6 text-xs justify-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-blue-500"></span> Activo A (ej. ES)
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-purple-500"></span> Activo B (ej. NQ)
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 3: Tipos de Divergencias + INTERACTIVO 2 (COMPARADOR) -->
+                <section id="tipos-divergencias" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="git-compare" class="text-kawn-base mr-3"></i> Tipos de divergencias SMT
+                    </h2>
+
+                    <!-- COMPONENTE INTERACTIVO 2: COMPARADOR -->
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden mb-8">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="window.switchTab('bearish')"
+                                class="tab-btn active flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors focus:outline-none">SMT
+                                Bajista (Bearish)</button>
+                            <button onclick="window.switchTab('bullish')"
+                                class="tab-btn flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors focus:outline-none">SMT
+                                Alcista (Bullish)</button>
+                        </div>
+
+                        <div class="p-8 min-h-[300px]">
+                            <!-- Contenido Bearish -->
+                            <div id="content-bearish" class="tab-content animate-fade-in">
+                                <h3 class="text-xl font-bold text-red-600 mb-2">Divergencia Bajista Clásica</h3>
+                                <p class="text-slate-600 mb-4">Señal de debilidad o distribución institucional.</p>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                        <h4 class="font-bold text-red-800 mb-2">Activo 1 (Trampa)</h4>
+                                        <p class="text-sm text-red-700">Hace un <strong>Nuevo Máximo (Higher
+                                                High)</strong>.</p>
+                                        <p class="text-xs mt-2 text-red-600 italic">"Parece fuerte, pero solo está
+                                            barriendo stops de compra."</p>
+                                    </div>
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                        <h4 class="font-bold text-green-800 mb-2">Activo 2 (Verdad)</h4>
+                                        <p class="text-sm text-green-700">Falla en hacer un nuevo máximo <strong>(Lower
+                                                High)</strong>.</p>
+                                        <p class="text-xs mt-2 text-green-600 italic">"Revela la debilidad real. No
+                                            puede subir más."</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-sm text-slate-500"><strong>Interpretación:</strong> El dinero
+                                    inteligente usa la fortaleza del Activo 1 para vender. Prepara cortos.</p>
+                            </div>
+
+                            <!-- Contenido Bullish -->
+                            <div id="content-bullish" class="tab-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-green-600 mb-2">Divergencia Alcista Clásica</h3>
+                                <p class="text-slate-600 mb-4">Señal de fortaleza o acumulación institucional.</p>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                        <h4 class="font-bold text-red-800 mb-2">Activo 1 (Trampa)</h4>
+                                        <p class="text-sm text-red-700">Hace un <strong>Nuevo Mínimo (Lower
+                                                Low)</strong>.</p>
+                                        <p class="text-xs mt-2 text-red-600 italic">"Parece débil, barriendo stops de
+                                            venta."</p>
+                                    </div>
+                                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                        <h4 class="font-bold text-green-800 mb-2">Activo 2 (Verdad)</h4>
+                                        <p class="text-sm text-green-700">Falla en hacer un nuevo mínimo <strong>(Higher
+                                                Low)</strong>.</p>
+                                        <p class="text-xs mt-2 text-green-600 italic">"Muestra fortaleza relativa. Se
+                                            niega a bajar."</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4 text-sm text-slate-500"><strong>Interpretación:</strong> El dinero
+                                    inteligente usa la caída del Activo 1 para comprar (acumular). Prepara largos.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p>En resumen, tanto en divergencias bajistas como alcistas, la lectura es similar: el índice
+                            que <strong>sí</strong> alcanza el nuevo extremo generalmente está ejecutando una maniobra
+                            de manipulación (buscando liquidez), mientras que el índice que <strong>no</strong> alcanza
+                            ese extremo aporta la confirmación silenciosa de que el movimiento no es genuino.</p>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Correlaciones Avanzadas (Sectoriales/Forex) -->
+                <section id="correlaciones-avanzadas" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="globe-2" class="text-kawn-base mr-3"></i> Correlaciones avanzadas: Forex y
+                        Commodities
+                    </h2>
+                    <p class="text-slate-600 mb-4">Aunque el SMT se asocia frecuentemente con índices (ES vs NQ), el
+                        concepto es universal. La clave está en entender <strong>qué une a dos activos</strong>. Si no
+                        existe una correlación lógica (como fundamentos compartidos), no es SMT, es ruido.</p>
+
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-2">Forex Majors</h4>
+                            <p class="text-xs text-slate-500 mb-3">Pares correlacionados positivamente contra el USD.
+                            </p>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded">
+                                <span class="font-mono font-bold text-slate-700">EURUSD</span>
+                                <i data-lucide="arrow-right-left" class="w-4 h-4 text-slate-400"></i>
+                                <span class="font-mono font-bold text-slate-700">GBPUSD</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-2">Commodities</h4>
+                            <p class="text-xs text-slate-500 mb-3">Metales preciosos y activos refugio.</p>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded">
+                                <span class="font-mono font-bold text-yellow-600">XAUUSD (Oro)</span>
+                                <i data-lucide="arrow-right-left" class="w-4 h-4 text-slate-400"></i>
+                                <span class="font-mono font-bold text-slate-500">XAGUSD (Plata)</span>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                            <h4 class="font-bold text-slate-800 mb-2">Sectoriales</h4>
+                            <p class="text-xs text-slate-500 mb-3">Rotación de capital (Tech vs Industrial).</p>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded">
+                                <span class="font-mono font-bold text-slate-700">NQ (Tech)</span>
+                                <i data-lucide="arrow-right-left" class="w-4 h-4 text-slate-400"></i>
+                                <span class="font-mono font-bold text-slate-700">YM (Dow)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVO: VALIDADOR DE PARES -->
+                    <div class="bg-slate-900 rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                            <i data-lucide="check-circle-2" class="text-kawn-base"></i> Validador de Correlaciones
+                        </h3>
+                        <p class="text-slate-400 text-sm mb-4">Selecciona dos activos para verificar si son válidos para
+                            buscar divergencias SMT.</p>
+
+                        <div class="flex flex-col md:flex-row gap-4 items-center">
+                            <select id="asset1"
+                                class="bg-slate-800 text-white p-3 rounded-lg border border-slate-600 outline-none focus:border-kawn-base w-full cursor-pointer">
+                                <option value="NQ">Nasdaq 100 (NQ)</option>
+                                <option value="ES">S&P 500 (ES)</option>
+                                <option value="EUR">Euro (EURUSD)</option>
+                                <option value="OIL">Petróleo (Crude Oil)</option>
+                            </select>
+                            <span class="text-slate-500 font-bold">VS</span>
+                            <select id="asset2"
+                                class="bg-slate-800 text-white p-3 rounded-lg border border-slate-600 outline-none focus:border-kawn-base w-full cursor-pointer">
+                                <option value="ES">S&P 500 (ES)</option>
+                                <option value="NQ">Nasdaq 100 (NQ)</option>
+                                <option value="GBP">Libra (GBPUSD)</option>
+                                <option value="OIL">Petróleo (Crude Oil)</option>
+                            </select>
+                            <button onclick="window.checkCorrelation()"
+                                class="bg-kawn-base hover:bg-kawn-dark text-white font-bold py-3 px-6 rounded-lg transition-colors w-full md:w-auto">
+                                Verificar
+                            </button>
+                        </div>
+                        <div id="corr-result" class="mt-4 p-4 rounded-lg hidden font-bold text-sm text-center"></div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Anatomía de la Trampa (Power of 3) -->
+                <section id="smt-amd" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> La anatomía de la trampa: Power of 3
+                        (AMD)
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7 mb-6">
+                        <p>El SMT no ocurre en el vacío. Frecuentemente, la divergencia SMT es la señal visual de la
+                            fase de <strong>Manipulación</strong> dentro del ciclo diario o semanal de <em>Accumulation,
+                                Manipulation, Distribution (AMD)</em>.</p>
+                        <p>Cuando ves que el precio abre, consolida (Acumulación) y luego hace un movimiento falso en
+                            contra de la tendencia real, ese movimiento falso ("Judas Swing") a menudo crea el SMT.
+                            Mientras un activo manipula rompiendo el rango, el otro se rehúsa, confirmando que la fase
+                            de <strong>Distribución</strong> real está por comenzar.</p>
+                    </div>
+
+                    <!-- INTERACTIVO: VISUALIZADOR AMD -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6 flex flex-col items-center">
+                        <h3 class="font-bold text-slate-800 mb-2">El Ciclo AMD y la Huella SMT</h3>
+                        <p class="text-xs text-slate-500 mb-6 text-center max-w-lg">Pasa el cursor (o toca) las fases
+                            para entender la narrativa institucional.</p>
+
+                        <div
+                            class="relative w-full max-w-2xl h-64 bg-slate-50 rounded-lg border border-slate-200 overflow-hidden flex select-none">
+                            <!-- Accumulation -->
+                            <div
+                                class="flex-1 border-r border-dashed border-slate-300 flex items-center justify-center relative group hover:bg-blue-50 transition-colors cursor-pointer">
+                                <div class="h-2 w-full bg-blue-200 absolute top-1/2"></div>
+                                <span class="absolute bottom-4 text-xs font-bold text-blue-800">Acumulación</span>
+                                <div
+                                    class="hidden group-hover:block absolute top-10 bg-white p-2 shadow-lg rounded text-xs z-10 border border-blue-100">
+                                    Rango asiático o consolidación inicial.</div>
+                            </div>
+
+                            <!-- Manipulation (SMT HERE) -->
+                            <div
+                                class="flex-1 border-r border-dashed border-slate-300 flex items-end justify-center relative group hover:bg-red-50 transition-colors cursor-pointer">
+                                <!-- Fake Move Down -->
+                                <div class="h-32 w-2 bg-red-400 mb-10"></div>
+                                <span class="absolute bottom-4 text-xs font-bold text-red-800">Manipulación (SMT)</span>
+                                <div
+                                    class="hidden group-hover:block absolute top-4 bg-white p-2 shadow-lg rounded text-xs z-10 border border-red-100 text-center w-48">
+                                    <strong>¡Zona SMT!</strong><br>Aquí ocurre la divergencia. Un activo rompe el mínimo
+                                    (trampa) y el otro no.
+                                </div>
+                            </div>
+
+                            <!-- Distribution -->
+                            <div
+                                class="flex-1 flex items-start justify-center relative group hover:bg-green-50 transition-colors cursor-pointer">
+                                <!-- True Move Up -->
+                                <div class="h-48 w-2 bg-green-500 mt-10"></div>
+                                <span class="absolute bottom-4 text-xs font-bold text-green-800">Distribución</span>
+                                <div
+                                    class="hidden group-hover:block absolute top-20 bg-white p-2 shadow-lg rounded text-xs z-10 border border-green-100">
+                                    Expansión real hacia el objetivo.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 4: Aplicación Práctica -->
+                <section id="aplicacion-practica" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="crosshair" class="text-kawn-base mr-3"></i> Aplicación práctica del SMT
+                    </h2>
+
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Identificación en tiempo real</h3>
+                    <p class="text-slate-600 mb-6">Para aplicar efectivamente el SMT, necesitas monitorear
+                        simultáneamente ambos índices. Cuando estés analizando un posible punto de entrada, presta
+                        atención especial a cómo se comportan ambos índices al acercarse a niveles clave
+                        (máximos/mínimos).</p>
+
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 mb-8">
+                        <h4 class="text-white font-bold mb-4 flex items-center gap-2">
+                            <i data-lucide="zap" class="text-yellow-400"></i> Estrategia: SMT + Toma de Liquidez
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-kawn-base flex items-center justify-center text-white font-bold flex-shrink-0">
+                                    1</div>
+                                <p class="text-slate-300 text-sm"><strong>Identifica Pools de Liquidez:</strong> Busca
+                                    máximos o mínimos iguales antiguos en ambos índices.</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-kawn-base flex items-center justify-center text-white font-bold flex-shrink-0">
+                                    2</div>
+                                <p class="text-slate-300 text-sm"><strong>Espera la barrida (Sweep):</strong> Observa
+                                    como UN índice rompe el nivel y toma la liquidez.</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-kawn-base flex items-center justify-center text-white font-bold flex-shrink-0">
+                                    3</div>
+                                <p class="text-slate-300 text-sm"><strong>Verifica la Divergencia:</strong> Confirma que
+                                    el OTRO índice NO rompió su nivel equivalente.</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-kawn-base flex items-center justify-center text-white font-bold flex-shrink-0">
+                                    4</div>
+                                <p class="text-slate-300 text-sm"><strong>Ejecuta en el rezagado:</strong> Considera
+                                    operar el índice que NO rompió (el más débil en bajada o fuerte en subida) o espera
+                                    confirmación de estructura.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">SMT y Fair Value Gaps: Una combinación letal</h3>
+                    <p class="text-slate-600 mb-4">Combinar la lectura de divergencias SMT con la localización de FVGs
+                        puede aportar una confluencia de alta precisión.</p>
+                    <ul class="list-disc pl-5 space-y-2 text-slate-600 mb-6">
+                        <li><strong>Divergencias en rebalanceo:</strong> Si el NQ llena un FVG completamente y el ES
+                            apenas lo toca y rechaza, el ES muestra más urgencia en la dirección del rechazo.</li>
+                        <li><strong>Creación asimétrica:</strong> Si el ES sube dejando un FVG y el NQ sube sin dejar
+                            ninguno, el ES muestra una compra institucional más agresiva.</li>
+                    </ul>
+                </section>
+
+                <!-- Sección 5: Simulador de Trading (PLOTLY) -->
+                <section id="simulador" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="monitor-play" class="text-kawn-base mr-3"></i> Simulador de SMT en vivo
+                    </h2>
+
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <h3 class="text-white font-bold text-lg">Setup: Posible SMT Bajista</h3>
+                            <button id="run-smt-sim"
+                                class="bg-kawn-base hover:bg-kawn-dark text-white text-xs px-4 py-2 rounded-full transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-white">
+                                Iniciar Simulación
+                            </button>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">Observa los gráficos de ES y NQ. Identifica si ocurre una
+                            divergencia en los máximos y decide si operar.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <!-- ES Chart -->
+                            <div class="relative">
+                                <div
+                                    class="absolute top-2 left-2 bg-slate-800/80 px-2 py-1 rounded text-xs text-white font-bold z-10 pointer-events-none">
+                                    S&P 500 (ES)</div>
+                                <div id="chartES"
+                                    class="w-full h-64 bg-slate-800 rounded-lg overflow-hidden border border-slate-600">
+                                </div>
+                            </div>
+                            <!-- NQ Chart -->
+                            <div class="relative">
+                                <div
+                                    class="absolute top-2 left-2 bg-slate-800/80 px-2 py-1 rounded text-xs text-white font-bold z-10 pointer-events-none">
+                                    Nasdaq 100 (NQ)</div>
+                                <div id="chartNQ"
+                                    class="w-full h-64 bg-slate-800 rounded-lg overflow-hidden border border-slate-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="sim-controls" class="mt-6 flex justify-center gap-4 hidden">
+                            <button onclick="window.userDecision('short')"
+                                class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300">Vender
+                                (Short)</button>
+                            <button onclick="window.userDecision('wait')"
+                                class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-6 rounded-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-slate-300">Esperar
+                                / No operar</button>
+                        </div>
+                        <div id="sim-feedback" class="mt-4 p-4 text-center text-sm rounded font-bold hidden"></div>
+                    </div>
+                </section>
+
+                <!-- Sección 6: Temporalidades y Riesgo -->
+                <section id="gestion-riesgo" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Temporalidades y Gestión de Riesgo</h2>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-xl border-l-4 border-kawn-deep shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-2">Temporalidades Mayores (H4, D1, W1)</h4>
+                            <p class="text-sm text-slate-600">Menos frecuentes pero extremadamente poderosas. Indican
+                                cambios de tendencia estructurales o giros macro.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl border-l-4 border-slate-400 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-2">Temporalidades Menores (M15, M5, M1)</h4>
+                            <p class="text-sm text-slate-600">Frecuentes pero ruidosas. Solo válidas en <strong>Kill
+                                    Zones</strong> o niveles clave. Úsalas para refinar entradas (sniper).</p>
+                        </div>
+                    </div>
+
+                    <div class="card-concept bg-slate-50 border-slate-300">
+                        <h4 class="font-bold text-slate-800 mb-2">Gestión del Stop Loss con SMT</h4>
+                        <p class="text-sm">Una gran ventaja del SMT es la claridad de invalidación. Si entras por una
+                            divergencia, tu stop va donde la divergencia se anularía (ej. encima del máximo del activo
+                            que no rompió). Si el activo rezagado finalmente rompe, la tesis de SMT falla y debes salir.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: SMT en Eventos de Noticias -->
+                <section id="smt-noticias" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="radio" class="text-kawn-base mr-3"></i> SMT durante eventos de alta volatilidad
+                    </h2>
+                    <p class="text-slate-600 mb-6">Durante eventos como el NFP o el FOMC, la volatilidad explota. Una
+                        divergencia inicial puede ser solo un "desfase de velocidad". La regla de oro es la paciencia.
+                    </p>
+
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6">
+                        <h3 class="font-bold text-slate-800 mb-4">Simulador de Impacto de Noticias (NFP)</h3>
+                        <p class="text-sm text-slate-500 mb-4">Desliza para ver cómo evoluciona la estructura del
+                            mercado tras la noticia.</p>
+
+                        <div class="mb-6 px-4">
+                            <label for="news-slider" class="sr-only">Línea de tiempo de la noticia</label>
+                            <input type="range" min="0" max="2" step="1" value="0" id="news-slider"
+                                class="w-full cursor-pointer">
+                            <div class="flex justify-between text-xs text-slate-400 mt-2 font-mono uppercase">
+                                <span>Impacto (0 min)</span>
+                                <span>Digestión (+15 min)</span>
+                                <span>Verdad (+30 min)</span>
+                            </div>
+                        </div>
+
+                        <div id="news-scene"
+                            class="h-40 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-center relative overflow-hidden transition-all duration-500">
+                            <!-- Dynamic Content injected via JS -->
+                            <div class="text-center">
+                                <h4 class="text-xl font-black text-red-600">¡CAOS!</h4>
+                                <p class="text-slate-500 text-sm">Spreads altos. Sin dirección clara.</p>
+                            </div>
+                        </div>
+                        <div id="news-insight"
+                            class="mt-4 p-3 bg-blue-50 text-blue-800 text-sm rounded border border-blue-100 font-medium">
+                            Momento del anuncio: No operes. Las divergencias aquí suelen ser falsas.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 7: Glosario (Acordeón) -->
+                <section id="glosario" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Glosario SMT</h2>
+                    <div class="space-y-3" id="glossary-container">
+                        <!-- JS inyectará contenido -->
+                    </div>
+                </section>
+
+                <!-- Sección 8: Ejercicios y Validación con IA -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="edit-3" class="text-kawn-base mr-3"></i> Práctica y Validación
+                    </h2>
+
+                    <!-- Ejercicio 1: Diario de Trading -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Ejercicio: Identificación Histórica</h3>
+                            <button id="ai-example-btn"
+                                class="bg-kawn-light text-kawn-deep hover:bg-kawn-base hover:text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-2 border border-kawn-base disabled:opacity-50">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> Pedir Ejemplo a IA
+                            </button>
+                        </div>
+
+                        <div id="ai-example-display"
+                            class="hidden mb-4 p-4 bg-indigo-50 border-l-4 border-indigo-500 text-slate-700 text-sm rounded-r-lg">
+                            <!-- Inyectado por JS -->
+                        </div>
+
+                        <p class="text-sm text-slate-600 mb-4">Describe un escenario reciente donde hayas visto una
+                            divergencia SMT (real o histórica). Detalla qué activo hizo la trampa y cuál dijo la verdad.
+                        </p>
+                        <textarea id="student-reflection"
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none transition-all mb-3"
+                            rows="3" placeholder="Ej: Ayer en el NQ vs ES a las 9:30 AM..."></textarea>
+
+                        <button id="ai-check-btn"
+                            class="text-xs bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-700 transition-colors">
+                            Validar análisis con IA
+                        </button>
+                        <div id="ai-check-result" class="hidden mt-3 text-sm text-slate-600 italic border-t pt-2"></div>
+                    </div>
+
+                    <!-- QUIZ -->
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Validación del Conocimiento (12 Preguntas)</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/0</span>
+                        </div>
+
+                        <div id="quiz-container" class="space-y-6">
+                            <!-- El JS inyectará las preguntas aquí -->
+                        </div>
+
+                        <div id="quiz-complete" class="hidden text-center mt-6">
+                            <p class="text-2xl font-bold mb-2">¡Módulo Completado!</p>
+                            <p class="text-sm opacity-80 mb-4" id="final-msg"></p>
+                            <button onclick="window.resetQuiz()"
+                                class="bg-white text-kawn-deep px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">Reiniciar
+                                Test</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Float -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor SMT IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light" aria-label="Cerrar chat"><i data-lucide="x"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col chat-container">
+            <div class="ai-msg message-bubble shadow-sm">
+                Hola. Soy tu especialista en Smart Money Tool. ¿Tienes dudas sobre cómo comparar el ES y el NQ o cómo
+                filtrar divergencias falsas?
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base focus:ring-1 focus:ring-kawn-base transition-all"
+                    placeholder="Pregunta sobre SMT...">
+                <button id="send-ai"
+                    class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors disabled:opacity-50"
+                    aria-label="Enviar mensaje">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+                Procesando...
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo sobre Trading Institucional.<br>No constituye
+                    asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGICA JAVASCRIPT ROBUSTA -->
+    <script>
+            // Verificación inicial de dependencias
+            (function checkDependencies() {
+                const deps = [
+                    { name: 'Chart.js', check: () => typeof Chart !== 'undefined' },
+                    { name: 'Plotly', check: () => typeof Plotly !== 'undefined' },
+                    { name: 'Tailwind', check: () => typeof tailwind !== 'undefined' }
+                ];
+                const missing = deps.filter(d => !d.check());
+                if (missing.length > 0) {
+                    console.warn('⚠️ Advertencia: Las siguientes librerías no cargaron correctamente:', missing.map(m => m.name).join(', '));
+                    // Podríamos mostrar un mensaje al usuario, pero por ahora solo logueamos.
+                }
+            })();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicialización Segura de Iconos
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                console.error("Lucide icons failed to load.");
+            }
+
+            // Año Footer
+            const yearEl = document.getElementById('current-year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            // -------------------------------------------------------------------------
+            // 1. TOC DINÁMICO (Con Safety Checks)
+            // -------------------------------------------------------------------------
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+
+            if (tocContainer && sections.length > 0) {
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        link.textContent = h2.innerText;
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all truncate cursor-pointer`;
+                        link.onclick = (e) => {
+                            e.preventDefault();
+                            const target = document.getElementById(section.id);
+                            if (target) target.scrollIntoView({ behavior: 'smooth' });
+                        };
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                            const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(section => observer.observe(section));
+            }
+
+            // Mobile Menu
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    const sidebar = document.getElementById('sidebar-toc');
+                    if (!sidebar) return;
+
+                    const isHidden = sidebar.classList.contains('hidden');
+                    if (isHidden) {
+                        sidebar.classList.remove('hidden');
+                        sidebar.classList.add('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                        mobileBtn.setAttribute('aria-expanded', 'true');
+
+                        // Agregar botón de cerrar si no existe
+                        if (!sidebar.querySelector('.close-mob')) {
+                            const btn = document.createElement('button');
+                            btn.className = 'close-mob absolute top-4 right-4 font-bold text-xl p-2';
+                            btn.innerHTML = '<i data-lucide="x"></i>';
+                            btn.onclick = () => {
+                                sidebar.classList.add('hidden');
+                                sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                                mobileBtn.setAttribute('aria-expanded', 'false');
+                            };
+                            sidebar.appendChild(btn);
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }
+                    } else {
+                        sidebar.classList.add('hidden');
+                        sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                        mobileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 2. CHART.JS: VISUALIZADOR DE CORRELACIÓN VS DIVERGENCIA
+            // -------------------------------------------------------------------------
+            const canvasCorr = document.getElementById('correlationChart');
+            let correlationChart;
+
+            if (canvasCorr && typeof Chart !== 'undefined') {
+                const ctxCorr = canvasCorr.getContext('2d');
+                const dataCorrelation = {
+                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    datasets: [
+                        { label: 'Activo A', data: [100, 102, 105, 103, 108, 112, 110, 115, 113, 118], borderColor: '#3b82f6', tension: 0.4 },
+                        { label: 'Activo B', data: [200, 204, 210, 206, 216, 224, 220, 230, 226, 236], borderColor: '#a855f7', tension: 0.4 }
+                    ]
+                };
+
+                const dataDivergence = {
+                    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    datasets: [
+                        { label: 'Activo A (Trampa - HH)', data: [100, 102, 105, 103, 108, 112, 110, 115, 113, 122], borderColor: '#3b82f6', tension: 0.4, borderWidth: 3 }, // Higher High at end
+                        { label: 'Activo B (Verdad - LH)', data: [200, 204, 210, 206, 216, 224, 220, 230, 226, 228], borderColor: '#a855f7', tension: 0.4, borderWidth: 3 }  // Lower High at end
+                    ]
+                };
+
+                correlationChart = new Chart(ctxCorr, {
+                    type: 'line',
+                    data: dataCorrelation,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: { legend: { display: false } },
+                        scales: { y: { display: false }, x: { display: false } }
+                    }
+                });
+
+                // Función global segura
+                window.setChartState = function (state) {
+                    const desc = document.getElementById('chart-desc');
+                    if (!correlationChart) return;
+
+                    if (state === 'correlation') {
+                        correlationChart.data = dataCorrelation;
+                        if (desc) {
+                            desc.textContent = "Modo Normal: Ambos activos se mueven sincronizados haciendo máximos más altos.";
+                            desc.className = "text-sm text-slate-500 mb-4";
+                        }
+                    } else {
+                        correlationChart.data = dataDivergence;
+                        if (desc) {
+                            desc.innerHTML = "<strong>Modo SMT:</strong> El Activo A rompe máximos (HH), pero el Activo B falla (LH). ¡Divergencia!";
+                            desc.className = "text-sm text-kawn-deep font-bold mb-4 bg-yellow-100 p-2 rounded";
+                        }
+                    }
+                    correlationChart.update();
+                }
+            }
+
+            // -------------------------------------------------------------------------
+            // 3. PLOTLY: SIMULADOR SMT (Con Gestión de Estado y Limpieza)
+            // -------------------------------------------------------------------------
+            let simTimeouts = [];
+            let isSimulating = false; // Flag para prevenir múltiples clicks
+
+            const plotES = document.getElementById('chartES');
+            const plotNQ = document.getElementById('chartNQ');
+            const runSimBtn = document.getElementById('run-smt-sim');
+            const simControls = document.getElementById('sim-controls');
+            const simFeedback = document.getElementById('sim-feedback');
+
+            // Datos base
+            const esData = { x: [1, 2, 3, 4, 5], y: [4100, 4120, 4110, 4140, 4130], type: 'scatter', mode: 'lines+markers', name: 'ES', line: { color: '#3b82f6' } };
+            const nqData = { x: [1, 2, 3, 4, 5], y: [13000, 13100, 13050, 13200, 13150], type: 'scatter', mode: 'lines+markers', name: 'NQ', line: { color: '#a855f7' } };
+
+            const layoutSim = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: { color: '#94a3b8' },
+                margin: { t: 10, b: 20, l: 30, r: 10 },
+                height: 250,
+                xaxis: { showgrid: false },
+                yaxis: { showgrid: true, gridcolor: '#334155' }
+            };
+
+            // Inicializar Plots
+            if (plotES && plotNQ && typeof Plotly !== 'undefined') {
+                Plotly.newPlot(plotES, [JSON.parse(JSON.stringify(esData))], layoutSim, { displayModeBar: false, staticPlot: true });
+                Plotly.newPlot(plotNQ, [JSON.parse(JSON.stringify(nqData))], layoutSim, { displayModeBar: false, staticPlot: true });
+
+                // Resize handler
+                window.addEventListener('resize', () => {
+                    Plotly.Plots.resize(plotES);
+                    Plotly.Plots.resize(plotNQ);
+                });
+            }
+
+            function clearSim() {
+                simTimeouts.forEach(t => clearTimeout(t));
+                simTimeouts = [];
+                isSimulating = false;
+            }
+
+            if (runSimBtn) {
+                runSimBtn.addEventListener('click', function () {
+                    if (isSimulating) return; // Prevent double click
+                    isSimulating = true;
+
+                    this.disabled = true;
+                    this.classList.add('btn-disabled');
+                    this.textContent = "Simulando...";
+                    if (simFeedback) simFeedback.classList.add('hidden');
+
+                    // Resetear gráficos
+                    Plotly.react(plotES, [JSON.parse(JSON.stringify(esData))], layoutSim, { displayModeBar: false, staticPlot: true });
+                    Plotly.react(plotNQ, [JSON.parse(JSON.stringify(nqData))], layoutSim, { displayModeBar: false, staticPlot: true });
+
+                    // Paso 1: Ambos suben
+                    simTimeouts.push(setTimeout(() => {
+                        Plotly.extendTraces(plotES, { x: [[6]], y: [[4150]] }, [0]); // HH
+                        Plotly.extendTraces(plotNQ, { x: [[6]], y: [[13250]] }, [0]); // HH
+                    }, 500));
+
+                    // Paso 2: Retroceso
+                    simTimeouts.push(setTimeout(() => {
+                        Plotly.extendTraces(plotES, { x: [[7]], y: [[4140]] }, [0]);
+                        Plotly.extendTraces(plotNQ, { x: [[7]], y: [[13200]] }, [0]);
+                    }, 1500));
+
+                    // Paso 3: EL SMT (ES hace HH, NQ hace LH)
+                    simTimeouts.push(setTimeout(() => {
+                        Plotly.extendTraces(plotES, { x: [[8]], y: [[4165]] }, [0]); // ¡Nuevo Máximo!
+                        Plotly.extendTraces(plotNQ, { x: [[8]], y: [[13230]] }, [0]); // ¡Fallo!
+
+                        if (simControls) simControls.classList.remove('hidden');
+                        this.classList.add('hidden');
+                        isSimulating = false; // Permitir interacción
+                    }, 2500));
+                });
+            }
+
+            window.userDecision = function (choice) {
+                if (!simFeedback || !simControls || !runSimBtn) return;
+
+                simFeedback.classList.remove('hidden');
+                simControls.classList.add('hidden');
+
+                if (choice === 'short') {
+                    simFeedback.innerHTML = "¡CORRECTO! ✅<br>El ES barrió liquidez (HH) mientras el NQ mostró debilidad real (LH). El mercado cae.";
+                    simFeedback.className = "mt-4 p-4 text-center text-sm rounded font-bold bg-green-100 text-green-800 border border-green-300";
+                    // Animar caída final
+                    Plotly.extendTraces(plotES, { x: [[9, 10]], y: [[4130, 4100]] }, [0]);
+                    Plotly.extendTraces(plotNQ, { x: [[9, 10]], y: [[13150, 13000]] }, [0]);
+                } else {
+                    simFeedback.innerHTML = "INCORRECTO ❌<br>Había una divergencia clara. Era una oportunidad de venta de alta probabilidad.";
+                    simFeedback.className = "mt-4 p-4 text-center text-sm rounded font-bold bg-red-100 text-red-800 border border-red-300";
+                }
+
+                setTimeout(() => {
+                    runSimBtn.classList.remove('hidden', 'btn-disabled');
+                    runSimBtn.disabled = false;
+                    runSimBtn.textContent = "Reiniciar Simulación";
+                }, 2000);
+            }
+
+            // -------------------------------------------------------------------------
+            // 4. COMPARADOR INTERACTIVO (Tabs)
+            // -------------------------------------------------------------------------
+            window.switchTab = function (tabName) {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'border-kawn-base', 'text-kawn-base');
+                    if (btn.onclick && btn.onclick.toString().includes(tabName)) btn.classList.add('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+
+                const target = document.getElementById(`content-${tabName}`);
+                if (target) target.classList.remove('hidden');
+            }
+
+            // -------------------------------------------------------------------------
+            // NEW: VALIDADOR DE CORRELACIÓN (Mejorado)
+            // -------------------------------------------------------------------------
+            window.checkCorrelation = function () {
+                const a1El = document.getElementById('asset1');
+                const a2El = document.getElementById('asset2');
+                const res = document.getElementById('corr-result');
+
+                if (!a1El || !a2El || !res) return;
+
+                const a1 = a1El.value;
+                const a2 = a2El.value;
+
+                // Mismo activo
+                if (a1 === a2) {
+                    res.innerHTML = "❌ Es el mismo activo. No hay divergencia posible.";
+                    res.className = "mt-4 p-4 rounded-lg font-bold text-sm text-center bg-gray-200 text-gray-700 block animate-fade-in";
+                    res.classList.remove('hidden');
+                    return;
+                }
+
+                // Lógica
+                let isValid = false;
+                if ((a1 === 'NQ' && a2 === 'ES') || (a1 === 'ES' && a2 === 'NQ')) isValid = true;
+                if ((a1 === 'EUR' && a2 === 'GBP') || (a1 === 'GBP' && a2 === 'EUR')) isValid = true;
+
+                // Petróleo check
+                if (a1 === 'OIL' || a2 === 'OIL') {
+                    res.innerHTML = "⚠️ <strong>Correlación Débil/Inexistente.</strong><br>El Petróleo responde a oferta/demanda física y geopolítica, no siempre sigue a los índices o divisas para SMT clásico.";
+                    res.className = "mt-4 p-4 rounded-lg font-bold text-sm text-center bg-yellow-100 text-yellow-800 block animate-fade-in";
+                } else if (isValid) {
+                    res.innerHTML = "✅ <strong>Correlación Alta.</strong><br>Estos activos comparten flujos institucionales. Aptos para SMT.";
+                    res.className = "mt-4 p-4 rounded-lg font-bold text-sm text-center bg-green-100 text-green-800 block animate-fade-in";
+                } else {
+                    res.innerHTML = "❌ <strong>No Recomendado.</strong><br>La correlación no es lo suficientemente fuerte para un análisis SMT fiable.";
+                    res.className = "mt-4 p-4 rounded-lg font-bold text-sm text-center bg-red-100 text-red-800 block animate-fade-in";
+                }
+                res.classList.remove('hidden');
+            }
+
+            // -------------------------------------------------------------------------
+            // NEW: NEWS SLIDER (Con Debounce)
+            // -------------------------------------------------------------------------
+            const newsSlider = document.getElementById('news-slider');
+            const newsScene = document.getElementById('news-scene');
+            const newsInsight = document.getElementById('news-insight');
+
+            if (newsSlider && newsScene && newsInsight) {
+                newsSlider.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value);
+                    if (val === 0) {
+                        newsScene.innerHTML = `
+                            <div class="text-center animate-pulse">
+                                <h4 class="text-xl font-black text-red-600">¡CAOS!</h4>
+                                <p class="text-slate-500 text-sm">Spreads altos. Velas erráticas.</p>
+                            </div>`;
+                        newsInsight.textContent = "Momento del anuncio: No operes. Las divergencias aquí suelen ser falsas por falta de liquidez.";
+                        newsInsight.className = "mt-4 p-3 bg-red-50 text-red-800 text-sm rounded border border-red-100 font-medium";
+                    } else if (val === 1) {
+                        newsScene.innerHTML = `
+                            <div class="text-center">
+                                <h4 class="text-xl font-black text-yellow-600">Digestión</h4>
+                                <p class="text-slate-500 text-sm">El precio empieza a formar estructura.</p>
+                            </div>`;
+                        newsInsight.textContent = "15 min después: El polvo se asienta. Empieza a buscar patrones, pero con cautela.";
+                        newsInsight.className = "mt-4 p-3 bg-yellow-50 text-yellow-800 text-sm rounded border border-yellow-100 font-medium";
+                    } else {
+                        newsScene.innerHTML = `
+                            <div class="text-center">
+                                <h4 class="text-xl font-black text-green-600">La Verdad</h4>
+                                <p class="text-slate-500 text-sm">Divergencia SMT clara y confirmada.</p>
+                            </div>`;
+                        newsInsight.textContent = "30+ min después: La manipulación terminó. Si ves SMT ahora, es una huella real.";
+                        newsInsight.className = "mt-4 p-3 bg-green-50 text-green-800 text-sm rounded border border-green-100 font-medium";
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 5. GLOSARIO (Inyección Segura)
+            // -------------------------------------------------------------------------
+            const glosData = [
+                { term: "SMT (Smart Money Tool)", def: "Indicador de divergencia entre activos correlacionados que revela manipulación o debilidad institucional." },
+                { term: "Correlación Positiva", def: "Cuando dos activos (ej. ES y NQ) se mueven en la misma dirección." },
+                { term: "Trampa de Liquidez", def: "Movimiento falso que rompe un nivel clave para activar stops antes de revertir. Suele ser el activo que hace el HH/LL en un SMT." },
+                { term: "Crack in Correlation", def: "Momento exacto en que la correlación se rompe, señalando el inicio del setup SMT." },
+                { term: "AMD (Accumulation, Manipulation, Distribution)", def: "Ciclo de precio donde la Manipulación suele coincidir con la formación del SMT." },
+                { term: "Judas Swing", def: "Movimiento falso de apertura (manipulación) destinado a atrapar traders antes de la tendencia real." }
+            ];
+
+            const glosCont = document.getElementById('glossary-container');
+            if (glosCont) {
+                glosData.forEach((item, idx) => {
+                    // Usar create element para evitar problemas de string injection
+                    const div = document.createElement('div');
+                    div.className = "border border-slate-200 rounded-lg bg-white overflow-hidden";
+                    div.innerHTML = `
+                        <button class="w-full px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-50 flex justify-between items-center transition-colors focus:outline-none" onclick="document.getElementById('desc-${idx}').classList.toggle('hidden')">
+                            ${item.term} <i data-lucide="chevron-down" class="w-4 h-4 text-kawn-base"></i>
+                        </button>
+                        <div id="desc-${idx}" class="hidden px-4 py-3 bg-slate-50 text-sm text-slate-600 border-t border-slate-100">${item.def}</div>
+                    `;
+                    glosCont.appendChild(div);
+                });
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+
+            // -------------------------------------------------------------------------
+            // 6. QUIZ ROBUSTO
+            // -------------------------------------------------------------------------
+            const quizData = [
+                {
+                    q: "¿Qué revela principalmente una divergencia SMT entre activos correlacionados?",
+                    opts: ["Un cambio de horario en las bolsas.", "La manipulación institucional y debilidad/fortaleza real.", "Un error en la plataforma de trading."],
+                    ans: 1,
+                    expl: "El SMT es la 'huella digital' del dinero inteligente, mostrando dónde están interviniendo de forma desigual para acumular o distribuir."
+                },
+                {
+                    q: "En una divergencia bajista clásica entre ES y NQ, si el ES hace un nuevo máximo más alto (Higher High) y el NQ no...",
+                    opts: ["El ES es la 'Trampa' (caza de liquidez) y el NQ dice la 'Verdad' (debilidad).", "Ambos son alcistas fuertes.", "El NQ es la trampa."],
+                    ans: 0,
+                    expl: "El activo que rompe el máximo (ES) suele estar barriendo stops (Buy Side Liquidity) para atrapar compradores, mientras el que falla (NQ) revela la falta de fuerza real."
+                },
+                {
+                    q: "¿Cómo se configura técnicamente una divergencia SMT alcista?",
+                    opts: ["Ambos activos hacen mínimos más bajos.", "Activo A hace un mínimo más bajo (LL) y Activo B hace un mínimo más alto (HL).", "Activo A hace un máximo más alto."],
+                    ans: 1,
+                    expl: "Es la imagen espejo de la bajista. Uno rompe abajo para sacar a los vendedores (sell stops), y el otro se niega a caer, mostrando acumulación."
+                },
+                {
+                    q: "¿Cuál de estos pares de activos NO sería adecuado para buscar divergencias SMT clásicas?",
+                    opts: ["S&P 500 (ES) vs Nasdaq 100 (NQ).", "Euro (EURUSD) vs Libra (GBPUSD).", "Nasdaq 100 (NQ) vs Petróleo Crudo (CL)."],
+                    ans: 2,
+                    expl: "El SMT requiere una correlación fuerte y lógica subyacente. El Nasdaq (tecnología) y el Petróleo no tienen una correlación directa consistente para este análisis."
+                },
+                {
+                    q: "¿Qué papel juega el activo 'rezagado' (el que no rompe el nivel) en el análisis?",
+                    opts: ["Ninguno, es irrelevante.", "Muestra la 'verdad' del mercado (fortaleza o debilidad relativa).", "Es el que siempre hay que operar en contra."],
+                    ans: 1,
+                    expl: "El activo que falla en hacer el nuevo extremo suele ser el indicador líder de la dirección real, ya que no participó en la manipulación de liquidez."
+                },
+                {
+                    q: "Si el NQ rellena completamente un FVG bajista y el ES apenas lo toca antes de caer con fuerza, ¿qué indica esto sobre el ES?",
+                    opts: ["Que el ES está más débil y tiene mayor urgencia de venta.", "Que el ES quiere subir más.", "Que el NQ va a caer primero."],
+                    ans: 0,
+                    expl: "La incapacidad de subir para rellenar una ineficiencia (FVG) completa demuestra una presión de venta institucional agresiva en ese activo."
+                },
+                {
+                    q: "¿Por qué una divergencia SMT en gráfico semanal es más relevante que una en gráfico de 1 minuto?",
+                    opts: ["Porque se ve más bonita.", "Porque implica flujos de capital institucional a gran escala y cambios estructurales.", "No hay diferencia, son iguales."],
+                    ans: 1,
+                    expl: "Las divergencias en temporalidades altas (HTF) señalan giros macroeconómicos o de tendencia mayor, filtrando el ruido del trading intradía."
+                },
+                {
+                    q: "¿Dónde es lógico colocar el Stop Loss al operar una divergencia SMT bajista?",
+                    opts: ["Justo en el precio de entrada.", "Por encima del máximo del activo que NO rompió (ajustado estructuralmente).", "500 puntos arriba por seguridad."],
+                    ans: 1,
+                    expl: "Si el activo 'débil' (que no hizo el máximo) termina rompiendo su propio máximo, la divergencia se anula y la tesis del trade queda invalidada."
+                },
+                {
+                    q: "¿Cómo se debe tratar una divergencia SMT durante una noticia de alto impacto (ej. NFP)?",
+                    opts: ["Operar inmediatamente, es la mejor señal.", "Esperar a que se asiente la volatilidad inicial para confirmar si es real.", "Ignorarla por completo siempre."],
+                    ans: 1,
+                    expl: "La volatilidad inicial puede crear falsas divergencias por velocidad de ejecución. Esperar unos minutos confirma si la intención institucional persiste."
+                },
+                {
+                    q: "¿Cuál es un error común al intentar operar con SMT?",
+                    opts: ["Usarlo como única señal de entrada sin contexto.", "Combinarlo con FVGs.", "Esperar a Kill Zones."],
+                    ans: 0,
+                    expl: "El SMT es una herramienta de confluencia. Operar cada pequeña divergencia sin un setup de precio (Price Action) lleva a pérdidas por sobreoperativa."
+                },
+                {
+                    q: "¿Es el SMT una señal de entrada inmediata (gatillo)?",
+                    opts: ["Sí, apenas la veas entra a mercado.", "No, requiere confirmación de estructura (MSS) o patrón de entrada.", "Depende del broker."],
+                    ans: 1,
+                    expl: "La divergencia alerta de una posible reversión, pero el precio debe confirmar el cambio de dirección (ej. rompiendo un mínimo anterior) antes de entrar."
+                },
+                {
+                    q: "¿Qué significa conceptualmente que la correlación entre ES y NQ se 'rompa' momentáneamente?",
+                    opts: ["Que el mercado va a cerrar.", "Que hay una oportunidad de SMT formándose.", "Que los algoritmos dejaron de funcionar."],
+                    ans: 1,
+                    expl: "Esa ruptura temporal de la simetría es la definición misma de la oportunidad SMT: una ventana donde el precio revela sus cartas."
+                }
+            ];
+
+            let quizScore = 0;
+            const quizCont = document.getElementById('quiz-container');
+            const quizScoreDisplay = document.getElementById('quiz-score');
+
+            if (quizCont && quizScoreDisplay) {
+                quizScoreDisplay.innerText = `Score: 0/${quizData.length}`;
+
+                quizData.forEach((item, idx) => {
+                    quizCont.innerHTML += `
+                        <div id="q-${idx}" class="quiz-item ${idx === 0 ? '' : 'hidden'} bg-white/10 p-6 rounded-xl border border-white/10">
+                            <p class="font-bold text-lg mb-4 text-kawn-light">${idx + 1}. ${item.q}</p>
+                            <div class="space-y-3">
+                                ${item.opts.map((opt, i) => `
+                                    <button onclick="window.checkAns(${idx}, ${i}, this)" class="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-transparent hover:border-kawn-base/50 text-sm quiz-option focus:outline-none focus:ring-2 focus:ring-slate-400" data-correct="${i === item.ans}">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="feed-${idx}" class="hidden mt-4 p-4 rounded bg-slate-900 border-l-4 border-kawn-base animate-fade-in">
+                                <p class="text-sm text-slate-300"><strong>Explicación:</strong> ${item.expl}</p>
+                                <button onclick="window.nextQ(${idx})" class="mt-3 bg-kawn-base text-white px-4 py-2 rounded text-xs font-bold hover:bg-kawn-dark transition-colors">Siguiente</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                window.checkAns = function (qIdx, optIdx, btn) {
+                    const isCorr = btn.dataset.correct === "true";
+                    const parent = document.getElementById(`q-${qIdx}`);
+                    if (!parent) return;
+
+                    parent.querySelectorAll('button').forEach(b => b.disabled = true);
+
+                    if (isCorr) {
+                        btn.classList.add('bg-green-600');
+                        btn.innerText += " ✅";
+                        quizScore++;
+                    } else {
+                        btn.classList.add('bg-red-600');
+                        btn.innerText += " ❌";
+                    }
+
+                    const feed = document.getElementById(`feed-${qIdx}`);
+                    if (feed) feed.classList.remove('hidden');
+                    if (quizScoreDisplay) quizScoreDisplay.innerText = `Score: ${quizScore}/${quizData.length}`;
+                }
+
+                window.nextQ = function (currIdx) {
+                    const curr = document.getElementById(`q-${currIdx}`);
+                    if (curr) curr.classList.add('hidden');
+
+                    const next = document.getElementById(`q-${currIdx + 1}`);
+                    if (next) {
+                        next.classList.remove('hidden');
+                    } else {
+                        const comp = document.getElementById('quiz-complete');
+                        const msg = document.getElementById('final-msg');
+                        if (comp) comp.classList.remove('hidden');
+                        if (msg) msg.innerText = quizScore >= 10 ? "¡Excelente! Nivel Institucional." : "Buen intento, repasa los conceptos clave.";
+                    }
+                }
+
+                window.resetQuiz = function () {
+                    location.reload();
+                }
+            }
+
+            // -------------------------------------------------------------------------
+            // 7. INTEGRACIÓN IA (PROXY NETLIFY CON ERROR HANDLING ROBUSTO)
+            // -------------------------------------------------------------------------
+            const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+            async function callAI(prompt, systemInstruction = "Eres un mentor experto en Trading Institucional (ICT).") {
+                try {
+                    const response = await fetch(proxyUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: systemInstruction }] }
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Error en Proxy: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "La IA no devolvió contenido.";
+                } catch (e) {
+                    console.error("Fallo IA:", e);
+                    return "Error de conexión con el Mentor IA. Verifica tu conexión o configuración de API.";
+                }
+            }
+
+            // Chat Mentor
+            const aiToggle = document.getElementById('ai-toggle');
+            const aiModal = document.getElementById('ai-modal');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            if (aiToggle && aiModal) {
+                aiToggle.addEventListener('click', () => aiModal.classList.remove('hidden'));
+                if (closeAi) closeAi.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+                if (sendAi && userInput && chatHistory) {
+                    const handleSend = async () => {
+                        const txt = userInput.value.trim();
+                        if (!txt) return;
+
+                        // Añadir mensaje usuario
+                        chatHistory.innerHTML += `<div class="message-bubble user-msg fade-in-up">${txt.replace(/</g, "&lt;")}</div>`; // Simple sanitize
+                        userInput.value = '';
+                        userInput.disabled = true;
+                        sendAi.disabled = true;
+
+                        if (aiLoading) aiLoading.classList.remove('hidden');
+                        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                        const reply = await callAI(`Eres un mentor experto en Trading Institucional (ICT). Responde brevemente: ${txt}`);
+
+                        if (aiLoading) aiLoading.classList.add('hidden');
+
+                        // Añadir respuesta IA
+                        chatHistory.innerHTML += `<div class="message-bubble ai-msg fade-in-up">${reply.replace(/\n/g, '<br>')}</div>`;
+                        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                        userInput.disabled = false;
+                        sendAi.disabled = false;
+                        userInput.focus();
+                    };
+
+                    sendAi.addEventListener('click', handleSend);
+                    userInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') handleSend();
+                    });
+                }
+            }
+
+            // Generador de Ejemplo IA
+            const exBtn = document.getElementById('ai-example-btn');
+            if (exBtn) {
+                exBtn.addEventListener('click', async () => {
+                    exBtn.disabled = true;
+                    exBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generando...`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+                    const res = await callAI("Genera un ejemplo corto (2 frases) de una divergencia SMT alcista que haya ocurrido hipotéticamente en el mercado hoy.");
+
+                    const disp = document.getElementById('ai-example-display');
+                    if (disp) {
+                        disp.classList.remove('hidden');
+                        disp.innerText = res;
+                    }
+
+                    exBtn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Generado`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                });
+            }
+
+            // Validador de Ejercicio IA
+            const checkBtn = document.getElementById('ai-check-btn');
+            if (checkBtn) {
+                checkBtn.addEventListener('click', async () => {
+                    const textEl = document.getElementById('student-reflection');
+                    if (!textEl) return;
+
+                    const text = textEl.value.trim();
+                    if (!text) return alert("Escribe tu análisis primero.");
+
+                    checkBtn.disabled = true;
+                    checkBtn.innerText = "Analizando...";
+
+                    const res = await callAI(`El estudiante escribió este análisis de SMT: "${text}". Valida si entiende el concepto de que un activo hace nuevo extremo y el otro falla. Responde en 1 frase.`);
+
+                    const resDiv = document.getElementById('ai-check-result');
+                    if (resDiv) {
+                        resDiv.classList.remove('hidden');
+                        resDiv.innerHTML = `<strong>Feedback IA:</strong> ${res}`;
+                    }
+
+                    checkBtn.disabled = false;
+                    checkBtn.innerText = "Validar de nuevo";
+                });
+            }
+
+        });
+    </script>
+</body>
+
+</html>

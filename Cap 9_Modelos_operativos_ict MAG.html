@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KawnBit Magazine | Modelos Operativos ICT</title>
+    <meta name="description"
+        content="Guía completa sobre Modelos Operativos ICT, transformación digital y estrategias de gestión tecnológica moderna.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Marked for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Chart.js for Interactive Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                            accent: '#0d9488' // Teal 600
+                        },
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Magazine Feel */
+        body {
+            background-color: #f8fafc;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        th {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        p,
+        li,
+        td {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.75;
+        }
+
+        /* Hero Section Gradient - Matching KawnBit Brand */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);
+        }
+
+        /* Visual Container Styles */
+        .visual-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            margin: 2rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Highlight Block */
+        .highlight-quote {
+            border-left: 4px solid #14b8a6;
+            background-color: #f0fdfa;
+            padding: 1.5rem;
+            font-style: italic;
+            color: #134e4a;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin: 2rem 0;
+        }
+
+        /* Custom Lists */
+        .custom-list li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: start;
+        }
+
+        .custom-list li i {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            color: #14b8a6;
+            flex-shrink: 0;
+        }
+
+        /* Buttons & Tabs */
+        .tab-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            outline: none;
+        }
+
+        .tab-btn:focus-visible {
+            background-color: #f1f5f9;
+            box-shadow: inset 0 0 0 2px #0f766e;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #0f766e;
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .tab-btn.active {
+            color: #0f766e;
+            background-color: #f0fdfa;
+        }
+
+        .tab-btn:not(.active):hover {
+            background-color: #f8fafc;
+            color: #134e4a;
+        }
+
+        /* AI Chat Styles */
+        .ai-message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.9rem;
+            max-width: 85%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            word-wrap: break-word;
+        }
+
+        .ai-message.user {
+            background-color: #f1f5f9;
+            color: #334155;
+            border-bottom-right-radius: 0;
+            margin-left: auto;
+        }
+
+        .ai-message.bot {
+            background-color: #ccfbf1;
+            color: #0f766e;
+            border-bottom-left-radius: 0;
+            margin-right: auto;
+            border: 1px solid #99f6e4;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quiz-option:hover {
+            border-color: #14b8a6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option.selected {
+            background-color: #f0fdfa;
+            border-color: #14b8a6;
+            font-weight: 600;
+        }
+
+        .quiz-option.correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+
+        .quiz-option.wrong {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        /* Interactive SVG Styles & Accessibility */
+        .diagram-node {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .diagram-node:hover rect,
+        .diagram-node:focus rect {
+            fill: #134e4a;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .diagram-node:focus {
+            filter: drop-shadow(0 0 5px rgba(20, 184, 166, 0.7));
+        }
+
+        .diagram-node:hover circle {
+            fill: #0d9488;
+            stroke-width: 4;
+        }
+
+        .diagram-node text {
+            pointer-events: none;
+        }
+
+        /* Sourcing Matrix Interactive Styles */
+        .matrix-quadrant {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .matrix-quadrant:hover,
+        .matrix-quadrant:focus {
+            filter: brightness(0.95);
+            transform: scale(1.01);
+        }
+
+        .matrix-quadrant.active {
+            stroke: #0f766e;
+            stroke-width: 3px;
+            filter: brightness(1);
+        }
+
+        /* Metric Cards Styles */
+        .metric-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .metric-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .metric-front,
+        .metric-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .metric-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Audio Player Waves */
+        .audio-wave {
+            display: inline-block;
+            width: 3px;
+            height: 10px;
+            background-color: #14b8a6;
+            margin: 0 1px;
+            animation: wave 1s infinite ease-in-out;
+        }
+
+        .audio-wave:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .audio-wave:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .audio-wave:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .audio-wave:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                height: 5px;
+            }
+
+            50% {
+                height: 15px;
+            }
+        }
+
+        /* Utility Classes */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(20, 184, 166, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(20, 184, 166, 0);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-600 antialiased selection:bg-kawn-light selection:text-kawn-deep">
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300"
+        id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center flex-shrink-0 mr-6 group cursor-pointer">
+                    <div
+                        class="h-10 w-10 bg-gradient-to-br from-kawn-dark to-kawn-base rounded-xl shadow-lg flex items-center justify-center text-white font-bold text-xl select-none group-hover:scale-105 transition-transform duration-300">
+                        K</div>
+                    <span
+                        class="ml-3 font-display font-bold text-slate-800 text-xl hidden md:block group-hover:text-kawn-deep transition-colors">KAWNBIT</span>
+                </div>
+
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#intro"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-[10px] uppercase tracking-wider py-2 focus:outline-none focus:text-kawn-base">Definición</a>
+                    <a href="#models"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-[10px] uppercase tracking-wider py-2 focus:outline-none focus:text-kawn-base">5
+                        Modelos</a>
+                    <a href="#sourcing"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-[10px] uppercase tracking-wider py-2 font-bold text-kawn-deep focus:outline-none focus:text-kawn-base">Sourcing</a>
+                    <a href="#metrics"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-[10px] uppercase tracking-wider py-2 focus:outline-none focus:text-kawn-base">KPIs</a>
+                    <a href="#best-practices"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors text-[10px] uppercase tracking-wider py-2 focus:outline-none focus:text-kawn-base">Prácticas</a>
+                    <a href="#ai-lab"
+                        class="text-white bg-kawn-base hover:bg-kawn-dark px-3 py-1.5 rounded-full font-bold transition-all text-[10px] uppercase tracking-wider flex items-center shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kawn-base"><i
+                            data-lucide="sparkles" class="w-3 h-3 mr-1"></i> AI Lab</a>
+
+                    <!-- Config Button -->
+                    <button onclick="toggleConfig()"
+                        class="text-slate-400 hover:text-slate-600 transition-colors p-2 rounded-full hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-kawn-base"
+                        title="Configurar API Key">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Config Modal -->
+    <div id="config-modal"
+        class="fixed inset-0 bg-slate-900/50 z-[100] hidden flex items-center justify-center backdrop-blur-sm transition-opacity"
+        role="dialog" aria-modal="true">
+        <div class="bg-white p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 border border-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-800 flex items-center"><i data-lucide="key"
+                        class="w-4 h-4 mr-2 text-kawn-base"></i> Configurar Gemini API</h3>
+                <button onclick="toggleConfig()" class="text-slate-400 hover:text-slate-600 focus:outline-none"><i
+                        data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">Ingresa tu API Key de Gemini para habilitar las funciones en vivo.
+                <br><span class="text-orange-500 font-bold">Nota:</span> Se guarda en tu navegador (LocalStorage).
+            </p>
+
+            <div class="relative mb-4">
+                <input type="password" id="api-key-input"
+                    class="w-full border border-slate-300 rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-kawn-base outline-none transition-all"
+                    placeholder="Pegar API Key aquí...">
+                <button onclick="togglePasswordVisibility()"
+                    class="absolute right-3 top-2 text-slate-400 hover:text-slate-600">
+                    <i data-lucide="eye" class="w-4 h-4" id="eye-icon"></i>
+                </button>
+            </div>
+
+            <div class="flex justify-between gap-2">
+                <button onclick="clearApiKey()"
+                    class="text-red-500 text-xs hover:text-red-700 px-2 py-2 font-medium">Borrar Clave</button>
+                <button onclick="saveApiKey()"
+                    class="bg-kawn-base text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-kawn-dark transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-kawn-base">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero-gradient relative text-white py-28 overflow-hidden">
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay">
+        </div>
+        <!-- Decorative particles -->
+        <div class="absolute top-20 left-20 w-32 h-32 bg-kawn-base rounded-full opacity-20 blur-3xl animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-20 right-20 w-64 h-64 bg-blue-500 rounded-full opacity-10 blur-3xl animate-pulse-slow"
+            style="animation-delay: 1s;"></div>
+
+        <div
+            class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-[float_4s_ease-in-out_infinite]">
+            <span
+                class="inline-block py-1 px-4 rounded-full bg-white/10 border border-white/20 text-kawn-light text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-md shadow-lg">Gestión
+                Tecnológica Empresarial</span>
+            <h1 class="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6 drop-shadow-lg">
+                Capítulo 9: <br /><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-kawn-light to-white">Modelos Operativos
+                    ICT</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+                Descubre cómo alinear estrategia, personas y tecnología para impulsar la transformación digital y
+                generar valor en la era moderna.
+            </p>
+        </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- INTRODUCCIÓN -->
+        <section id="intro" class="mb-20 scroll-mt-28 relative">
+
+            <!-- NEW FEATURE: AUDIO SUMMARY -->
+            <div class="absolute -top-12 right-0 z-10">
+                <button onclick="generateAudioSummary()" id="audio-btn"
+                    class="bg-slate-900 text-white text-xs px-4 py-2 rounded-full flex items-center shadow-lg hover:bg-slate-800 transition-all border border-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900">
+                    <i data-lucide="headphones" class="w-3 h-3 mr-2"></i>
+                    <span>Escuchar Podcast del Capítulo</span>
+                    <span id="audio-loading" class="ml-2 hidden">
+                        <span class="audio-wave"></span><span class="audio-wave"></span><span class="audio-wave"></span>
+                    </span>
+                </button>
+                <audio id="tts-player" class="hidden" crossorigin="anonymous"></audio>
+            </div>
+
+            <div class="flex items-center mb-6">
+                <div class="bg-kawn-light p-3 rounded-2xl mr-4">
+                    <i data-lucide="book-open" class="w-8 h-8 text-kawn-dark"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Introducción al Modelo Operativo ICT</h2>
+            </div>
+
+            <p class="mb-4 text-lg font-medium text-slate-700 leading-relaxed">
+                En el ámbito de las Tecnologías de la Información y la Comunicación (ICT), el <strong>modelo
+                    operativo</strong> se refiere a la forma en que una organización estructura sus procesos, recursos
+                humanos y tecnologías para generar valor.
+            </p>
+            <p class="mb-6 leading-relaxed">
+                En esencia, define qué actividades y procesos debe realizar la organización, cómo y dónde se llevan a
+                cabo, y cómo se miden y gestionan para entregar valor a clientes, socios y la sociedad [1]. Los modelos
+                operativos actúan como el pegamento entre la estrategia y la operación diaria del negocio [2], alineando
+                la visión y los objetivos estratégicos con la ejecución práctica.
+            </p>
+
+            <!-- GRAPHIC 1: Interactive Structure Diagram -->
+            <div class="visual-container grid lg:grid-cols-5 gap-8 bg-gradient-to-br from-slate-50 to-white">
+                <div class="lg:col-span-2 flex flex-col justify-center">
+                    <h3 class="font-bold text-2xl text-kawn-dark mb-4">Estructura del Modelo</h3>
+                    <p class="text-sm text-slate-600 mb-6">Pasa el cursor (o selecciona con teclado) los elementos del
+                        diagrama para explorar cómo el modelo conecta la visión con la realidad.</p>
+
+                    <div id="diagram-info"
+                        class="bg-white p-4 rounded-xl border border-kawn-light shadow-sm min-h-[140px] transition-all duration-300">
+                        <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+                            <i data-lucide="info" class="w-4 h-4 text-kawn-base"></i>
+                            <span id="info-title">Explora el diagrama</span>
+                        </h4>
+                        <p id="info-desc" class="text-xs text-slate-500">Interactúa con el gráfico de la derecha para
+                            ver los detalles de cada componente.</p>
+                    </div>
+
+                    <ul class="custom-list text-sm mt-6 space-y-2">
+                        <li><i data-lucide="settings"></i> <strong>Procesos clave:</strong> Flujos definidos.</li>
+                        <li><i data-lucide="users"></i> <strong>Personas:</strong> Estructura y roles.</li>
+                        <li><i data-lucide="cpu"></i> <strong>Tecnologías:</strong> Herramientas.</li>
+                    </ul>
+                </div>
+
+                <div
+                    class="lg:col-span-3 relative h-64 lg:h-auto flex justify-center items-center bg-slate-100/50 rounded-xl border border-slate-200">
+                    <svg viewBox="0 0 400 220" class="w-full h-full max-w-md drop-shadow-xl"
+                        aria-label="Diagrama interactivo de estructura del modelo operativo">
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"
+                                markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+                            </marker>
+                        </defs>
+
+                        <!-- Connector Lines -->
+                        <line x1="200" y1="60" x2="200" y2="85" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4"
+                            class="animate-pulse" />
+                        <line x1="200" y1="135" x2="200" y2="160" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#arrow)" />
+
+                        <!-- Top Node: Strategy -->
+                        <g class="diagram-node" tabindex="0" role="button" aria-label="Estrategia"
+                            onmouseenter="showNodeInfo('strategy')" onmouseleave="resetNodeInfo()"
+                            onfocus="showNodeInfo('strategy')" onblur="resetNodeInfo()"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showNodeInfo('strategy')">
+                            <rect x="100" y="20" width="200" height="40" rx="8" fill="#0f766e" />
+                            <text x="200" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="800"
+                                letter-spacing="1">ESTRATEGIA</text>
+                            <rect x="95" y="15" width="210" height="50" rx="10" fill="transparent" stroke="#0f766e"
+                                stroke-width="0" class="hover:stroke-2 hover:stroke-kawn-light transition-all" />
+                        </g>
+
+                        <!-- Middle Node: Model -->
+                        <g class="diagram-node" tabindex="0" role="button" aria-label="Modelo Operativo"
+                            onmouseenter="showNodeInfo('model')" onmouseleave="resetNodeInfo()"
+                            onfocus="showNodeInfo('model')" onblur="resetNodeInfo()"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showNodeInfo('model')">
+                            <circle cx="200" cy="110" r="45" fill="white" stroke="#14b8a6" stroke-width="3" />
+                            <circle cx="200" cy="110" r="38" fill="#f0fdfa" />
+                            <text x="200" y="105" text-anchor="middle" fill="#0f766e" font-size="11"
+                                font-weight="900">MODELO</text>
+                            <text x="200" y="125" text-anchor="middle" fill="#0d9488" font-size="9"
+                                font-style="italic">"Pegamento"</text>
+
+                            <!-- Orbiting particles -->
+                            <circle cx="200" cy="65" r="3" fill="#14b8a6">
+                                <animateTransform attributeName="transform" type="rotate" from="0 200 110"
+                                    to="360 200 110" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="200" cy="155" r="3" fill="#14b8a6">
+                                <animateTransform attributeName="transform" type="rotate" from="180 200 110"
+                                    to="540 200 110" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                        </g>
+
+                        <!-- Bottom Node: Operations -->
+                        <g class="diagram-node" tabindex="0" role="button" aria-label="Operación Diaria"
+                            onmouseenter="showNodeInfo('operations')" onmouseleave="resetNodeInfo()"
+                            onfocus="showNodeInfo('operations')" onblur="resetNodeInfo()"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showNodeInfo('operations')">
+                            <rect x="100" y="160" width="200" height="40" rx="8" fill="#334155" />
+                            <text x="200" y="185" text-anchor="middle" fill="white" font-size="12" font-weight="800"
+                                letter-spacing="1">OPERACIÓN DIARIA</text>
+                            <rect x="95" y="155" width="210" height="50" rx="10" fill="transparent" stroke="#334155"
+                                stroke-width="0" class="hover:stroke-2 hover:stroke-slate-300 transition-all" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                En el caso de TI, todo modelo operativo debe incluir elementos que definan cómo el departamento de
+                tecnología crea y entrega valor al negocio [4], asegurando que la inversión en ICT se traduzca en
+                resultados empresariales.
+            </p>
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                En la actualidad, la importancia de diseñar y ajustar el modelo operativo ICT es más crítica que nunca.
+                La <strong>transformación digital</strong> se ha vuelto un imperativo para competir en prácticamente
+                todos los sectores. Ya no basta con adoptar hardware, software o servicios digitales de forma aislada;
+                hace falta una reinvención más profunda de la organización que incluye un cambio cultural y la adopción
+                de nuevos modelos operativos adaptados a la era digital [5].
+            </p>
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                De hecho, los modelos operativos modernos buscan dotar a las empresas de la agilidad, rapidez y
+                capacidad de innovación necesarias para aprovechar oportunidades en la economía digital [1]. En otras
+                palabras, un buen modelo operativo de ICT permite responder velozmente a cambios del mercado, innovar en
+                productos/servicios y operar eficientemente.
+            </p>
+
+            <h3 class="text-2xl font-bold text-slate-800 mt-10 mb-4 flex items-center">
+                El Cambio de Paradigma
+                <span class="ml-3 h-px flex-1 bg-slate-200"></span>
+            </h3>
+            <p class="mb-6 text-slate-600 leading-relaxed">
+                La velocidad del cambio tecnológico actual está forzando a replantear los modelos tradicionales de TI.
+                Tecnologías emergentes como la <strong>inteligencia artificial generativa</strong> están automatizando
+                tareas rutinarias y optimizando flujos de trabajo, lo que exige que el área de ICT evolucione más allá
+                de su rol tradicional [6][7].
+            </p>
+
+            <div class="highlight-quote relative shadow-sm hover:shadow-md transition-shadow duration-300">
+                <i data-lucide="quote" class="absolute top-4 right-4 w-8 h-8 text-kawn-light opacity-50"></i>
+                <p class="mb-2 relative z-10 font-medium">
+                    "Muchas organizaciones están pasando de un modelo operativo de TI clásico –con un gran departamento
+                    centralizado bajo un CIO que provee todas las soluciones tecnológicas– a un modelo operativo de
+                    tecnología empresarial distribuido." [8]
+                </p>
+            </div>
+
+            <p class="mb-4 text-slate-600 leading-relaxed mt-6">
+                En este nuevo enfoque, el departamento de TI asume un rol más estratégico, centrado en establecer
+                estándares de gobernanza y ciberseguridad y en coordinar la innovación, mientras que las unidades de
+                negocio adquieren mayor autonomía para implementar y gestionar tecnologías en su dominio [9][10].
+            </p>
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                Esto implica, por ejemplo, que ciertos profesionales de TI antes concentrados en la dirección de
+                sistemas ahora estén integrados dentro de equipos en las unidades de negocio, trabajando codo a codo con
+                áreas como marketing, operaciones o finanzas [11]. El resultado es un modelo más ágil y alineado con el
+                negocio: tareas repetitivas gestionadas por algoritmos o automatizaciones, y el talento humano de ICT
+                enfocado en proyectos de alto valor estratégico [7].
+            </p>
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                Los líderes empresariales reconocen la urgencia de esta transformación operativa. Según un estudio
+                reciente, 63% de los directivos globales planea reinventar la función de TI en los próximos tres años
+                [12]. Este dato refleja la convicción de que la manera en que organizamos y operamos la tecnología debe
+                evolucionar constantemente para impulsar la estrategia de negocio.
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                En suma, un modelo operativo ICT bien diseñado es el cimiento para lograr una transformación digital
+                exitosa, mejorar la eficiencia operacional y sentar las bases para el escalado sostenible del negocio en
+                el tiempo.
+            </p>
+        </section>
+
+        <!-- BENEFICIOS -->
+        <section id="benefits" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-blue-100 p-3 rounded-2xl mr-4">
+                    <i data-lucide="trending-up" class="w-8 h-8 text-blue-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Importancia y Beneficios</h2>
+            </div>
+
+            <p class="mb-8 text-lg text-slate-600">
+                Implementar el modelo operativo adecuado conlleva múltiples beneficios. Por un lado, proporciona
+                <strong>coherencia y enfoque</strong>: al definir estándares, procesos y responsabilidades, toda la
+                organización entiende cómo contribuir al valor final. Esto facilita que el área de tecnología y las
+                áreas de negocio trabajen alineadas hacia objetivos comunes, evitando esfuerzos aislados o
+                contraproducentes.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div
+                    class="group p-8 bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-kawn-base"></div>
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="p-2 bg-kawn-light rounded-lg mr-3 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                            <i data-lucide="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-slate-800">Agilidad e Innovación</h4>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Un modelo operativo moderno tiende a derribar silos tradicionales, fomentando equipos
+                        multidisciplinarios. Las empresas que han adoptado modelos de "nueva generación" han logrado
+                        incrementos dramáticos en velocidad.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-start">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-green-500 mr-2 mt-1"></i>
+                        <p class="text-xs text-slate-500 italic">
+                            Ejemplo: Ciertas organizaciones multiplicaron por 3 a 5 las conversiones digitales y
+                            aumentaron ventas un 150% tras rediseñar su modelo [13].
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="group p-8 bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-blue-500"></div>
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="p-2 bg-blue-50 rounded-lg mr-3 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                            <i data-lucide="settings-2" class="w-6 h-6 text-blue-600 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="font-bold text-xl text-slate-800">Eficiencia Operativa</h4>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        La combinación de automatización de tareas rutinarias (mediante bots o RPA) con la
+                        reestructuración de procesos permite grandes ganancias de eficiencia y eliminación de
+                        desperdicios.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex items-start">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-green-500 mr-2 mt-1"></i>
+                        <p class="text-xs text-slate-500 italic">
+                            Ejemplo: Una entidad financiera aumentó la productividad del desarrollo de software en 200%
+                            en tres meses al reorganizarse por flujos de valor [15].
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-4 text-slate-600 leading-relaxed">
+                Un modelo operativo bien articulado acelera la ejecución de la estrategia, porque traduce la visión
+                estratégica en actividades concretas día a día [2]. Además, al empoderar a los equipos para tomar
+                decisiones y experimentar, la empresa se vuelve más innovadora y adaptable.
+            </p>
+        </section>
+
+        <!-- 5 MODELOS + RADAR CHART -->
+        <section id="models" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8 justify-between flex-wrap gap-4">
+                <div class="flex items-center">
+                    <div class="bg-indigo-100 p-3 rounded-2xl mr-4">
+                        <i data-lucide="layers" class="w-8 h-8 text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-slate-900">Principales Modelos Operativos ICT</h2>
+                </div>
+
+                <!-- NEW FEATURE: SIMPLIFIER -->
+                <button onclick="simplifyCurrentModel()" id="simplify-btn"
+                    class="text-xs bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full font-bold hover:bg-indigo-100 transition-colors flex items-center border border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm">
+                    <i data-lucide="baby" class="w-4 h-4 mr-2"></i> Explícamelo como a un niño
+                </button>
+            </div>
+
+            <p class="mb-8 text-slate-600 leading-relaxed">
+                No existe un único modelo operativo que sirva para todas las organizaciones. De hecho, en la práctica
+                vemos diversos enfoques o arquetipos. A continuación, describiremos cinco modelos operativos
+                identificados en estudios sobre transformación digital [17], junto con ejemplos reales, ventajas y
+                desafíos de cada uno.
+            </p>
+
+            <div
+                class="visual-container p-0 overflow-hidden bg-white border border-slate-200 rounded-2xl shadow-lg flex flex-col lg:flex-row h-auto lg:h-[600px]">
+
+                <!-- Left: List -->
+                <div class="w-full lg:w-1/3 bg-slate-50 border-r border-slate-200 flex flex-col overflow-y-auto">
+                    <div class="p-4 bg-white border-b border-slate-200">
+                        <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Selecciona un modelo</h4>
+                    </div>
+                    <button onclick="switchModel(0)"
+                        class="tab-btn active px-6 py-5 text-left flex items-center border-l-4 border-transparent hover:bg-white transition-all w-full"
+                        id="btn-m0">
+                        <i data-lucide="smile" class="w-5 h-5 mr-3 flex-shrink-0"></i>
+                        <span class="font-bold text-sm">Centrado en Cliente</span>
+                    </button>
+                    <button onclick="switchModel(1)"
+                        class="tab-btn px-6 py-5 text-left flex items-center border-l-4 border-transparent hover:bg-white transition-all w-full"
+                        id="btn-m1">
+                        <i data-lucide="scissors" class="w-5 h-5 mr-3 flex-shrink-0"></i>
+                        <span class="font-bold text-sm">Extrafrugal</span>
+                    </button>
+                    <button onclick="switchModel(2)"
+                        class="tab-btn px-6 py-5 text-left flex items-center border-l-4 border-transparent hover:bg-white transition-all w-full"
+                        id="btn-m2">
+                        <i data-lucide="database" class="w-5 h-5 mr-3 flex-shrink-0"></i>
+                        <span class="font-bold text-sm">Data-Driven</span>
+                    </button>
+                    <button onclick="switchModel(3)"
+                        class="tab-btn px-6 py-5 text-left flex items-center border-l-4 border-transparent hover:bg-white transition-all w-full"
+                        id="btn-m3">
+                        <i data-lucide="cpu" class="w-5 h-5 mr-3 flex-shrink-0"></i>
+                        <span class="font-bold text-sm">"Skynet" (Máquinas)</span>
+                    </button>
+                    <button onclick="switchModel(4)"
+                        class="tab-btn px-6 py-5 text-left flex items-center border-l-4 border-transparent hover:bg-white transition-all w-full"
+                        id="btn-m4">
+                        <i data-lucide="globe" class="w-5 h-5 mr-3 flex-shrink-0"></i>
+                        <span class="font-bold text-sm">Abierto/Líquido</span>
+                    </button>
+                </div>
+
+                <!-- Right: Content & Chart -->
+                <div class="w-full lg:w-2/3 p-8 flex flex-col overflow-y-auto relative bg-white">
+                    <!-- Chart Overlay (Top Right) -->
+                    <div class="hidden lg:block absolute top-6 right-6 w-48 h-48 opacity-20 pointer-events-none z-0">
+                        <canvas id="bg-radar-chart"></canvas>
+                    </div>
+
+                    <div id="model-content" class="relative z-10">
+                        <!-- Content Injected via JS -->
+                    </div>
+
+                    <!-- Simplified Content Box (Hidden by default) -->
+                    <div id="simplified-box"
+                        class="hidden mt-4 p-4 bg-indigo-50 rounded-xl border border-indigo-100 relative animate-[fade-in_0.3s]">
+                        <button onclick="this.parentElement.classList.add('hidden')"
+                            class="absolute top-2 right-2 text-indigo-400 hover:text-indigo-600"><i data-lucide="x"
+                                class="w-3 h-3"></i></button>
+                        <h5 class="font-bold text-indigo-700 text-xs uppercase mb-2 flex items-center"><i
+                                data-lucide="sparkles" class="w-3 h-3 mr-1"></i> Versión Simplificada (IA)</h5>
+                        <p id="simplified-text" class="text-sm text-slate-700 italic">Generando explicación...</p>
+                    </div>
+
+                    <!-- Comparison Chart Section Mobile/Desktop -->
+                    <div class="mt-auto pt-6 border-t border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-4">Análisis de Capacidades</h5>
+                        <div class="h-64 w-full flex justify-center">
+                            <canvas id="main-radar-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-8 mb-4 text-slate-600 leading-relaxed">
+                Estos cinco modelos operativos ICT no son mutuamente excluyentes; de hecho, muchas compañías combinan
+                rasgos de varios. Por ejemplo, <strong>Amazon</strong> mezcla claramente el enfoque de automatización
+                intensiva con una obsesión por el cliente; <strong>Netflix</strong>, además de ser data-driven, tiene
+                elementos de modelo abierto al correr en ecosistemas de Smart TVs.
+            </p>
+        </section>
+
+        <!-- NUEVA SECCIÓN: ESTRATEGIAS DE SOURCING -->
+        <section id="sourcing" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-violet-100 p-3 rounded-2xl mr-4">
+                    <i data-lucide="puzzle" class="w-8 h-8 text-violet-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Estrategias de Sourcing y Colaboración</h2>
+            </div>
+
+            <p class="mb-6 text-slate-600 leading-relaxed">
+                Un componente crítico del modelo operativo es decidir <strong>quién realiza cada actividad</strong>. La
+                pregunta clásica de "Hacer vs. Comprar" ha evolucionado hacia la orquestación de ecosistemas complejos
+                donde coexisten equipos internos, proveedores externos y socios estratégicos.
+            </p>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="visual-container bg-white p-6 shadow-md border border-slate-200">
+                    <h4 class="font-bold text-slate-800 mb-4 flex items-center">
+                        <i data-lucide="layout-grid" class="w-5 h-5 mr-2 text-kawn-base"></i> Matriz de Decisión
+                    </h4>
+                    <p class="text-sm text-slate-500 mb-4">Haz clic en los cuadrantes para descubrir la estrategia
+                        recomendada según la importancia estratégica y la complejidad operativa.</p>
+
+                    <!-- Interactive Matrix SVG -->
+                    <svg viewBox="0 0 400 350" class="w-full h-auto drop-shadow-sm select-none"
+                        aria-label="Matriz de decisión de Sourcing">
+                        <!-- Axes -->
+                        <line x1="40" y1="310" x2="380" y2="310" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#arrow)" />
+                        <line x1="40" y1="310" x2="40" y2="20" stroke="#94a3b8" stroke-width="2"
+                            marker-end="url(#arrow)" />
+
+                        <!-- Labels -->
+                        <text x="370" y="335" font-size="10" fill="#64748b" font-weight="bold"
+                            text-anchor="end">COMPLEJIDAD OPERATIVA</text>
+                        <text x="25" y="15" font-size="10" fill="#64748b" font-weight="bold"
+                            transform="rotate(-90 25,100)" text-anchor="end">VALOR ESTRATÉGICO</text>
+
+                        <!-- Quadrants -->
+                        <!-- High Strat / Low Complex -->
+                        <g class="matrix-quadrant" tabindex="0" role="button" aria-label="Internalizar"
+                            onclick="showSourcingInfo('insource')"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showSourcingInfo('insource')">
+                            <rect x="45" y="30" width="165" height="135" fill="#dcfce7" stroke="white" stroke-width="2"
+                                rx="4" />
+                            <text x="127" y="100" text-anchor="middle" font-size="12" font-weight="bold"
+                                fill="#166534">INTERNALIZAR</text>
+                            <text x="127" y="115" text-anchor="middle" font-size="9" fill="#166534">(Control
+                                Total)</text>
+                        </g>
+
+                        <!-- High Strat / High Complex -->
+                        <g class="matrix-quadrant" tabindex="0" role="button" aria-label="Alianza Estratégica"
+                            onclick="showSourcingInfo('partner')"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showSourcingInfo('partner')">
+                            <rect x="215" y="30" width="165" height="135" fill="#e0e7ff" stroke="white" stroke-width="2"
+                                rx="4" />
+                            <text x="297" y="100" text-anchor="middle" font-size="12" font-weight="bold"
+                                fill="#3730a3">ALIANZA ESTRATÉGICA</text>
+                            <text x="297" y="115" text-anchor="middle" font-size="9" fill="#3730a3">(Co-Creación)</text>
+                        </g>
+
+                        <!-- Low Strat / Low Complex -->
+                        <g class="matrix-quadrant" tabindex="0" role="button" aria-label="Automatizar o SaaS"
+                            onclick="showSourcingInfo('commodity')"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showSourcingInfo('commodity')">
+                            <rect x="45" y="170" width="165" height="135" fill="#f1f5f9" stroke="white" stroke-width="2"
+                                rx="4" />
+                            <text x="127" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                fill="#475569">AUTOMATIZAR / SAAS</text>
+                            <text x="127" y="255" text-anchor="middle" font-size="9" fill="#475569">(Commodity)</text>
+                        </g>
+
+                        <!-- Low Strat / High Complex -->
+                        <g class="matrix-quadrant" tabindex="0" role="button" aria-label="Outsourcing"
+                            onclick="showSourcingInfo('outsource')"
+                            onkeydown="if(event.key==='Enter' || event.key===' ') showSourcingInfo('outsource')">
+                            <rect x="215" y="170" width="165" height="135" fill="#fef3c7" stroke="white"
+                                stroke-width="2" rx="4" />
+                            <text x="297" y="240" text-anchor="middle" font-size="12" font-weight="bold"
+                                fill="#92400e">OUTSOURCING</text>
+                            <text x="297" y="255" text-anchor="middle" font-size="9" fill="#92400e">(Servicios
+                                Gestionados)</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    <div id="sourcing-details"
+                        class="bg-slate-50 p-6 rounded-2xl border border-slate-200 transition-all duration-300">
+                        <div class="flex items-center mb-4 text-kawn-deep">
+                            <i data-lucide="mouse-pointer-2" class="w-6 h-6 mr-3"></i>
+                            <h4 class="font-bold text-lg" id="sourcing-title">Explora la Matriz</h4>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4" id="sourcing-desc">
+                            Selecciona un cuadrante en el gráfico de la izquierda para ver en detalle cuándo aplicar
+                            cada modelo de sourcing, sus riesgos y beneficios.
+                        </p>
+                        <div class="hidden" id="sourcing-list">
+                            <ul class="space-y-2 text-sm text-slate-600">
+                                <li class="flex items-start"><i data-lucide="check"
+                                        class="w-4 h-4 text-green-500 mr-2 mt-0.5"></i> <span id="sourcing-pro"></span>
+                                </li>
+                                <li class="flex items-start"><i data-lucide="alert-circle"
+                                        class="w-4 h-4 text-amber-500 mr-2 mt-0.5"></i> <span id="sourcing-con"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUEVA SECCIÓN: MÉTRICAS Y VALOR -->
+        <section id="metrics" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-rose-100 p-3 rounded-2xl mr-4">
+                    <i data-lucide="target" class="w-8 h-8 text-rose-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Medición del Valor (KPIs & OKRs)</h2>
+            </div>
+
+            <p class="mb-6 text-slate-600 leading-relaxed">
+                Un modelo operativo moderno no puede medirse con métricas del pasado. El enfoque ha cambiado desde la
+                simple disponibilidad técnica ("Uptime") hacia el impacto real en el negocio y la experiencia del
+                usuario. Pasamos de los <strong>SLAs</strong> (Acuerdos de Nivel de Servicio) a los
+                <strong>XLAs</strong> (Acuerdos de Nivel de Experiencia).
+            </p>
+
+            <div class="bg-slate-900 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 w-96 h-96 bg-rose-500 opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2">
+                </div>
+
+                <h4 class="text-xl font-bold mb-6 flex items-center relative z-10">
+                    <i data-lucide="arrow-left-right" class="w-5 h-5 mr-3 text-rose-400"></i>
+                    Evolución de las Métricas (Haz clic o toca las tarjetas)
+                </h4>
+
+                <div class="grid md:grid-cols-3 gap-6 relative z-10">
+
+                    <!-- Card 1 -->
+                    <div class="h-48 metric-card group" onclick="this.classList.toggle('flipped')" tabindex="0"
+                        onkeydown="if(event.key==='Enter') this.classList.toggle('flipped')">
+                        <div
+                            class="metric-front bg-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col items-center justify-center hover:border-rose-500 transition-colors">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Enfoque
+                                Tradicional</span>
+                            <div class="text-3xl font-black text-white mb-2">99.9%</div>
+                            <div class="text-sm text-slate-300">Uptime de Servidores</div>
+                            <div class="mt-4 text-xs text-rose-400 flex items-center animate-bounce"><i
+                                    data-lucide="rotate-cw" class="w-3 h-3 mr-1"></i> Voltear</div>
+                        </div>
+                        <div
+                            class="metric-back bg-gradient-to-br from-rose-600 to-rose-800 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+                            <span class="text-xs font-bold text-rose-200 uppercase tracking-widest mb-3">Enfoque
+                                Moderno</span>
+                            <div class="text-lg font-black text-white mb-2">User Satisfaction</div>
+                            <div class="text-xs text-rose-100 mb-2">¿Están contentos los usuarios aunque el sistema
+                                funcione?</div>
+                            <div class="text-2xl font-bold text-white">NPS / CSAT</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="h-48 metric-card group" onclick="this.classList.toggle('flipped')" tabindex="0"
+                        onkeydown="if(event.key==='Enter') this.classList.toggle('flipped')">
+                        <div
+                            class="metric-front bg-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col items-center justify-center hover:border-rose-500 transition-colors">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Enfoque
+                                Tradicional</span>
+                            <div class="text-3xl font-black text-white mb-2">Costos</div>
+                            <div class="text-sm text-slate-300">Presupuesto TI vs Real</div>
+                            <div class="mt-4 text-xs text-rose-400 flex items-center animate-bounce"><i
+                                    data-lucide="rotate-cw" class="w-3 h-3 mr-1"></i> Voltear</div>
+                        </div>
+                        <div
+                            class="metric-back bg-gradient-to-br from-rose-600 to-rose-800 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+                            <span class="text-xs font-bold text-rose-200 uppercase tracking-widest mb-3">Enfoque
+                                Moderno</span>
+                            <div class="text-lg font-black text-white mb-2">Valor de Negocio</div>
+                            <div class="text-xs text-rose-100 mb-2">¿Cuánto ingreso generó esta nueva funcionalidad?
+                            </div>
+                            <div class="text-2xl font-bold text-white">ROI / Revenue</div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="h-48 metric-card group" onclick="this.classList.toggle('flipped')" tabindex="0"
+                        onkeydown="if(event.key==='Enter') this.classList.toggle('flipped')">
+                        <div
+                            class="metric-front bg-slate-800 rounded-xl p-6 border border-slate-700 flex flex-col items-center justify-center hover:border-rose-500 transition-colors">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Enfoque
+                                Tradicional</span>
+                            <div class="text-3xl font-black text-white mb-2">Velocidad</div>
+                            <div class="text-sm text-slate-300">Tickets Resueltos</div>
+                            <div class="mt-4 text-xs text-rose-400 flex items-center animate-bounce"><i
+                                    data-lucide="rotate-cw" class="w-3 h-3 mr-1"></i> Voltear</div>
+                        </div>
+                        <div
+                            class="metric-back bg-gradient-to-br from-rose-600 to-rose-800 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+                            <span class="text-xs font-bold text-rose-200 uppercase tracking-widest mb-3">Enfoque
+                                Moderno</span>
+                            <div class="text-lg font-black text-white mb-2">Time-to-Market</div>
+                            <div class="text-xs text-rose-100 mb-2">Rapidez desde la idea hasta la producción.</div>
+                            <div class="text-2xl font-bold text-white">Lead Time</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- MEJORES PRÁCTICAS -->
+        <section id="best-practices" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-green-100 p-3 rounded-2xl mr-4">
+                    <i data-lucide="check-circle-2" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Mejores Prácticas de Implementación</h2>
+            </div>
+            <!-- ... existing content ... -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Practice 1 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        1</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Alineación con la estrategia del negocio</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">El modelo operativo de ICT debe ser un reflejo
+                            de la estrategia corporativa. Es fundamental articular cómo la función de tecnología crea,
+                            entrega y protege valor para la empresa. Una clara cadena de valor ayuda a priorizar
+                            proyectos.</p>
+                    </div>
+                </div>
+
+                <!-- Practice 2 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        2</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Liderazgo involucrado y gobernanza interfuncional</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">La implementación debe ser impulsada desde la
+                            alta dirección. El CIO y ejecutivos de negocio deben co-diseñar el modelo. Se sugiere crear
+                            <em>steering committees</em> mixtos para guiar la transición, derribando la barrera "TI vs
+                            negocio" [25].
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Practice 3 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        3</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Claridad de procesos, roles y métricas</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Documentar procesos clave y establecer KPI
+                            alineados a cada nivel (ej. time-to-market). Revisar la estructura organizativa creando
+                            nuevos roles necesarios (product owners, líderes de datos) y evitando solapamientos.</p>
+                    </div>
+                </div>
+
+                <!-- Practice 4 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        4</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Equipos multifuncionales y enfoque ágil</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Organizar equipos autónomos orientados a
+                            productos o flujos de valor en lugar de departamentos estancos. La colaboración
+                            interfuncional ágil puede acortar el time-to-market hasta en un 90% [29].</p>
+                    </div>
+                </div>
+
+                <!-- Practice 5 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        5</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Tecnología moderna y arquitectura flexible</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Evolucionar hacia arquitecturas modulares
+                            (microservicios, APIs, nube) que habiliten la rapidez. La tecnología deja de ser un área
+                            separada y pasa a ser parte intrínseca del modelo de negocio.</p>
+                    </div>
+                </div>
+
+                <!-- Practice 6 -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex gap-4 group">
+                    <div
+                        class="flex-shrink-0 bg-slate-100 text-slate-600 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        6</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Cultura de mejora continua e innovación</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">Cambiar el modelo operativo requiere un cambio
+                            cultural: valorar la experimentación y el aprendizaje. Los líderes deben dar el ejemplo y
+                            dedicar recursos a la formación continua del personal [33].</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mt-8 mb-4 text-slate-600 leading-relaxed">
+                Adicionalmente, al ganar flexibilidad, es indispensable reforzar la <strong>gobernanza y gestión del
+                    riesgo</strong>. Flexibilidad no significa falta de control; el desafío es implementar controles
+                ligeros pero efectivos (automatización, monitoreo).
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                Finalmente, la <strong>gestión del cambio</strong> es vital: comunicación transparente y empatía para
+                atender la incertidumbre humana ante la transformación.
+            </p>
+        </section>
+
+        <!-- TENDENCIAS -->
+        <section id="tendencias" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-amber-100 p-3 rounded-2xl mr-4">
+                    <i data-lucide="lightbulb" class="w-8 h-8 text-amber-600"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Tendencias Emergentes</h2>
+            </div>
+
+            <p class="mb-8 text-slate-600">El panorama tecnológico cambia constantemente. Estas son algunas tendencias
+                que influyen en la evolución de los modelos operativos:</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="bot" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">Automatización inteligente e IA</h5>
+                    <p class="text-sm text-slate-500">Uso de agentes inteligentes y IA generativa para tareas
+                        rutinarias, liberando talento humano para labores estratégicas.</p>
+                </div>
+                <!-- ... cards 2 to 6 existing content ... -->
+                <!-- Card 2 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="users-2" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">Equipos "Fusionados"</h5>
+                    <p class="text-sm text-slate-500">Profesionales de TI integrados directamente en áreas de negocio
+                        (marketing, operaciones), difuminando fronteras.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">DevSecOps & SRE</h5>
+                    <p class="text-sm text-slate-500">Seguridad y confiabilidad integradas desde el diseño en todo el
+                        ciclo de vida del servicio, no al final.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="smartphone" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">Experiencia Omnicanal</h5>
+                    <p class="text-sm text-slate-500">Estructuras orientadas al <em>customer journey</em> y UX,
+                        integrando canales físicos y digitales coherentemente.</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="bar-chart-2" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">Analítica Avanzada</h5>
+                    <p class="text-sm text-slate-500">Democratización de datos (Data Mesh) y gobierno de datos robusto
+                        como eje organizador de procesos.</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div
+                    class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-kawn-base hover:shadow-lg transition-all duration-300">
+                    <div
+                        class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-kawn-base group-hover:text-white transition-colors">
+                        <i data-lucide="leaf" class="w-6 h-6 text-slate-600 group-hover:text-white"></i>
+                    </div>
+                    <h5 class="font-bold text-slate-800 mb-2">Sostenibilidad (Green IT)</h5>
+                    <p class="text-sm text-slate-500">Inclusión de criterios ambientales y responsabilidad social en las
+                        decisiones operativas de tecnología.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI LAB -->
+        <section id="ai-lab" class="mb-20 scroll-mt-28">
+            <div class="flex items-center mb-8">
+                <div class="bg-gradient-to-br from-kawn-base to-kawn-deep p-3 rounded-2xl mr-4 shadow-lg">
+                    <i data-lucide="sparkles" class="w-8 h-8 text-white"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-slate-900">Laboratorio de Inteligencia KawnBit</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+
+                <!-- Main Chat Interface -->
+                <div
+                    class="lg:col-span-2 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col h-[550px] relative">
+                    <div class="absolute top-0 w-full h-1 bg-gradient-to-r from-kawn-light via-kawn-base to-kawn-dark">
+                    </div>
+
+                    <div
+                        class="bg-slate-50/50 p-4 flex justify-between items-center border-b border-slate-100 backdrop-blur-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-white p-2 rounded-full shadow-sm border border-slate-100">
+                                <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-800">Consultor de Estrategia TI</h3>
+                                <p class="text-[10px] text-slate-500">Experto en Modelos Operativos y Transformación</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1 animate-pulse"></span>
+                                ONLINE
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-slate-50/30 scroll-smooth">
+                        <div class="ai-message bot shadow-sm">
+                            Hola, soy tu consultor virtual. ¿Te gustaría saber qué modelo operativo se adapta mejor a tu
+                            empresa o cómo implementar equipos ágiles? ¡Pregúntame! ✨
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white border-t border-slate-100">
+                        <form id="chat-form" class="flex gap-3">
+                            <input type="text" id="user-input"
+                                class="flex-1 border border-slate-200 bg-slate-50 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none transition-all"
+                                placeholder="Ej: ¿Cuáles son las ventajas del modelo Data-Driven?">
+                            <button type="submit" id="chat-submit-btn"
+                                class="bg-kawn-deep text-white p-3 rounded-xl hover:bg-kawn-base transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed group"
+                                aria-label="Enviar mensaje">
+                                <i data-lucide="send"
+                                    class="w-5 h-5 group-hover:translate-x-0.5 transition-transform"></i>
+                            </button>
+                        </form>
+                        <p id="connection-status"
+                            class="text-[10px] text-center text-slate-400 mt-2 flex justify-center items-center">
+                            <i data-lucide="lock" class="w-3 h-3 mr-1"></i> Modo Mock (Seguro) - Añade API Key en Config
+                            para Live
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tools Column -->
+                <div class="flex flex-col gap-6">
+
+                    <!-- Recommender Tool -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex-1 flex flex-col">
+                        <h3 class="font-bold text-kawn-deep mb-3 flex items-center text-sm"><i data-lucide="search"
+                                class="mr-2 w-4 h-4"></i> Recomendador de Modelo</h3>
+                        <p class="text-xs text-slate-500 mb-3">Describe brevemente tu empresa y la IA sugerirá un
+                            modelo.</p>
+
+                        <textarea id="scenario-input"
+                            class="w-full h-24 border border-slate-200 rounded-xl p-3 text-xs focus:ring-2 focus:ring-kawn-base outline-none resize-none mb-3 bg-slate-50"
+                            placeholder="Ej: Retail pequeño enfocado en precios bajos y eficiencia..."></textarea>
+
+                        <button id="scenario-btn" onclick="analyzeScenario()"
+                            class="w-full py-2 bg-slate-800 text-white rounded-lg font-bold text-xs hover:bg-slate-700 transition-all flex justify-center items-center gap-2 mb-3 shadow-md focus:outline-none focus:ring-2 focus:ring-slate-800">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i> Consultar IA
+                        </button>
+
+                        <div id="scenario-result"
+                            class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700 h-24 overflow-y-auto custom-scrollbar">
+                            <span class="opacity-50 italic">Esperando descripción...</span>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Tool -->
+                    <div
+                        class="bg-gradient-to-br from-kawn-light/30 to-white p-6 rounded-2xl shadow-sm border border-kawn-base/20 flex-1 flex flex-col justify-center relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 bg-kawn-light/50 w-20 h-20 rounded-full blur-xl"></div>
+                        <h3 class="font-bold text-kawn-deep mb-2 flex items-center text-sm"><i data-lucide="award"
+                                class="mr-2 w-4 h-4"></i> Desafío de Conocimiento</h3>
+                        <p class="text-xs text-slate-500 mb-4">Gemini generará preguntas sobre este capítulo.</p>
+
+                        <div id="quiz-container">
+                            <button id="quiz-btn" onclick="generateQuiz()"
+                                class="w-full py-3 bg-kawn-base text-white rounded-xl font-bold text-xs hover:bg-kawn-dark transition-all flex justify-center items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-kawn-base">
+                                <i data-lucide="zap" class="w-4 h-4"></i> Generar Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONCLUSIONES -->
+        <section
+            class="mb-16 scroll-mt-28 bg-slate-800 text-white p-10 rounded-3xl shadow-2xl relative overflow-hidden">
+            <!-- Decorative background elements -->
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-kawn-base opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2">
+            </div>
+
+            <div class="relative z-10">
+                <div class="flex items-center mb-8">
+                    <div class="bg-white/10 p-3 rounded-2xl mr-4 backdrop-blur-md">
+                        <i data-lucide="flag" class="w-8 h-8 text-kawn-light"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold">Conclusiones</h2>
+                </div>
+
+                <p class="mb-4 text-lg text-slate-200 leading-relaxed font-light">
+                    La gestión eficaz de la tecnología en una empresa moderna requiere mucho más que buenas herramientas
+                    o talento técnico; requiere el <strong>modelo operativo adecuado</strong>.
+                </p>
+                <p class="mb-4 text-slate-300 leading-relaxed">
+                    Para los emprendedores, ejecutivos y responsables de tecnología, entender y desarrollar el modelo
+                    operativo óptimo se ha vuelto una tarea de primera línea, al mismo nivel que definir la estrategia
+                    de negocio. Se recomienda mantener una visión holística: considerar procesos, personas y tecnología
+                    de forma integral.
+                </p>
+                <p class="mb-4 text-slate-300 leading-relaxed">
+                    Es importante enfatizar que <strong>no existe un modelo operativo perfecto universal</strong>. Cada
+                    empresa, dependiendo de su tamaño, sector, madurez digital y objetivos, tendrá una configuración
+                    distinta. Lo esencial es que la elección sea consciente y fundamentada.
+                </p>
+                <p class="mb-8 text-slate-300 leading-relaxed">
+                    Finalmente, adoptar un nuevo modelo operativo ICT es un viaje. Tendrá obstáculos, pero la recompensa
+                    es grande: una organización más ágil, innovadora y eficiente, capaz de aprovechar la tecnología para
+                    impulsar la estrategia en vez de estar limitada por ella.
+                </p>
+
+                <div class="bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-md text-center">
+                    <p class="font-bold text-kawn-light text-lg italic">
+                        "Las empresas que logren dominar su modelo operativo y alinearlo con la dirección estratégica
+                        estarán mejor posicionadas para liderar en sus industrias."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div
+                    class="h-10 w-10 bg-gradient-to-br from-kawn-dark to-kawn-base rounded-lg opacity-80 flex items-center justify-center text-white font-bold">
+                    K</div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black text-white tracking-tight leading-none font-display">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <p class="text-sm text-center md:text-right">
+                © <span id="current-year">2024</span> KawnBit Magazine. Todos los derechos reservados.<br>
+                <span class="text-xs opacity-50">Basado en el Capítulo 9: Modelos Operativos ICT.</span>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Set Current Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Init Icons
+        lucide.createIcons();
+
+        // -----------------------------------------------------
+        // 0. CONFIG & API KEY MANAGEMENT
+        // -----------------------------------------------------
+        let userApiKey = localStorage.getItem('gemini_api_key') || "";
+
+        function toggleConfig() {
+            const modal = document.getElementById('config-modal');
+            const input = document.getElementById('api-key-input');
+            modal.classList.toggle('hidden');
+
+            if (!modal.classList.contains('hidden')) {
+                input.value = userApiKey;
+                setTimeout(() => input.focus(), 100); // Focus for a11y
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('api-key-input');
+            const icon = document.getElementById('eye-icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = "password";
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        function saveApiKey() {
+            const input = document.getElementById('api-key-input');
+            userApiKey = input.value.trim();
+            localStorage.setItem('gemini_api_key', userApiKey);
+            toggleConfig();
+            updateStatus();
+        }
+
+        function clearApiKey() {
+            userApiKey = "";
+            localStorage.removeItem('gemini_api_key');
+            document.getElementById('api-key-input').value = "";
+            toggleConfig();
+            updateStatus();
+            alert("API Key eliminada. Volviendo a modo Mock.");
+        }
+
+        function updateStatus() {
+            const status = document.getElementById('connection-status');
+            if (userApiKey) {
+                status.innerHTML = `<i data-lucide="zap" class="w-3 h-3 mr-1 text-kawn-base"></i> Modo Live (API Key configurada) ✨`;
+                status.className = "text-[10px] text-center text-kawn-dark mt-2 flex justify-center items-center font-bold animate-pulse";
+            } else {
+                status.innerHTML = `<i data-lucide="lock" class="w-3 h-3 mr-1"></i> Modo Mock (Seguro) - Añade API Key en Config para Live`;
+                status.className = "text-[10px] text-center text-slate-400 mt-2 flex justify-center items-center";
+            }
+            lucide.createIcons();
+        }
+        updateStatus();
+
+
+        // -----------------------------------------------------
+        // 1. INTERACTIVE STRUCTURE DIAGRAM LOGIC
+        // -----------------------------------------------------
+        const nodeInfo = {
+            strategy: {
+                title: "Estrategia (El QUÉ y el POR QUÉ)",
+                desc: "Define la visión a largo plazo, los objetivos de mercado y la propuesta de valor. Es el punto de partida que dicta qué debe lograr la tecnología."
+            },
+            model: {
+                title: "Modelo Operativo (El CÓMO)",
+                desc: "El 'pegamento' o motor de traducción. Configura procesos, roles (personas) y herramientas (tecnología) para ejecutar la estrategia de forma efectiva."
+            },
+            operations: {
+                title: "Operación Diaria (La EJECUCIÓN)",
+                desc: "Las actividades del día a día: soporte, desarrollo, mantenimiento y entrega de servicios. Aquí es donde se materializa el valor para el cliente."
+            }
+        };
+
+        function showNodeInfo(node) {
+            const info = nodeInfo[node];
+            document.getElementById('info-title').textContent = info.title;
+            document.getElementById('info-desc').textContent = info.desc;
+            document.getElementById('diagram-info').classList.add('border-kawn-base', 'bg-kawn-light/10');
+        }
+
+        function resetNodeInfo() {
+            document.getElementById('info-title').textContent = "Explora el diagrama";
+            document.getElementById('info-desc').textContent = "Interactúa con el gráfico de la derecha para ver los detalles de cada componente.";
+            document.getElementById('diagram-info').classList.remove('border-kawn-base', 'bg-kawn-light/10');
+        }
+
+        // -----------------------------------------------------
+        // 2. MODELS SWITCHER & RADAR CHART LOGIC
+        // -----------------------------------------------------
+
+        let radarChartInstance = null;
+        let currentModelIndex = 0; // Track current model for Simplifier
+
+        const modelsData = [
+            {
+                title: "Modelo Centrado en el Cliente",
+                icon: "smile",
+                desc: "Toda la organización se estructura en función de las necesidades del cliente. El front office (ventas, canales digitales) es protagonista.",
+                example: "Ejemplos: Nespresso, Hoteles InterContinental.",
+                pros: "Aumento de fidelidad y satisfacción, personalización rápida.",
+                cons: "Romper silos internos y alta inversión en capacitación.",
+                stats: [9, 5, 8, 4, 7]
+            },
+            {
+                title: "Modelo Extrafrugal / Ultrasimplificado",
+                icon: "scissors",
+                desc: "Orientado a la eficiencia extrema y la simplicidad operacional. Prima la centralización y la estandarización para reducir costos (mantra: 'menos es más').",
+                example: "Ejemplos: Aerolíneas Low-Cost, Retailers de descuento.",
+                pros: "Costos muy bajos, consistencia en ejecución.",
+                cons: "Puede sacrificar innovación y afectar la moral si se enfoca solo en recortes.",
+                stats: [3, 9, 4, 10, 5]
+            },
+            {
+                title: "Modelo Alimentado por Datos (Data-Driven)",
+                icon: "database",
+                desc: "Los datos dirigen la toma de decisiones. Se apoya en Analytics, IA y Big Data para personalizar servicios y optimizar en tiempo real.",
+                example: "Ejemplos: Netflix, Uber.",
+                pros: "Personalización masiva, decisiones basadas en hechos.",
+                cons: "Retos de privacidad, seguridad y necesidad de cambio cultural.",
+                stats: [9, 8, 8, 6, 8]
+            },
+            {
+                title: "Modelo 'Skynet' (Uso intensivo de máquinas)",
+                icon: "cpu",
+                desc: "Automatización al máximo nivel. Uso de robots, algoritmos y sensores IoT para realizar tareas operativas con mínima intervención humana.",
+                example: "Ejemplos: Amazon (Centros logísticos).",
+                pros: "Eficiencia 24/7, escalabilidad, reducción de error humano.",
+                cons: "Alta inversión inicial, dependencia de sistemas, impacto en empleo.",
+                stats: [8, 10, 5, 7, 7]
+            },
+            {
+                title: "Modelo Abierto y Líquido",
+                icon: "globe",
+                desc: "Basado en colaboración y apertura (ecosistemas, APIs). La empresa co-crea valor con socios, startups e incluso competidores.",
+                example: "Ejemplos: Facebook (Plataforma apps), PayPal, Open Banking.",
+                pros: "Innovación rápida (ideas externas), efectos de red.",
+                cons: "Riesgos de seguridad, propiedad intelectual y complejidad de gestión.",
+                stats: [10, 6, 7, 5, 9]
+            }
+        ];
+
+        function initChart() {
+            const canvas = document.getElementById('main-radar-chart');
+            if (!canvas) return; // Guard against missing element
+
+            const ctx = canvas.getContext('2d');
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Innovación', 'Eficiencia', 'Enfoque Cliente', 'Bajo Coste', 'Agilidad'],
+                    datasets: [{
+                        label: 'Capacidades del Modelo',
+                        data: [0, 0, 0, 0, 0],
+                        fill: true,
+                        backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                        borderColor: '#14b8a6',
+                        pointBackgroundColor: '#0f766e',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0f766e'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 3 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e2e8f0' },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: {
+                                font: { size: 10, family: "'Inter', sans-serif", weight: 'bold' },
+                                color: '#64748b'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: { display: false } // Hide numbers
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function switchModel(index) {
+            currentModelIndex = index;
+            const data = modelsData[index];
+            const contentDiv = document.getElementById('model-content');
+
+            // Hide simplified box when switching
+            document.getElementById('simplified-box').classList.add('hidden');
+
+            // Update Buttons State
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.classList.add('active', 'bg-slate-50', 'border-kawn-base');
+                    btn.classList.remove('border-transparent', 'hover:bg-white');
+                    btn.setAttribute('aria-selected', 'true');
+                } else {
+                    btn.classList.remove('active', 'bg-slate-50', 'border-kawn-base');
+                    btn.classList.add('border-transparent', 'hover:bg-white');
+                    btn.setAttribute('aria-selected', 'false');
+                }
+            });
+
+            // Update Content with animation
+            contentDiv.innerHTML = `
+                <div class="animate-[fade-in_0.5s_ease-out]">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-kawn-light p-4 rounded-xl mr-5 text-kawn-dark shadow-sm">
+                            <i data-lucide="${data.icon}" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-kawn-base uppercase tracking-wider">Modelo Seleccionado</span>
+                            <h3 class="text-2xl font-bold text-slate-800">${data.title}</h3>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mb-6 text-lg">${data.desc}</p>
+                    
+                    <div class="bg-slate-50 p-5 rounded-xl border-l-4 border-kawn-base mb-6 shadow-sm">
+                        <p class="text-sm font-bold text-kawn-deep flex items-start">
+                            <i data-lucide="building" class="w-4 h-4 mr-2 mt-1"></i>
+                            ${data.example}
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 bg-green-50 rounded-xl border border-green-100">
+                            <span class="text-green-700 font-bold text-xs uppercase block mb-2 flex items-center"><i data-lucide="thumbs-up" class="w-3 h-3 mr-1"></i> Ventajas</span>
+                            <p class="text-sm text-slate-700">${data.pros}</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl border border-red-100">
+                            <span class="text-red-700 font-bold text-xs uppercase block mb-2 flex items-center"><i data-lucide="alert-triangle" class="w-3 h-3 mr-1"></i> Desafíos</span>
+                            <p class="text-sm text-slate-700">${data.cons}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+
+            // Update Chart
+            if (radarChartInstance) {
+                radarChartInstance.data.datasets[0].data = data.stats;
+                radarChartInstance.update();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            switchModel(0);
+        });
+
+        // -----------------------------------------------------
+        // 3. SOURCING MATRIX LOGIC
+        // -----------------------------------------------------
+        const sourcingInfo = {
+            insource: {
+                title: "Internalización (In-House)",
+                desc: "El equipo interno gestiona el 100%. Se usa cuando la actividad es el 'Core Business' y requiere alto control y agilidad máxima.",
+                pro: "Control total, retención de conocimiento, cultura unificada.",
+                con: "Costos fijos altos, difícil encontrar talento especializado."
+            },
+            outsource: {
+                title: "Outsourcing / Servicios Gestionados",
+                desc: "Se delega la operación a un proveedor especializado. Ideal para actividades complejas pero que no son diferenciadores estratégicos (ej. Mantenimiento SAP).",
+                pro: "Acceso a expertos, reducción de costos, enfoque en el core.",
+                con: "Pérdida de control, dependencia del proveedor, rigidez contractual."
+            },
+            partner: {
+                title: "Alianza Estratégica (Co-Sourcing)",
+                desc: "Colaboración profunda con socios para innovar juntos. Ambas partes comparten riesgos y beneficios. Común en nuevos desarrollos digitales.",
+                pro: "Innovación acelerada, riesgos compartidos, flexibilidad.",
+                con: "Gestión compleja de la relación, conflictos de interés, propiedad intelectual."
+            },
+            commodity: {
+                title: "Automatización / SaaS / Cloud",
+                desc: "Uso de soluciones estandarizadas de mercado (Utility). Baja complejidad y bajo valor estratégico diferencial (ej. Email, CRM estándar).",
+                pro: "Implementación rápida, pago por uso, escalabilidad.",
+                con: "Poca personalización, dependencia del roadmap del vendor."
+            }
+        };
+
+        function showSourcingInfo(type) {
+            const info = sourcingInfo[type];
+            document.getElementById('sourcing-title').textContent = info.title;
+            document.getElementById('sourcing-desc').textContent = info.desc;
+            document.getElementById('sourcing-pro').textContent = info.pro;
+            document.getElementById('sourcing-con').textContent = info.con;
+            document.getElementById('sourcing-list').classList.remove('hidden');
+            document.querySelectorAll('.matrix-quadrant').forEach(el => el.classList.remove('active'));
+            // Use event target logic carefully for keyboard support
+            // If called from keyboard, target might need to be passed explicitly or logic adjusted,
+            // but clicking works fine. For now focusing on click/active states.
+            if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        }
+
+
+        // -----------------------------------------------------
+        // 4. GEMINI API CLIENT (ROBUST IMPLEMENTATION)
+        // -----------------------------------------------------
+        const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+        async function callSecureAI(systemInstruction, userPrompt, type) {
+            try {
+                const response = await fetch(proxyUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userPrompt }] }],
+                        systemInstruction: { parts: [{ text: systemInstruction }] }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en el Proxy: ${response.status}`);
+                }
+
+                const data = await response.json();
+                let text = data.candidates?.[0]?.content?.parts?.[0]?.text || data.result;
+
+                if (!text) throw new Error("No se recibió respuesta de la IA");
+
+                // Clean up markdown block for JSON responses
+                if (type === 'quiz') {
+                    const start = text.indexOf('[');
+                    const end = text.lastIndexOf(']');
+                    if (start !== -1 && end !== -1) {
+                        text = text.substring(start, end + 1);
+                    }
+                }
+
+                return text;
+
+            } catch (error) {
+                console.error("API Call Failed", error);
+                if (type === 'quiz') throw error;
+                return `⚠️ Error de conexión: Asegúrate de haber configurado la variable GEMINI_API_KEY en Netlify.`;
+            }
+        }
+
+        // Mock Data for Fallback
+        const MOCK_RESPONSES = {
+            chat: "Como Consultor TI (Modo Mock), te diría que el modelo Data-Driven es excelente para escalabilidad. Para respuestas reales, configura tu API Key en el icono ⚙️.",
+            scenario: "**Análisis (Simulado):** Basado en tu descripción, parece que un **Modelo Extrafrugal** te beneficiaría inicialmente. Configura tu API Key para un análisis real.",
+            quiz: `[
+                {"q": "¿Qué modelo prioriza la eficiencia extrema?", "options": ["Data-Driven", "Extrafrugal", "Skynet", "Abierto"], "a": 1},
+                {"q": "¿Cuál es un beneficio de los modelos modernos?", "options": ["Burocracia", "Silos", "Agilidad", "Lentitud"], "a": 2},
+                {"q": "¿Ejemplo de 'Skynet'?", "options": ["Nespresso", "Uber", "Amazon", "Facebook"], "a": 2}
+            ]`,
+            simplify: "El modelo seleccionado se explica así (Mock): Imagina que tu empresa es como un lego gigante..."
+        };
+
+        // --- Chatbot Logic ---
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('user-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        const CONSULTANT_PROMPT = `Eres un Consultor Senior de Estrategia Tecnológica. Responde preguntas sobre Modelos Operativos ICT de forma breve y profesional en español.`;
+
+        if (chatForm) {
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const message = chatInput.value.trim();
+                if (!message) return;
+                chatInput.disabled = true;
+                appendMessage(message, 'user');
+                chatInput.value = '';
+                const loadingId = appendTypingIndicator();
+                const reply = await callSecureAI(CONSULTANT_PROMPT, message, 'chat');
+                document.getElementById(loadingId).remove();
+                appendMessage(reply, 'bot');
+                chatInput.disabled = false;
+                chatInput.focus();
+            });
+        }
+
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `ai-message ${sender} animate-[fade-in_0.3s_ease-out]`;
+            div.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function appendTypingIndicator() {
+            const id = 'loading-' + Date.now();
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = 'ai-message bot italic text-slate-400 text-xs flex items-center gap-2';
+            div.innerHTML = '<span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-75"></span><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-150"></span>';
+            chatMessages.appendChild(div);
+            return id;
+        }
+
+        // --- Scenario Analyzer ---
+        async function analyzeScenario() {
+            const input = document.getElementById('scenario-input').value;
+            const resultBox = document.getElementById('scenario-result');
+            const btn = document.getElementById('scenario-btn');
+            if (!input.trim()) return;
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-4 h-4"></i> Analizando...';
+            lucide.createIcons();
+            const analysis = await callSecureAI("Recomienda uno de los 5 modelos ICT según esta descripción. Sé breve.", input, 'scenario');
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="sparkles" class="w-4 h-4"></i> Consultar IA';
+            lucide.createIcons();
+            resultBox.innerHTML = typeof marked !== 'undefined' ? marked.parse(analysis) : analysis;
+        }
+
+        // --- Quiz Generator ---
+        async function generateQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `<div class="text-center py-6"><i data-lucide="loader-2" class="animate-spin w-8 h-8 mx-auto text-kawn-base"></i><p class="text-xs mt-2 text-slate-500">Generando...</p></div>`;
+            lucide.createIcons();
+            try {
+                // More robust prompt to force JSON
+                const jsonPrompt = `Genera un JSON válido (sin markdown) con 3 preguntas. Formato estricto: [{"q": "Pregunta", "options": ["A","B","C","D"], "a": 0}]`;
+
+                let text = await callSecureAI(jsonPrompt, "Temas: Modelos Operativos, KPI, Sourcing.", 'quiz');
+
+                // Parse Check
+                let questions;
+                try {
+                    questions = JSON.parse(text);
+                } catch (e) {
+                    // Last ditch cleanup attempt if AI added text
+                    const match = text.match(/\[.*\]/s);
+                    if (match) questions = JSON.parse(match[0]);
+                    else throw e;
+                }
+
+                renderQuiz(questions);
+
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `
+                    <div class="text-center py-4">
+                        <p class="text-red-500 text-xs mb-2">Error generando quiz.</p>
+                        <button onclick="generateQuiz()" class="text-xs bg-slate-200 px-2 py-1 rounded hover:bg-slate-300">Reintentar</button>
+                    </div>`;
+            }
+        }
+
+        function renderQuiz(questions) {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            let score = 0;
+            let answered = 0;
+            const quizWrapper = document.createElement('div');
+            quizWrapper.className = 'overflow-y-auto max-h-[300px] pr-2 custom-scrollbar';
+            questions.forEach((q, idx) => {
+                const div = document.createElement('div');
+                div.className = 'mb-6 pb-2 border-b border-dashed border-slate-200 last:border-0';
+                div.innerHTML = `<p class="font-bold text-xs text-kawn-deep mb-3 flex"><span class="bg-kawn-light text-kawn-deep w-5 h-5 rounded-full flex items-center justify-center mr-2 text-[10px]">${idx + 1}</span> ${q.q}</p>`;
+                const optsDiv = document.createElement('div');
+                q.options.forEach((opt, optIdx) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'quiz-option text-xs text-slate-600';
+                    btn.innerHTML = `<span>${opt}</span>`;
+                    btn.setAttribute('role', 'button');
+                    btn.onclick = () => {
+                        if (btn.parentElement.classList.contains('locked')) return;
+                        btn.parentElement.classList.add('locked');
+                        answered++;
+                        if (optIdx === q.a) { btn.classList.add('correct'); score++; }
+                        else { btn.classList.add('wrong'); optsDiv.children[q.a].classList.add('correct'); }
+                        if (answered === questions.length) showScore(score, questions.length);
+                    };
+                    optsDiv.appendChild(btn);
+                });
+                div.appendChild(optsDiv);
+                quizWrapper.appendChild(div);
+            });
+            container.appendChild(quizWrapper);
+        }
+
+        function showScore(s, t) {
+            const container = document.getElementById('quiz-container');
+            const res = document.createElement('div');
+            res.className = 'p-3 bg-gradient-to-r from-kawn-base to-kawn-dark text-white text-center font-bold rounded-xl mt-2 shadow-lg';
+            res.innerHTML = `<div class="text-xs uppercase opacity-80 mb-1">Resultado Final</div><div class="text-2xl mb-1">${s} / ${t}</div>`;
+            container.appendChild(res);
+        }
+
+        // -----------------------------------------------------
+        // 5. TEXT TO SPEECH (PODCAST) ROBUST VERSION
+        // -----------------------------------------------------
+        async function generateAudioSummary() {
+            const btn = document.getElementById('audio-btn');
+            const loading = document.getElementById('audio-loading');
+            const player = document.getElementById('tts-player');
+
+            btn.disabled = true;
+            loading.classList.remove('hidden');
+
+            const script = "Bienvenidos al Capítulo 9 de KawnBit Magazine. Hoy exploraremos los Modelos Operativos ICT. Descubriremos cómo alinear estrategia, personas y tecnología.";
+
+            try {
+                const response = await fetch(proxyUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: script }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
+                        }
+                    })
+                });
+
+                if (!response.ok) throw new Error("TTS Proxy Error");
+
+                const data = await response.json();
+                const part = data.candidates?.[0]?.content?.parts?.[0];
+
+                if (part?.inlineData) {
+                    const audioBase64 = part.inlineData.data;
+                    const mimeType = part.inlineData.mimeType || "audio/mp3";
+
+                    player.src = `data:${mimeType};base64,${audioBase64}`;
+                    player.play();
+                    btn.innerHTML = `<i data-lucide="volume-2" class="w-3 h-3 mr-2"></i> Reproduciendo...`;
+                    lucide.createIcons();
+
+                    player.onended = () => {
+                        btn.innerHTML = `<i data-lucide="headphones" class="w-3 h-3 mr-2"></i> Escuchar Podcast`;
+                        btn.disabled = false;
+                        lucide.createIcons();
+                    };
+                } else {
+                    throw new Error("No audio data received from proxy");
+                }
+
+            } catch (error) {
+                console.error("TTS Error", error);
+                alert("Error generando audio (Proxy). Verifica la configuración en Netlify.");
+            } finally {
+                loading.classList.add('hidden');
+                if (player.paused && !player.src) btn.disabled = false;
+            }
+        }
+
+        // -----------------------------------------------------
+        // 6. SIMPLIFIER (TEXT GEN)
+        // -----------------------------------------------------
+        async function simplifyCurrentModel() {
+            const box = document.getElementById('simplified-box');
+            const txt = document.getElementById('simplified-text');
+            const modelName = modelsData[currentModelIndex].title;
+            const modelDesc = modelsData[currentModelIndex].desc;
+
+            box.classList.remove('hidden');
+            txt.innerHTML = '<i data-lucide="loader" class="animate-spin w-3 h-3"></i> Pensando...';
+            lucide.createIcons();
+
+            const prompt = `Explica el modelo operativo "${modelName}" (${modelDesc}) usando una analogy simple para un niño de 5 años. Máximo 2 frases.`;
+            const simplified = await callSecureAI("Eres un profesor amable.", prompt, 'simplify');
+
+            txt.innerText = simplified;
+        }
+
+    </script>
+</body>
+
+</html>

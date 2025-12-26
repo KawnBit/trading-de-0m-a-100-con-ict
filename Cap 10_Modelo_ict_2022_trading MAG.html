@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KawnBit Magazine: El Modelo ICT en Trading (Robust Edition)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* KawnBit Palette */
+            --primary-teal: #4db6ac;
+            --secondary-teal: #00897b;
+            --dark-teal: #005b4f;
+            --accent-dark: #263238;
+            --text-grey: #455a64;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --danger: #e57373;
+            --danger-dark: #c62828;
+            --success: #66bb6a;
+            --gold: #fbc02d;
+            --gradient-teal: linear-gradient(135deg, var(--primary-teal), var(--secondary-teal));
+            --ai-gradient: linear-gradient(135deg, #7b1fa2, #ab47bc);
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-grey);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--secondary-teal);
+            margin-bottom: 0.5em;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--primary-teal);
+            padding-bottom: 10px;
+            margin-top: 50px;
+            color: var(--dark-teal);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary-teal);
+            margin-top: 30px;
+        }
+
+        strong {
+            color: var(--secondary-teal);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Header Styles */
+        .magazine-header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--light-bg);
+            margin-bottom: 40px;
+        }
+
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .logo-placeholder {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            background: var(--gradient-teal);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .intro-lead {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            border-left: 5px solid var(--primary-teal);
+            padding-left: 25px;
+            margin-bottom: 30px;
+            background: #e0f2f1;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Infographic Boxes Improved */
+        .infographic-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .infographic-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .infographic-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-teal);
+        }
+
+        /* AI Feature Box Specifics */
+        .ai-box {
+            border: 2px solid #ce93d8;
+            background: #f3e5f5;
+        }
+
+        .ai-box::before {
+            background: var(--ai-gradient);
+        }
+
+        .ai-title {
+            color: #4a148c;
+            background: #e1bee7;
+        }
+
+        .infographic-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-teal);
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #e0f2f1;
+            padding: 10px 20px;
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .infographic-title i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--secondary-teal);
+        }
+
+        .ai-title i {
+            color: #7b1fa2;
+        }
+
+        /* --- Interactive & Canvas Styles --- */
+
+        .structure-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .control-btn {
+            background: white;
+            border: 2px solid var(--secondary-teal);
+            color: var(--secondary-teal);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover,
+        .control-btn.active {
+            background: var(--secondary-teal);
+            color: white;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 300px;
+            background: #fcfcfc;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Liquidity Sweep Animation */
+        .liquidity-stage {
+            height: 250px;
+            position: relative;
+            background: linear-gradient(to bottom, #fff 0%, #f4f7f6 100%);
+            border-bottom: 2px solid #333;
+        }
+
+        /* FVG Interactive */
+        .fvg-interactive-container {
+            position: relative;
+            height: 300px;
+            background: #fff;
+        }
+
+        .fvg-tooltip {
+            position: absolute;
+            background: rgba(38, 50, 56, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 100;
+        }
+
+        /* Premium/Discount Slider */
+        .pd-tool-container {
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pd-visual {
+            height: 40px;
+            width: 100%;
+            background: linear-gradient(to right, #66bb6a 0%, #a5d6a7 49%, #ef5350 51%, #e57373 100%);
+            border-radius: 20px;
+            position: relative;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pd-marker {
+            width: 4px;
+            height: 50px;
+            background: #333;
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: left 0.1s ease;
+        }
+
+        .pd-slider {
+            width: 100%;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .pd-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--secondary-teal);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .pd-status {
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            min-height: 1.5em;
+        }
+
+        /* Step Cards */
+        .step-card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .step-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .step-card:hover {
+            border-color: var(--primary-teal);
+            background: #e0f2f1;
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background: var(--dark-teal);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+            font-weight: bold;
+        }
+
+        /* List Styles */
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "\f058";
+            /* FontAwesome check */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--secondary-teal);
+            position: absolute;
+            left: -25px;
+            top: 2px;
+        }
+
+        /* Footer */
+        .main-footer {
+            margin-top: 50px;
+            padding: 40px 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .canvas-container {
+                height: 200px;
+            }
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .quiz-option:hover {
+            background: #e0f2f1;
+        }
+
+        .quiz-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+        }
+
+        .quiz-option.incorrect {
+            background: #ffcdd2;
+            border-color: #f44336;
+        }
+
+        .btn-interact {
+            background: var(--gradient-teal);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .btn-interact:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* AI Button Special */
+        .btn-ai {
+            background: var(--ai-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ai:hover:not(:disabled) {
+            box-shadow: 0 0 15px rgba(171, 71, 188, 0.5);
+        }
+
+        /* New Styles for AMD and OTE */
+        .amd-label {
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: var(--text-grey);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        /* Chat & Decoder Interface */
+        .ai-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .ai-response-area {
+            background: #fff;
+            border: 1px solid #e1bee7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 60px;
+            font-size: 0.95rem;
+            color: #4a148c;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(171, 71, 188, 0.3);
+            border-radius: 50%;
+            border-top-color: #7b1fa2;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="magazine-header">
+            <div class="logo-container">
+                <div id="logo-text" class="logo-placeholder">KawnBit</div>
+            </div>
+            <div
+                style="font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary-teal); font-size: 0.9rem; font-weight: 600; margin-top: 5px;">
+                Quantitative Trading Community
+            </div>
+        </header>
+
+        <div class="chapter-title">
+            <h1>Capítulo 10: El Modelo ICT en Trading (Inner Circle Trader)</h1>
+        </div>
+
+        <section>
+            <h2>Introducción al modelo ICT</h2>
+            <p class="intro-lead">El modelo ICT (Inner Circle Trader) es una metodología de trading desarrollada por
+                Michael J. Huddleston que se centra en entender cómo operan las instituciones financieras (Smart Money)
+                y cómo esto se refleja en la acción del precio.</p>
+
+            <p>A diferencia de las estrategias tradicionales basadas en indicadores, el enfoque ICT analiza el
+                <strong>flujo de órdenes institucionales y la liquidez del mercado</strong>. La premisa central es que
+                el mercado se mueve para buscar liquidez y ejecutar órdenes, no simplemente siguiendo indicadores
+                técnicos.</p>
+
+            <p>En la práctica, esto significa que el precio suele dirigirse deliberadamente hacia áreas donde hay
+                acumulación de órdenes (por ejemplo, niveles evidentes de stop loss por encima de máximos o por debajo
+                de mínimos) para luego revertir una vez que esas órdenes han sido activadas. Cada gráfico puede
+                interpretarse así como una “historia de liquidez” diseñada por las instituciones y grandes operadores.
+            </p>
+
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-sitemap"></i> Los Pilares del Modelo ICT</div>
+                <p>Este marco estructurado ayuda a identificar giros de precio de alta probabilidad combinando varios
+                    conceptos clave que desarrollaremos a continuación:</p>
+                <ul>
+                    <li><strong>Estructura del mercado:</strong> El esqueleto del movimiento.</li>
+                    <li><strong>Piscinas de liquidez:</strong> Donde se acumula el dinero.</li>
+                    <li><strong>Manipulación institucional:</strong> Barridos o <em>stop hunts</em>.</li>
+                    <li><strong>El Poder de 3 (AMD):</strong> Acumulación, Manipulación, Distribución.</li>
+                    <li><strong>Desplazamientos:</strong> Movimientos fuertes con intención.</li>
+                    <li><strong>Imbalances:</strong> Brechas de valor justo (FVG).</li>
+                    <li><strong>Optimal Trade Entry (OTE):</strong> Puntos precisos de entrada con Fibonacci.</li>
+                </ul>
+            </div>
+
+            <p>Al dominar este “idioma” de la acción del precio institucional, incluso un trader sin experiencia previa
+                puede comenzar a entender la narrativa detrás de los movimientos del mercado y aprender a posicionarse a
+                favor de esa dinámica.</p>
+        </section>
+
+        <!-- NEW AI FEATURE 1: MENTOR -->
+        <section>
+            <div class="infographic-box ai-box">
+                <div class="infographic-title ai-title"><i class="fas fa-brain"></i> Mentor Virtual ICT (Powered by
+                    Gemini ✨)</div>
+                <p>¿Tienes dudas sobre los conceptos leídos? Pregúntale a nuestra IA entrenada en la metodología ICT.
+                </p>
+                <div class="ai-input-group">
+                    <input type="text" id="mentor-input" class="ai-input"
+                        placeholder="Ej: ¿Qué diferencia hay entre BOS y CHoCH?">
+                    <button id="mentor-btn" class="btn-interact btn-ai" onclick="askMentor()">Preguntar <div
+                            id="mentor-spinner" class="loading-spinner"></div></button>
+                </div>
+                <div id="mentor-response" class="ai-response-area"></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Estructura del mercado: tendencias, rupturas y cambios</h2>
+            <p>La <strong>estructura del mercado</strong> es el punto de partida para analizar cualquier gráfico bajo la
+                perspectiva ICT. Se refiere a la secuencia de máximos y mínimos que va dibujando el precio, la cual nos
+                indica si estamos en una tendencia alcista, bajista o consolidación.</p>
+
+            <h3>Continuidad de tendencia (BOS)</h3>
+            <p>Cuando el precio rompe un máximo relevante en una tendencia alcista (o un mínimo en una bajista) y
+                continúa desplazándose en esa dirección, se considera una confirmación de la tendencia vigente. Esto es
+                conocido como <strong>ruptura de estructura</strong> o <strong>Break of Structure (BOS)</strong>, e
+                indica que el movimiento dominante sigue intacto.</p>
+
+            <h3>Cambio de estructura (CHoCH)</h3>
+            <p>Por el contrario, si tras una larga secuencia tendencial el precio rompe en la dirección opuesta,
+                hablamos de un <strong>cambio de carácter o de estructura (Change of Character, CHoCH)</strong>. Esto
+                ocurre, por ejemplo, cuando en una tendencia alcista el precio forma un máximo significativo y luego cae
+                por debajo del último mínimo relevante.</p>
+
+            <!-- IMPROVED GRAPHIC: INTERACTIVE CANVAS -->
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-chart-line"></i> Laboratorio de Estructura (Interactivo)
+                </div>
+                <div class="structure-controls">
+                    <button class="control-btn active" onclick="drawStructure('bullish')">Ver Continuación
+                        (BOS)</button>
+                    <button class="control-btn" onclick="drawStructure('reversal')">Ver Cambio (CHoCH)</button>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="structureCanvas" width="800" height="300"></canvas>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 10px; text-align: center; color: var(--text-grey);">
+                    <em>Haz clic en los botones para animar cómo se forma la estructura del precio. Observa cómo el BOS
+                        respeta los mínimos, mientras que el CHoCH los rompe violentamente.</em>
+                </p>
+            </div>
+
+            <p>El modelo ICT fomenta un análisis <strong>multifractal</strong>: se busca una alineación entre lo que
+                ocurre en marcos mayores (sesgo principal) y la confirmación en marcos menores para afinar la entrada.
+                Un error común es confundir un simple amago o mecha con un verdadero cambio de estructura; ICT enfatiza
+                que el precio debe desplazar y cerrar más allá del nivel.</p>
+        </section>
+
+        <section>
+            <h2>Liquidez del mercado y manipulación institucional</h2>
+            <p>En la metodología ICT, la <strong>liquidez</strong> ocupa un lugar central. Se denomina así a la
+                acumulación de órdenes pendientes (principalmente stop loss y stop de entrada) en zonas clave.
+                Típicamente, estas piscinas de liquidez se forman por encima de máximos y por debajo de mínimos
+                claramente identificables.</p>
+
+            <p>La <strong>manipulación institucional</strong> se refiere a cómo los grandes participantes empujan el
+                precio deliberadamente hacia estas zonas para activar esas órdenes y llenar sus propias posiciones. Este
+                movimiento se conoce como <strong>barrido de liquidez</strong> (<em>liquidity sweep</em> o <em>stop
+                    hunt</em>).</p>
+
+            <!-- IMPROVED GRAPHIC: LIQUIDITY SIMULATOR -->
+            <div class="infographic-box" style="background-color: #fff8e1; border-color: #ffe0b2;">
+                <div class="infographic-title" style="background-color: #ffe0b2; color: #e65100;"><i
+                        class="fas fa-exclamation-triangle"></i> Simulador de Trampas de Liquidez</div>
+
+                <div style="padding: 10px; text-align: center; margin-bottom: 10px;">
+                    <p>Haz clic en "Simular Barrido" para ver cómo el mercado caza los Stop Loss.</p>
+                    <button class="btn-interact" style="background: #e65100;" onclick="animateSweep()">Simular Barrido
+                        (Stop Hunt)</button>
+                </div>
+
+                <div class="canvas-container" style="background: white; border-color: #ffe0b2;">
+                    <canvas id="liquidityCanvas" width="800" height="250"></canvas>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+                    <div style="flex:1; min-width: 200px;">
+                        <h4><i class="fas fa-arrows-alt-v"></i> Dobles Techos/Suelos</h4>
+                        <p>Los "Equal Highs/Lows" son imanes. El precio suele romperlos falsamente para capturar stops
+                            antes de girar.</p>
+                    </div>
+                    <div style="flex:1; min-width: 200px;">
+                        <h4><i class="fas fa-clock"></i> Máximos del Día Anterior</h4>
+                        <p>Niveles de referencia donde se acumulan órdenes. Un barrido aquí suele preceder a un
+                            movimiento fuerte.</p>
+                    </div>
+                </div>
+            </div>
+
+            <p>La clave está en que estos barridos no son movimientos orgánicos sino diseñados. Detectar un barrido nos
+                indica cuándo un movimiento de volatilidad ha sido provocado artificialmente para recoger órdenes. Tras
+                el barrido, necesitamos confirmación de que el mercado va a girar, generalmente a través de un
+                desplazamiento y cambio de estructura.</p>
+        </section>
+
+        <!-- NEW SECTION: POWER OF 3 (AMD) -->
+        <section>
+            <h2>El Poder de 3: Acumulación, Manipulación y Distribución (AMD)</h2>
+            <p>Uno de los patrones más recurrentes en el modelo ICT es el concepto de <strong>AMD (Accumulation,
+                    Manipulation, Distribution)</strong>. Este ciclo describe la anatomía de una vela diaria o de un
+                movimiento intradía completo.</p>
+            <p>Para que el Smart Money pueda mover el precio agresivamente (Distribución), primero necesita construir
+                una posición (Acumulación) e inducir a los traders minoristas en la dirección equivocada (Manipulación).
+            </p>
+
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-sync"></i> Animación del Ciclo AMD</div>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <button class="btn-interact" onclick="animateAMD()">Reproducir Ciclo AMD</button>
+                </div>
+                <div class="canvas-container" style="background: #fdfdfd;">
+                    <canvas id="amdCanvas" width="800" height="300"></canvas>
+                </div>
+                <div
+                    style="display: flex; gap: 15px; margin-top: 15px; justify-content: space-around; text-align: center;">
+                    <div style="width: 30%;">
+                        <h5 style="color: #555;">1. Acumulación</h5>
+                        <p style="font-size: 0.8rem;">Rango lateral. El Smart Money acumula posiciones discretamente.
+                        </p>
+                    </div>
+                    <div style="width: 30%;">
+                        <h5 style="color: #e57373;">2. Manipulación</h5>
+                        <p style="font-size: 0.8rem;">Falsa ruptura (Judas Swing) en dirección opuesta a la intención
+                            real.</p>
+                    </div>
+                    <div style="width: 30%;">
+                        <h5 style="color: #4db6ac;">3. Distribución</h5>
+                        <p style="font-size: 0.8rem;">El movimiento real y expansivo hacia el objetivo.</p>
+                    </div>
+                </div>
+            </div>
+            <p>Si tu sesgo es alcista, buscarás que el precio <strong>acumule</strong> cerca de la apertura,
+                <strong>manipule</strong> a la baja (atrapando vendedores) y luego <strong>distribuya</strong> al alza.
+                Comprar durante la fase de manipulación ofrece el mejor precio posible.</p>
+        </section>
+
+        <!-- NEW AI FEATURE 2: NEWS DECODER -->
+        <section>
+            <div class="infographic-box ai-box">
+                <div class="infographic-title ai-title"><i class="fas fa-newspaper"></i> Decodificador de Noticias
+                    "Smart Money" ✨</div>
+                <p>Pega un titular financiero. La IA analizará cómo las instituciones podrían usar esta noticia para
+                    inducir liquidez.</p>
+                <div class="ai-input-group">
+                    <input type="text" id="news-input" class="ai-input"
+                        placeholder="Ej: La inflación sube más de lo esperado...">
+                    <button id="news-btn" class="btn-interact btn-ai" onclick="decodeNews()">Analizar <div
+                            id="news-spinner" class="loading-spinner"></div></button>
+                </div>
+                <div id="news-response" class="ai-response-area"></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Desplazamiento e Imbalances (Fair Value Gaps)</h2>
+            <p>El <strong>desplazamiento</strong> es un movimiento impulsivo, rápido y dirigido que indica intención
+                institucional. Ocurre típicamente tras un barrido de liquidez y se caracteriza por velas de rango amplio
+                y poco retroceso.</p>
+
+            <h3>Brechas de Valor Justo (FVG)</h3>
+            <p>Cuando el precio se mueve muy rápido, a menudo no deja órdenes contrarias suficientes, produciendo
+                <strong>desequilibrios o ineficiencias</strong>. En terminología ICT, estos huecos se llaman
+                <strong>Fair Value Gaps (FVG)</strong>.</p>
+
+            <p>Una FVG aparece en un patrón de tres velas donde la mecha de la primera no se solapa con la mecha de la
+                tercera, dejando un espacio vacío en la segunda vela.</p>
+
+            <!-- IMPROVED GRAPHIC: INTERACTIVE FVG ANATOMY -->
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-layer-group"></i> Anatomía Interactiva de una FVG</div>
+                <div class="fvg-interactive-container" id="fvgContainer">
+                    <canvas id="fvgCanvas" width="800" height="300"></canvas>
+                    <div id="fvgTooltip" class="fvg-tooltip"></div>
+                </div>
+                <p style="text-align: center; font-size: 0.9rem; margin-top: 10px;">
+                    <em>Mueve el ratón (o toca) sobre el gráfico. Cuando encuentres la zona amarilla, verás la
+                        ineficiencia detectada.</em>
+                </p>
+            </div>
+
+            <p>Las instituciones suelen rellenar las brechas antes de seguir. Por tanto, las FVG sirven como puntos de
+                entrada ideales, esperando que el precio retroceda a llenar la brecha para retomar la tendencia.</p>
+        </section>
+
+        <section>
+            <h2>Bloques de Órdenes (Order Blocks)</h2>
+            <p>Un <strong>Order Block (OB)</strong> es la última vela significativa antes de un movimiento impulsivo
+                contrario. Representa el área donde probablemente una institución abrió una posición grande.</p>
+            <ul>
+                <li><strong>OB Alcista:</strong> La última vela bajista antes de un rally alcista fuerte.</li>
+                <li><strong>OB Bajista:</strong> La última vela alcista antes de una caída fuerte.</li>
+            </ul>
+            <p>Cuando el precio retorna a esa zona, a menudo quedan órdenes pendientes sin ejecutar, por lo que actúa
+                como soporte o resistencia institucional. La estrategia recomienda marcar el cuerpo de la vela o su 50%
+                (mean threshold) como nivel de entrada, con el stop loss justo por debajo/encima del bloque.</p>
+        </section>
+
+        <section>
+            <h2>Zonas de Descuento y Premium</h2>
+            <p>El principio de equilibrio dicta: <strong>"Compra solo en descuento y vende solo en premium"</strong>.
+            </p>
+
+            <!-- IMPROVED GRAPHIC: INTERACTIVE CALCULATOR -->
+            <div class="infographic-box" style="border-left: 5px solid var(--secondary-teal);">
+                <div class="infographic-title"><i class="fas fa-calculator"></i> Calculadora Visual de Zonas</div>
+                <div class="pd-tool-container">
+                    <p>Arrastra el deslizador para simular el retroceso del precio:</p>
+                    <div class="pd-status" id="pdStatus">Equilibrio (50%)</div>
+
+                    <div class="pd-visual">
+                        <div class="pd-marker" id="pdMarker"></div>
+                        <!-- Overlay text for zones -->
+                        <span
+                            style="position: absolute; left: 20%; top: 45px; font-size: 0.8rem; font-weight: bold; color: var(--secondary-teal);">Zona
+                            DESCUENTO (Comprar)</span>
+                        <span
+                            style="position: absolute; right: 20%; top: 45px; font-size: 0.8rem; font-weight: bold; color: var(--danger);">Zona
+                            PREMIUM (Vender)</span>
+                    </div>
+
+                    <input type="range" min="0" max="100" value="50" class="pd-slider" id="pdInput">
+                </div>
+            </div>
+
+            <p>En una tendencia alcista, esperamos a que el precio retroceda por debajo del 50% del impulso (zona
+                barata) para comprar. En una bajista, esperamos un retroceso por encima del 50% (zona cara) para vender.
+                Esto alinea nuestras entradas con la lógica institucional de buscar el mejor precio posible.</p>
+        </section>
+
+        <!-- NEW SECTION: OPTIMAL TRADE ENTRY (OTE) -->
+        <section>
+            <h2>Entrada Óptima de Negociación (OTE)</h2>
+            <p>Dentro de las zonas de Descuento y Premium, ICT refina aún más la entrada utilizando niveles específicos
+                de Fibonacci. A esto se le llama <strong>Optimal Trade Entry (OTE)</strong>.</p>
+            <p>La configuración estándar consiste en trazar el retroceso de Fibonacci desde el inicio del impulso hasta
+                su final. Los niveles clave son:</p>
+            <ul>
+                <li><strong>62% (0.62):</strong> Primer nivel de interés.</li>
+                <li><strong>70.5% (0.705):</strong> El "Sweet Spot" o punto dulce institucional.</li>
+                <li><strong>79% (0.79):</strong> Nivel profundo de reversión.</li>
+            </ul>
+            <p>Cualquier entrada dentro de esta zona, combinada con un FVG o un Order Block, tiene una probabilidad muy
+                alta de éxito.</p>
+
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-crosshairs"></i> Proyector de Zona OTE</div>
+                <p style="text-align: center;">Genera un impulso y visualiza dónde colocar tu orden.</p>
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <button class="btn-interact" onclick="drawOTE()">Generar Impulso y Trazar Fibonacci</button>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="oteCanvas" width="800" height="300"></canvas>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 10px; color: var(--text-grey);">La zona dorada resaltada entre
+                    el 62% y el 79% es donde los algoritmos institucionales suelen reactivar sus posiciones.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Estrategia ICT 2022: Paso a Paso</h2>
+            <p>El <strong>Modelo ICT 2022</strong> integra todos los conceptos anteriores en una secuencia lógica de
+                cuatro fases para operar intradía.</p>
+
+            <div class="step-card-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Barrido de Liquidez</h4>
+                    <p>El precio toma un máximo o mínimo anterior (trampa). Es la fase de manipulación. No entramos aún.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Cambio de Estructura (MSS)</h4>
+                    <p>El precio rompe la estructura en dirección opuesta con <strong>desplazamiento</strong> fuerte.
+                        Confirma el giro.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>Entrada en Retroceso</h4>
+                    <p>Esperamos pacientemente a que el precio vuelva a una <strong>FVG o Order Block</strong>
+                        (idealmente en OTE).</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h4>Salida en Liquidez</h4>
+                    <p>Take Profit en la siguiente piscina de liquidez opuesta (máximo/mínimo evidente).</p>
+                </div>
+            </div>
+
+            <h3>Ejemplo Ilustrativo (Escenario Bajista)</h3>
+            <p>Imagina que el S&P500 marca un doble techo en 4200. En la apertura de Nueva York, el precio sube a 4210
+                (barrido) y colapsa rápidamente rompiendo un mínimo intermedio en 4185 (cambio de estructura).</p>
+            <p>Esa caída deja un FVG entre 4190 y 4195. Como esa zona está en la parte superior del rango (Premium),
+                colocamos una orden de venta ahí. El stop va sobre 4210. El objetivo es el siguiente mínimo en 4150.
+                Resultado: un ratio riesgo/beneficio de 3:1 o superior.</p>
+        </section>
+
+        <section>
+            <h2>Consideraciones Temporales: Kill Zones</h2>
+            <p>Huddleston enfatiza que <em>"el precio no es nada sin el tiempo"</em>. Las operaciones tienen mayor
+                probabilidad de éxito si ocurren dentro de ventanas horarias específicas de alta volatilidad, conocidas
+                como <strong>Kill Zones</strong>.</p>
+
+            <ul style="margin-top: 20px;">
+                <li><strong>London Killzone (2 AM - 5 AM EST):</strong> Arranque de sesión europea. Suele definir el
+                    mínimo o máximo del día.</li>
+                <li><strong>NY Killzone (7 AM - 10 AM EST):</strong> Apertura americana. A menudo revierte o continúa el
+                    movimiento de Londres con gran volumen.</li>
+                <li><strong>London Close (10 AM - 12 PM EST):</strong> Posibles reversiones intradiarias.</li>
+            </ul>
+
+            <p>Planificar operaciones dentro de estas zonas filtra muchas falsas rupturas que ocurren en horarios de
+                poco volumen como la sesión asiática (que suele ser de acumulación).</p>
+        </section>
+
+        <section>
+            <h2>Conclusión</h2>
+            <p>El Modelo ICT 2022 proporciona una forma casi ingenieril de leer el mercado, enfocándose en <strong>qué
+                    hacen las instituciones</strong> en lugar de seguir indicadores rezagados. Al integrar estructura,
+                liquidez, desplazamiento y zonas de valor, el trader aprende a pensar como el Smart Money: <em>“¿Dónde
+                    está el dinero y dónde están las órdenes atrapadas?”</em>.</p>
+            <p>No es una fórmula mágica y requiere práctica y disciplina psicológica ("no inventes, no opines, no
+                pienses"), pero ofrece un enfoque sólido para evitar trampas y operar a favor de la corriente principal
+                del mercado.</p>
+        </section>
+
+        <section class="infographic-box" style="border: 2px solid var(--primary-teal); background: #e0f7fa;">
+            <div class="infographic-title"><i class="fas fa-robot"></i> KawnBit AI Quiz: Testea tu Conocimiento ICT
+            </div>
+            <p>¿Has entendido los conceptos del capítulo? Pon a prueba tu aprendizaje.</p>
+
+            <div class="quiz-container" id="quiz-area">
+                <div id="quiz-question-text" style="font-weight: bold; margin-bottom: 15px; font-size: 1.1rem;"></div>
+                <div id="quiz-options"></div>
+                <div id="quiz-feedback" style="margin-top: 15px; padding: 10px; display: none;"></div>
+                <button id="next-question" class="btn-interact" style="display:none; margin-top: 15px;"
+                    onclick="loadNextQuestion()">Siguiente Pregunta</button>
+            </div>
+        </section>
+
+        <footer class="main-footer">
+            <p class="copyright">&copy; 2025 KawnBit Magazine. Todos los derechos reservados. Basado en el Modelo ICT.
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- GRAPHIC SCRIPTS -->
+    <script>
+        const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+        async function callGemini(userPrompt, systemInstruction) {
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            const maxRetries = 3;
+            const delays = [1000, 2000, 4000];
+
+            for (let i = 0; i <= maxRetries; i++) {
+                try {
+                    const response = await fetch(proxyUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 503 && i < maxRetries) {
+                        console.warn(`Service unavailable (503). Retrying in ${delays[i]}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delays[i]));
+                        continue;
+                    }
+
+                    if (!response.ok) throw new Error(`Error en el Proxy: ${response.status}`);
+
+                    const data = await response.json();
+
+                    // Extraemos la respuesta de la estructura de Gemini o del campo result del proxy
+                    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+                        return data.candidates[0].content.parts[0].text;
+                    }
+                    return data.result || "La IA no devolvió una respuesta válida.";
+
+                } catch (error) {
+                    console.error(`Attempt ${i + 1} failed:`, error);
+                    if (i === maxRetries) return "Lo siento, hubo un error al conectar con la IA a través del proxy. Por favor intenta de nuevo más tarde.";
+                }
+            }
+        }
+
+        // --- Feature 1: Mentor Logic ---
+        async function askMentor() {
+            const input = document.getElementById('mentor-input');
+            const output = document.getElementById('mentor-response');
+            const spinner = document.getElementById('mentor-spinner');
+            const btn = document.getElementById('mentor-btn');
+            const question = input.value.trim();
+
+            if (!question) return;
+
+            // UI Guardrails
+            btn.disabled = true;
+            input.disabled = true;
+            output.style.display = 'block';
+            output.innerText = "Consultando a los algoritmos...";
+            spinner.style.display = 'inline-block';
+
+            const systemPrompt = "Eres un mentor experto en trading institucional (modelo ICT) para la revista KawnBit. Responde a las preguntas de los estudiantes usando terminología precisa (Liquidez, FVG, Order Block, Estructura). Sé conciso, educativo y motivador. Si la pregunta no es de trading, responde educadamente que solo hablas de mercados.";
+
+            const response = await callGemini(question, systemPrompt);
+
+            output.innerText = response;
+
+            // Restore UI
+            spinner.style.display = 'none';
+            btn.disabled = false;
+            input.disabled = false;
+            input.focus();
+        }
+
+        // --- Feature 2: News Decoder Logic ---
+        async function decodeNews() {
+            const input = document.getElementById('news-input');
+            const output = document.getElementById('news-response');
+            const spinner = document.getElementById('news-spinner');
+            const btn = document.getElementById('news-btn');
+            const news = input.value.trim();
+
+            if (!news) return;
+
+            // UI Guardrails
+            btn.disabled = true;
+            input.disabled = true;
+            output.style.display = 'block';
+            output.innerText = "Decodificando intención institucional...";
+            spinner.style.display = 'inline-block';
+
+            const systemPrompt = "Actúa como un algoritmo de 'Smart Money'. Analiza el titular de noticia proporcionado. Determina si esta noticia servirá para: 1. Acumulación, 2. Manipulación (Inducement), o 3. Distribución. Clasifica el sentimiento de -10 (Muy Bajista) a +10 (Muy Alcista). Explica brevemente la 'trampa' institucional. Formato de respuesta: 'Sentimiento: [X]/10. Fase Probable: [Fase]. Análisis: [Texto breve]'.";
+
+            const response = await callGemini(news, systemPrompt);
+
+            output.innerText = response;
+
+            // Restore UI
+            spinner.style.display = 'none';
+            btn.disabled = false;
+            input.disabled = false;
+            input.focus();
+        }
+
+
+        /**
+         * UTILITY: Draw Line Function
+         */
+        function drawLine(ctx, x1, y1, x2, y2, color, width = 2, dashed = false) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            if (dashed) ctx.setLineDash([5, 5]);
+            else ctx.setLineDash([]);
+            ctx.stroke();
+        }
+
+        function drawText(ctx, text, x, y, color = "#455a64", font = "12px sans-serif") {
+            ctx.fillStyle = color;
+            ctx.font = font;
+            ctx.fillText(text, x, y);
+        }
+
+        /**
+         * GRAPHIC 1: MARKET STRUCTURE (BOS vs CHoCH)
+         */
+        const structCanvas = document.getElementById('structureCanvas');
+        const structCtx = structCanvas.getContext('2d');
+        let structAnimationId;
+        let structProgress = 0;
+        let currentMode = 'bullish';
+
+        function drawStructure(mode) {
+            currentMode = mode;
+            structProgress = 0;
+            // Robust cleanup of previous animation frame
+            if (structAnimationId) {
+                cancelAnimationFrame(structAnimationId);
+                structAnimationId = null;
+            }
+            animateStructure();
+
+            // Update buttons
+            document.querySelectorAll('.control-btn').forEach(btn => btn.classList.remove('active'));
+            if (mode === 'bullish') document.querySelector("button[onclick=\"drawStructure('bullish')\"]").classList.add('active');
+            else document.querySelector("button[onclick=\"drawStructure('reversal')\"]").classList.add('active');
+        }
+
+        function animateStructure() {
+            structCtx.clearRect(0, 0, structCanvas.width, structCanvas.height);
+
+            // Base Points
+            const points = [
+                { x: 50, y: 250 }, { x: 150, y: 150 }, // Leg 1
+                { x: 200, y: 200 }, // HL
+                { x: 300, y: 100 }, // HH (Break 1)
+                { x: 350, y: 150 }, // HL
+                { x: 450, y: 50 }   // HH
+            ];
+
+            // Draw Static Base (Completed part)
+            structCtx.strokeStyle = "#4db6ac";
+            structCtx.lineWidth = 3;
+            structCtx.beginPath();
+            structCtx.moveTo(points[0].x, points[0].y);
+
+            // Calculate total path length for animation logic simulation
+            let targetPoints = [...points];
+            if (currentMode === 'reversal') {
+                // Modify points for reversal
+                targetPoints.push({ x: 550, y: 220 }); // Violent Drop (CHoCH)
+            } else {
+                targetPoints.push({ x: 500, y: 100 }); // Continuation
+                targetPoints.push({ x: 600, y: 20 });  // Higher High
+            }
+
+            // Draw lines progressively
+            let drawnPoints = 0;
+            const totalSegments = targetPoints.length - 1;
+            const segmentProgress = structProgress * totalSegments;
+            const currentSegmentIndex = Math.floor(segmentProgress);
+            const segmentT = segmentProgress - currentSegmentIndex;
+
+            // Draw completed segments
+            for (let i = 0; i < currentSegmentIndex; i++) {
+                // Array bounds check
+                if (i + 1 < targetPoints.length) {
+                    drawLine(structCtx, targetPoints[i].x, targetPoints[i].y, targetPoints[i + 1].x, targetPoints[i + 1].y, "#00897b", 3);
+                }
+            }
+
+            // Draw current animating segment
+            if (currentSegmentIndex < totalSegments && currentSegmentIndex + 1 < targetPoints.length) {
+                const start = targetPoints[currentSegmentIndex];
+                const end = targetPoints[currentSegmentIndex + 1];
+                const curX = start.x + (end.x - start.x) * segmentT;
+                const curY = start.y + (end.y - start.y) * segmentT;
+
+                // Color logic: Reversal leg is red
+                let color = "#00897b";
+                if (currentMode === 'reversal' && currentSegmentIndex === points.length - 1) {
+                    color = "#e57373";
+                }
+
+                drawLine(structCtx, start.x, start.y, curX, curY, color, 3);
+            }
+
+            // Draw Labels
+            drawText(structCtx, "Min", 50, 270);
+            drawText(structCtx, "Max", 150, 140);
+
+            // Draw BOS Line
+            drawLine(structCtx, 150, 150, 400, 150, "#ccc", 1, true);
+            if (structProgress > 0.4) drawText(structCtx, "BOS", 250, 140, "#00897b", "bold 14px sans-serif");
+
+            // Draw CHoCH Line if reversal
+            if (currentMode === 'reversal' && structProgress > 0.8) {
+                drawLine(structCtx, 350, 150, 600, 150, "#e57373", 1, true);
+                drawText(structCtx, "CHoCH (Rotura de Estructura)", 400, 140, "#c62828", "bold 14px sans-serif");
+            }
+
+            structProgress += 0.005;
+            if (structProgress <= 1) {
+                structAnimationId = requestAnimationFrame(animateStructure);
+            } else {
+                structAnimationId = null; // Animation finished
+            }
+        }
+
+        /**
+         * GRAPHIC 2: LIQUIDITY SWEEP
+         */
+        const liqCanvas = document.getElementById('liquidityCanvas');
+        const liqCtx = liqCanvas.getContext('2d');
+        let liqAnimId;
+
+        function drawLiquidityBase() {
+            liqCtx.clearRect(0, 0, liqCanvas.width, liqCanvas.height);
+
+            // Draw Equal Highs
+            drawLine(liqCtx, 100, 150, 200, 100, "#333"); // Up
+            drawLine(liqCtx, 200, 100, 300, 150, "#333"); // Down
+            drawLine(liqCtx, 300, 150, 400, 100, "#333"); // Up to Eq High
+            drawLine(liqCtx, 400, 100, 450, 120, "#333"); // Slight pull back
+
+            // EQH Line
+            drawLine(liqCtx, 180, 100, 500, 100, "#ff9800", 2, true);
+            drawText(liqCtx, "$$ LIQUIDEZ (Stop Loss) $$", 250, 90, "#ef6c00", "bold 12px sans-serif");
+        }
+
+        function animateSweep() {
+            // Robust cleanup
+            if (liqAnimId) {
+                cancelAnimationFrame(liqAnimId);
+                liqAnimId = null;
+            }
+            let t = 0;
+
+            function loop() {
+                drawLiquidityBase();
+
+                // Start from end of base (450, 120)
+                let cx, cy;
+                liqCtx.beginPath();
+                liqCtx.moveTo(450, 120);
+
+                if (t < 0.5) {
+                    // Phase 1: The Sweep
+                    const progress = t / 0.5;
+                    cx = 450 + (480 - 450) * progress;
+                    cy = 120 + (80 - 120) * progress;
+                    liqCtx.lineTo(cx, cy);
+                    liqCtx.strokeStyle = "#4db6ac"; // Lure buyers
+                } else {
+                    // Phase 2: The Reversal
+                    // Draw full sweep first
+                    liqCtx.lineTo(480, 80);
+                    liqCtx.stroke();
+
+                    liqCtx.beginPath();
+                    liqCtx.moveTo(480, 80);
+                    const progress = (t - 0.5) / 0.5;
+                    cx = 480 + (600 - 480) * progress;
+                    cy = 80 + (220 - 80) * progress;
+                    liqCtx.lineTo(cx, cy);
+                    liqCtx.strokeStyle = "#c62828"; // Trap triggered
+                    liqCtx.lineWidth = 3;
+                }
+                liqCtx.stroke();
+
+                // Highlight sweep
+                if (t > 0.4) {
+                    liqCtx.fillStyle = "rgba(255, 0, 0, 0.2)";
+                    liqCtx.beginPath();
+                    liqCtx.arc(480, 80, 20, 0, Math.PI * 2);
+                    liqCtx.fill();
+                    drawText(liqCtx, "STOP HUNT!", 490, 70, "#c62828", "bold 14px sans-serif");
+                }
+
+                t += 0.01;
+                if (t <= 1) {
+                    liqAnimId = requestAnimationFrame(loop);
+                } else {
+                    liqAnimId = null;
+                }
+            }
+            loop();
+        }
+
+
+        /**
+         * GRAPHIC 3: FVG INTERACTIVE
+         */
+        const fvgCanvas = document.getElementById('fvgCanvas');
+        const fvgCtx = fvgCanvas.getContext('2d');
+        const tooltip = document.getElementById('fvgTooltip');
+
+        // Candle Data: x, y_open, y_close, y_high, y_low, type
+        // Bearish FVG Setup
+        const candles = [
+            { x: 100, o: 100, c: 150, h: 90, l: 160, type: 'bear' }, // Candle 1 (Low is 160)
+            { x: 200, o: 150, c: 250, h: 150, l: 260, type: 'bear' }, // Candle 2 (Gap)
+            { x: 300, o: 250, c: 280, h: 220, l: 290, type: 'bear' }  // Candle 3 (High is 220)
+        ];
+        // Gap is between Candle 1 Low (160) and Candle 3 High (220)
+        const gapZone = { yTop: 160, yBottom: 220 };
+
+        function drawCandle(c) {
+            fvgCtx.fillStyle = c.type === 'bear' ? '#e57373' : '#4db6ac';
+            fvgCtx.strokeStyle = "#333";
+            const w = 40;
+
+            // Wick
+            fvgCtx.beginPath();
+            fvgCtx.moveTo(c.x + w / 2, c.h);
+            fvgCtx.lineTo(c.x + w / 2, c.l);
+            fvgCtx.stroke();
+
+            // Body
+            fvgCtx.fillRect(c.x, Math.min(c.o, c.c), w, Math.abs(c.o - c.c));
+            fvgCtx.strokeRect(c.x, Math.min(c.o, c.c), w, Math.abs(c.o - c.c));
+        }
+
+        function drawFVGScene(highlight = false) {
+            fvgCtx.clearRect(0, 0, fvgCanvas.width, fvgCanvas.height);
+
+            // Draw Gap Zone Background
+            if (highlight) {
+                fvgCtx.fillStyle = "rgba(255, 235, 59, 0.3)";
+                fvgCtx.fillRect(120, gapZone.yTop, 200, gapZone.yBottom - gapZone.yTop);
+                fvgCtx.strokeStyle = "#fbc02d";
+                fvgCtx.setLineDash([5, 5]);
+                fvgCtx.strokeRect(120, gapZone.yTop, 200, gapZone.yBottom - gapZone.yTop);
+                fvgCtx.setLineDash([]);
+
+                drawText(fvgCtx, "INEFICIENCIA (FVG)", 350, 190, "#f57f17", "bold 14px sans-serif");
+                drawText(fvgCtx, "El precio volverá aquí", 350, 210, "#455a64");
+            }
+
+            candles.forEach(drawCandle);
+
+            // Lines connecting gap
+            fvgCtx.strokeStyle = "#ccc";
+            fvgCtx.setLineDash([2, 2]);
+            fvgCtx.beginPath();
+            fvgCtx.moveTo(120, gapZone.yTop); // Candle 1 Low
+            fvgCtx.lineTo(350, gapZone.yTop);
+            fvgCtx.moveTo(320, gapZone.yBottom); // Candle 3 High
+            fvgCtx.lineTo(350, gapZone.yBottom);
+            fvgCtx.stroke();
+            fvgCtx.setLineDash([]);
+        }
+
+        // Interaction
+        fvgCanvas.addEventListener('mousemove', (e) => {
+            const rect = fvgCanvas.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+            const x = e.clientX - rect.left;
+
+            // Check if inside vertical gap zone
+            if (y > gapZone.yTop && y < gapZone.yBottom && x > 100 && x < 350) {
+                drawFVGScene(true);
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (x + 10) + 'px';
+                tooltip.style.top = (y + 10) + 'px';
+                tooltip.innerHTML = "<strong>Fair Value Gap</strong><br>Brecha de precio sin negociar.";
+            } else {
+                drawFVGScene(false);
+                tooltip.style.opacity = 0;
+            }
+        });
+
+
+        /**
+         * GRAPHIC 4: PREMIUM/DISCOUNT LOGIC
+         */
+        const pdInput = document.getElementById('pdInput');
+        const pdMarker = document.getElementById('pdMarker');
+        const pdStatus = document.getElementById('pdStatus');
+
+        pdInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            // Position Marker
+            pdMarker.style.left = val + '%';
+
+            // Logic
+            if (val < 45) {
+                pdStatus.textContent = `Zona DESCUENTO (${val}%): Busca COMPRAS`;
+                pdStatus.style.color = "#2e7d32";
+            } else if (val > 55) {
+                pdStatus.textContent = `Zona PREMIUM (${val}%): Busca VENTAS`;
+                pdStatus.style.color = "#c62828";
+            } else {
+                pdStatus.textContent = `Equilibrio (${val}%): Zona neutra, espera.`;
+                pdStatus.style.color = "#455a64";
+            }
+        });
+
+        /**
+         * NEW GRAPHIC 5: AMD (Power of 3)
+         */
+        const amdCanvas = document.getElementById('amdCanvas');
+        const amdCtx = amdCanvas.getContext('2d');
+        let amdAnimId;
+
+        function animateAMD() {
+            // Robust cleanup
+            if (amdAnimId) {
+                cancelAnimationFrame(amdAnimId);
+                amdAnimId = null;
+            }
+            let t = 0;
+
+            function loopAMD() {
+                amdCtx.clearRect(0, 0, amdCanvas.width, amdCanvas.height);
+
+                // Draw Phases Backgrounds (Subtle)
+                amdCtx.fillStyle = "#f5f5f5";
+                amdCtx.fillRect(50, 50, 200, 200); // Accum box
+                drawText(amdCtx, "Rango Asiático", 100, 40, "#aaa");
+
+                // Path Calculation
+                // 1. Accumulation (Wiggle in box)
+                // 2. Manipulation (Drop below box)
+                // 3. Distribution (Rise above box)
+
+                amdCtx.beginPath();
+                amdCtx.moveTo(50, 150);
+
+                // Accumulation Phase (Static wiggle)
+                const accumPoints = [
+                    { x: 80, y: 130 }, { x: 110, y: 170 }, { x: 140, y: 140 }, { x: 170, y: 160 }, { x: 200, y: 150 },
+                    { x: 230, y: 150 } // Exit accum
+                ];
+
+                // Manipulation Phase (Judas Swing)
+                const manipPoints = [
+                    { x: 250, y: 200 }, { x: 280, y: 250 }, { x: 300, y: 240 } // Low point
+                ];
+
+                // Distribution Phase
+                const distPoints = [
+                    { x: 330, y: 150 }, { x: 380, y: 80 }, { x: 450, y: 50 }, { x: 550, y: 60 }
+                ];
+
+                const allPoints = [...accumPoints, ...manipPoints, ...distPoints];
+
+                // Draw full path progressively
+                const totalPoints = allPoints.length;
+                const progressIndex = Math.floor(t * totalPoints);
+
+                // Draw established path
+                amdCtx.strokeStyle = "#555";
+                amdCtx.lineWidth = 2;
+
+                let currentX = 50;
+                let currentY = 150;
+
+                for (let i = 0; i < allPoints.length; i++) {
+                    if (i <= progressIndex) {
+                        // Color logic based on phase
+                        if (i < 6) amdCtx.strokeStyle = "#78909c"; // Accum
+                        else if (i < 9) amdCtx.strokeStyle = "#e57373"; // Manip (Red)
+                        else amdCtx.strokeStyle = "#4db6ac"; // Dist (Green)
+
+                        amdCtx.beginPath();
+                        amdCtx.moveTo(currentX, currentY);
+                        amdCtx.lineTo(allPoints[i].x, allPoints[i].y);
+                        amdCtx.stroke();
+
+                        currentX = allPoints[i].x;
+                        currentY = allPoints[i].y;
+                    }
+                }
+
+                // Labels appearing based on time
+                if (t > 0.2) drawText(amdCtx, "Acumulación", 100, 190, "#555", "bold 12px sans-serif");
+                if (t > 0.6) drawText(amdCtx, "Manipulación (Judas)", 280, 270, "#c62828", "bold 12px sans-serif");
+                if (t > 0.9) drawText(amdCtx, "Distribución", 450, 40, "#00897b", "bold 12px sans-serif");
+
+                t += 0.005;
+                if (t <= 1) {
+                    amdAnimId = requestAnimationFrame(loopAMD);
+                } else {
+                    amdAnimId = null;
+                }
+            }
+            loopAMD();
+        }
+
+        /**
+         * NEW GRAPHIC 6: OTE (Optimal Trade Entry)
+         */
+        const oteCanvas = document.getElementById('oteCanvas');
+        const oteCtx = oteCanvas.getContext('2d');
+
+        function drawOTE() {
+            oteCtx.clearRect(0, 0, oteCanvas.width, oteCanvas.height);
+
+            // 1. Draw Impulse (Swing Low to High)
+            const low = { x: 50, y: 250 };
+            const high = { x: 300, y: 50 };
+
+            drawLine(oteCtx, low.x, low.y, 150, 150, "#333");
+            drawLine(oteCtx, 150, 150, 200, 200, "#333");
+            drawLine(oteCtx, 200, 200, high.x, high.y, "#333", 3); // Main Impulse
+
+            drawText(oteCtx, "Inicio Impulso", low.x, low.y + 20);
+            drawText(oteCtx, "Fin Impulso", high.x, high.y - 10);
+
+            // 2. Draw Fib Retracement Tool
+            const height = low.y - high.y; // 200px
+            const level0 = high.y;
+            const level1 = low.y;
+
+            const fibX = 400;
+            const fibW = 200;
+
+            // Calculate Levels
+            const lvl50 = level0 + (height * 0.5);
+            const lvl62 = level0 + (height * 0.62);
+            const lvl70 = level0 + (height * 0.705);
+            const lvl79 = level0 + (height * 0.79);
+
+            // Draw Fib Grid
+            oteCtx.font = "10px sans-serif";
+
+            // 0%
+            drawLine(oteCtx, fibX, level0, fibX + fibW, level0, "#ccc");
+            drawText(oteCtx, "0.0 (Target)", fibX + fibW + 5, level0 + 3);
+
+            // 50%
+            drawLine(oteCtx, fibX, lvl50, fibX + fibW, lvl50, "#ccc");
+            drawText(oteCtx, "0.50 (Eq)", fibX + fibW + 5, lvl50 + 3);
+
+            // OTE ZONE Highlight
+            oteCtx.fillStyle = "rgba(255, 215, 0, 0.2)"; // Gold
+            oteCtx.fillRect(fibX, lvl62, fibW, lvl79 - lvl62);
+            oteCtx.strokeStyle = "#fbc02d";
+            oteCtx.strokeRect(fibX, lvl62, fibW, lvl79 - lvl62);
+
+            drawText(oteCtx, "ZONA OTE", fibX + 10, lvl70, "#f9a825", "bold 14px sans-serif");
+
+            // OTE Levels
+            drawLine(oteCtx, fibX, lvl62, fibX + fibW, lvl62, "#fbc02d");
+            drawText(oteCtx, "0.62", fibX + fibW + 5, lvl62 + 3);
+
+            drawLine(oteCtx, fibX, lvl70, fibX + fibW, lvl70, "#f57f17", 1, true);
+            drawText(oteCtx, "0.705 (Sweet Spot)", fibX + fibW + 5, lvl70 + 3);
+
+            drawLine(oteCtx, fibX, lvl79, fibX + fibW, lvl79, "#fbc02d");
+            drawText(oteCtx, "0.79", fibX + fibW + 5, lvl79 + 3);
+
+            // 100%
+            drawLine(oteCtx, fibX, level1, fibX + fibW, level1, "#ccc");
+            drawText(oteCtx, "1.0 (Stop)", fibX + fibW + 5, level1 + 3);
+
+            // Connect Impulse to Fib
+            oteCtx.setLineDash([2, 2]);
+            oteCtx.strokeStyle = "#eee";
+            oteCtx.beginPath();
+            oteCtx.moveTo(high.x, high.y);
+            oteCtx.lineTo(fibX, high.y);
+            oteCtx.moveTo(low.x, low.y);
+            oteCtx.lineTo(fibX, low.y);
+            oteCtx.stroke();
+            oteCtx.setLineDash([]);
+        }
+
+
+        /**
+         * QUIZ LOGIC (Extended)
+         */
+        const quizData = [
+            {
+                question: "¿Qué indica un desplazamiento (displacement) en el modelo ICT?",
+                options: ["Un movimiento lento y lateral", "Intención institucional con movimiento rápido y fuerte", "Una divergencia en el RSI", "Acumulación de órdenes minoristas"],
+                correct: 1,
+                feedback: "Correcto. El desplazamiento es la 'patada' fuerte que confirma que el Smart Money ha entrado al mercado."
+            },
+            {
+                question: "¿Cuál es la característica visual de una Fair Value Gap (FVG)?",
+                options: ["Tres velas donde la mecha de la 1ª y la 3ª no se tocan", "Un patrón de doble techo perfecto", "Una vela Doji en resistencia", "El cruce de medias móviles"],
+                correct: 0,
+                feedback: "Exacto. La FVG es una ineficiencia o hueco que queda entre la vela 1 y la 3 en un movimiento impulsivo."
+            },
+            {
+                question: "¿Dónde se debe colocar idealmente una operación de compra según el concepto de equilibrio?",
+                options: ["En la zona Premium (arriba del 50%)", "En la ruptura del máximo", "En la zona de Descuento (abajo del 50%)", "En cualquier punto del Order Block"],
+                correct: 2,
+                feedback: "Correcto. Las instituciones buscan comprar 'barato' en zona de descuento antes de impulsar el precio."
+            },
+            {
+                question: "¿Qué representa la 'M' en el patrón AMD?",
+                options: ["Momentum (Impulso)", "Manipulación (Smart Money trap)", "Media Móvil", "Margen"],
+                correct: 1,
+                feedback: "¡Correcto! Es la fase de Manipulación, diseñada para inducir a los traders en la dirección incorrecta antes del movimiento real."
+            },
+            {
+                question: "¿Cuál es el nivel 'Sweet Spot' de Fibonacci en el modelo OTE?",
+                options: ["50%", "61.8%", "70.5%", "79%"],
+                correct: 2,
+                feedback: "Exacto. El 70.5% es considerado el punto óptimo de entrada institucional dentro de la zona OTE."
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadNextQuestion() {
+            if (currentQuestion >= quizData.length) currentQuestion = 0;
+            renderQuiz(currentQuestion);
+        }
+
+        function renderQuiz(index) {
+            const q = quizData[index];
+            document.getElementById('quiz-question-text').textContent = q.question;
+            const optsContainer = document.getElementById('quiz-options');
+            optsContainer.innerHTML = '';
+            document.getElementById('quiz-feedback').style.display = 'none';
+            document.getElementById('next-question').style.display = 'none';
+
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(i, q.correct, btn, q.feedback);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct, btnElement, feedbackText) {
+            const allOpts = document.querySelectorAll('.quiz-option');
+            allOpts.forEach(o => o.onclick = null);
+
+            const feedbackDiv = document.getElementById('quiz-feedback');
+            feedbackDiv.style.display = 'block';
+
+            if (selected === correct) {
+                btnElement.classList.add('correct');
+                feedbackDiv.style.backgroundColor = '#e8f5e9';
+                feedbackDiv.style.color = '#2e7d32';
+                feedbackDiv.innerHTML = `<strong>¡Correcto!</strong> ${feedbackText}`;
+            } else {
+                btnElement.classList.add('incorrect');
+                allOpts[correct].classList.add('correct');
+                feedbackDiv.style.backgroundColor = '#ffebee';
+                feedbackDiv.style.color = '#c62828';
+                feedbackDiv.innerHTML = `<strong>Incorrecto.</strong> ${feedbackText}`;
+            }
+
+            document.getElementById('next-question').style.display = 'inline-block';
+            currentQuestion++;
+        }
+
+        // Initialize Everything
+        window.onload = function () {
+            renderQuiz(0);
+            drawStructure('bullish');
+            drawLiquidityBase();
+            drawFVGScene(false);
+            animateAMD(); // Initial static frame or start anim
+            drawOTE(); // Initial render
+        };
+    </script>
+
+</body>
+
+</html>
