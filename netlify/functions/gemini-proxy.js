@@ -1,4 +1,5 @@
 exports.handler = async (event, context) => {
+
   // Handle CORS preflight request
   if (event.httpMethod === 'OPTIONS') {
     return {
