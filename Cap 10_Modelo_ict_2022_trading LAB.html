@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 10: El Modelo ICT en Trading. Metodología institucional, liquidez y estructura de mercado.">
+    <title>KawnBit | El Modelo ICT (Inner Circle Trader)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- External Libraries -->
+    <!-- Added 'defer' to ensure non-blocking loading where possible -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config - KawnBit Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation */
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 24px;
+        }
+
+        /* Navigation & TOC */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Chat Bot */
+        .chat-message {
+            max-width: 80%;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .user-message {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .ai-message {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        /* Quiz Styles */
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+        }
+
+        .quiz-option.selected {
+            border-color: #14b8a6;
+            background-color: #ccfbf1;
+        }
+
+        .quiz-option.correct {
+            border-color: #10b981;
+            background-color: #d1fae5;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #ef4444;
+            background-color: #fee2e2;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #14b8a6;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background-color: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .toast.error {
+            background-color: #ef4444;
+        }
+
+        .toast.success {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+
+<body class="antialiased text-slate-600">
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-md text-slate-600 hover:text-kawn-base"
+                    aria-label="Abrir Menú">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-kawn-base font-semibold border-b-2 border-kawn-base pb-1">Capítulo 10</a>
+                    <a href="#amd-power"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">AMD</a>
+                    <a href="#simulador"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Simulador</a>
+                    <a href="#laboratorio-ia"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">IA Lab ✨</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside class="hidden md:block w-64 flex-shrink-0">
+                <div class="sticky top-24">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Tabla de Contenidos</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-2 text-sm max-h-[calc(100vh-150px)] overflow-y-auto pr-2">
+                        <!-- JS Generated -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 animate-fade-in">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-dark text-xs font-bold uppercase tracking-wider mb-4">Metodología
+                        Institucional</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        El modelo <span class="text-kawn-base">ICT</span> en trading
+                    </h1>
+                    <p class="text-xl text-slate-500 leading-relaxed">
+                        Domina la metodología Inner Circle Trader: aprende a leer la narrativa institucional, la
+                        liquidez y la estructura de mercado para operar junto a las manos fuertes.
+                    </p>
+                </section>
+
+                <!-- 1. Introducción -->
+                <section id="introduccion" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="book-open" class="text-kawn-base mr-3"></i> Introducción al modelo ICT
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 mb-6">
+                        <p class="mb-4 leading-7">
+                            El modelo <strong>ICT (Inner Circle Trader)</strong> es una metodología desarrollada por
+                            Michael J. Huddleston centrada en entender cómo operan las instituciones financieras
+                            (<strong>Smart Money</strong>). A diferencia del análisis técnico tradicional, el ICT
+                            analiza el flujo de órdenes y la liquidez. La premisa es simple: el mercado se mueve para
+                            buscar liquidez y ejecutar órdenes, no para seguir indicadores.
+                        </p>
+                        <div class="bg-white border-l-4 border-kawn-base p-6 rounded-r-xl shadow-md my-6">
+                            <h4 class="font-bold text-slate-800 mb-2">Concepto Clave: La "Historia de Liquidez"</h4>
+                            <p class="text-sm">El precio se dirige deliberadamente hacia áreas con acumulación de
+                                órdenes (stops) para activarlas y luego revertir. Cada gráfico es una narrativa diseñada
+                                por las instituciones.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Estructura de Mercado -->
+                <section id="estructura" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="activity" class="text-kawn-base mr-3"></i> Estructura de mercado
+                    </h2>
+
+                    <p class="mb-6 leading-7">
+                        Entender la estructura es el primer paso. Debemos identificar si el mercado está en tendencia o
+                        cambiando de dirección.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-kawn-base">
+                            <h3 class="font-bold text-slate-900 mb-2">BOS (Break of Structure)</h3>
+                            <p class="text-sm text-slate-600">Ruptura de estructura a favor de la tendencia. Confirma
+                                continuidad (ej. romper un máximo en tendencia alcista).</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-red-500">
+                            <h3 class="font-bold text-slate-900 mb-2">CHoCH (Change of Character)</h3>
+                            <p class="text-sm text-slate-600">El primer indicio de un cambio de tendencia. Ocurre cuando
+                                el precio rompe el último mínimo válido en una tendencia alcista.</p>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVE COMPONENT 1: Market Structure Visualizer -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Visualizador de Estructura</h3>
+                            <div class="flex gap-2">
+                                <button id="btn-bos"
+                                    class="px-3 py-1 text-xs font-semibold rounded bg-kawn-light text-kawn-deep hover:bg-kawn-base hover:text-white transition">Tendencia
+                                    (BOS)</button>
+                                <button id="btn-choch"
+                                    class="px-3 py-1 text-xs font-semibold rounded bg-red-100 text-red-800 hover:bg-red-500 hover:text-white transition">Reversión
+                                    (CHoCH)</button>
+                            </div>
+                        </div>
+                        <div class="relative h-64 w-full bg-white rounded-lg shadow-inner p-2">
+                            <canvas id="structureChart"></canvas>
+                        </div>
+                        <p id="structure-desc" class="mt-4 text-sm text-slate-600 italic">
+                            El gráfico muestra una tendencia alcista saludable con máximos y mínimos crecientes (BOS).
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 3. Liquidez y Manipulación -->
+                <section id="liquidez" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="droplets" class="text-kawn-base mr-3"></i> Liquidez y manipulación
+                    </h2>
+                    <p class="mb-6 leading-7">
+                        La <strong>liquidez</strong> es la acumulación de órdenes pendientes (Stop Loss). Las
+                        instituciones "barren" estas zonas para obtener contrapartida para sus operaciones masivas.
+                    </p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-400 shadow-sm">
+                            <h4 class="font-bold text-slate-800">Equal Highs / Lows</h4>
+                            <p class="text-sm text-slate-600">Techos o suelos dobles. Son imanes para el precio porque
+                                hay muchos stops justo detrás.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-blue-400 shadow-sm">
+                            <h4 class="font-bold text-slate-800">Máximos/Mínimos Diarios</h4>
+                            <p class="text-sm text-slate-600">El High y Low del día anterior son zonas críticas de
+                                liquidez.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Desplazamiento y FVG -->
+                <section id="desplazamiento-fvg" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="zap" class="text-kawn-base mr-3"></i> Desplazamiento y Fair Value Gaps
+                    </h2>
+                    <p class="mb-4 leading-7">
+                        Tras barrer liquidez, buscamos un <strong>desplazamiento</strong>: un movimiento rápido y
+                        agresivo que confirma la intención institucional. Este movimiento suele dejar huellas llamadas
+                        <strong>FVG (Imbalances)</strong>.
+                    </p>
+                </section>
+
+                <!-- 5. Order Blocks & Breakers -->
+                <section id="order-blocks" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> Order Blocks y Breakers
+                    </h2>
+                    <p class="mb-6 leading-7">
+                        El <strong>Order Block (OB)</strong> es la última vela contraria antes de un movimiento
+                        impulsivo fuerte. Representa la zona donde las instituciones acumularon sus posiciones. Sin
+                        embargo, cuando un OB falla en sostener el precio, se transforma en un <strong>Breaker
+                            Block</strong>.
+                    </p>
+
+                    <!-- NEW INTERACTIVE COMPONENT: Advanced Blocks -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+                            <h3 class="font-bold text-slate-800 mb-2 sm:mb-0">Anatomía de Bloques</h3>
+                            <div class="flex bg-slate-100 p-1 rounded-lg">
+                                <button onclick="window.kawnApp.updateBlockVisualizer('ob')"
+                                    class="px-3 py-1 text-xs font-bold rounded-md transition-all block-btn active bg-white shadow-sm text-kawn-deep"
+                                    id="btn-ob">Order Block</button>
+                                <button onclick="window.kawnApp.updateBlockVisualizer('breaker')"
+                                    class="px-3 py-1 text-xs font-bold rounded-md transition-all block-btn text-slate-500 hover:text-slate-900"
+                                    id="btn-breaker">Breaker Block</button>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="relative h-60 w-full bg-slate-50 rounded-lg p-2 border border-slate-100">
+                                <canvas id="blockChart"></canvas>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800 mb-2" id="block-title">Standard Bullish OB
+                                </h4>
+                                <p class="text-sm text-slate-600 mb-4" id="block-desc">
+                                    El precio baja, crea la última vela bajista (OB) y luego explota al alza
+                                    (Desplazamiento). Cuando el precio regresa al OB, reacciona y sube.
+                                </p>
+                                <ul class="text-xs text-slate-500 space-y-2 list-disc pl-4" id="block-list">
+                                    <li>Zona de alta probabilidad de reacción.</li>
+                                    <li>Stop Loss debajo del mínimo del OB.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Power of Three (AMD) - NEW SECTION -->
+                <section id="amd-power" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="bar-chart-2" class="text-kawn-base mr-3"></i> Power of Three (AMD)
+                    </h2>
+
+                    <div class="bg-kawn-light/30 border border-kawn-base p-6 rounded-xl mb-8">
+                        <p class="leading-relaxed text-slate-700">
+                            Cada vela diaria (o de alta temporalidad) tiene una anatomía institucional:
+                            <strong>Acumulación, Manipulación y Distribución</strong>. La manipulación inicial (a menudo
+                            en la apertura de Londres) crea la mecha del día para inducir a los traders al lado
+                            equivocado antes del movimiento real.
+                        </p>
+                    </div>
+
+                    <!-- INTERACTIVE COMPONENT: AMD Simulator -->
+                    <div
+                        class="bg-slate-900 p-6 rounded-xl shadow-2xl border border-slate-700 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <h3 class="text-white font-bold text-lg">Simulador de Vela Diaria</h3>
+                            <button id="btn-animate-amd"
+                                class="bg-kawn-base hover:bg-kawn-light hover:text-kawn-deep text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-glow flex items-center gap-2">
+                                <i data-lucide="play" class="w-4 h-4"></i> Reproducir Formación
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                            <!-- Left: The Daily Candle -->
+                            <div class="flex flex-col items-center justify-center border-r border-slate-700 pr-4">
+                                <span class="text-slate-400 text-xs mb-2 uppercase tracking-widest">Vela Diaria</span>
+                                <div class="relative w-16 h-64 bg-slate-800 rounded flex items-center justify-center">
+                                    <!-- Dynamic elements for candle -->
+                                    <div id="amd-wick-top"
+                                        class="absolute w-1 bg-slate-600 transition-all duration-[2000ms]"
+                                        style="height: 0; top: 50%;"></div>
+                                    <div id="amd-wick-bottom"
+                                        class="absolute w-1 bg-slate-600 transition-all duration-[2000ms]"
+                                        style="height: 0; bottom: 50%;"></div>
+                                    <div id="amd-body"
+                                        class="absolute w-8 bg-slate-500 transition-all duration-[2000ms]"
+                                        style="height: 2px; top: 50%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Intraday PA -->
+                            <div class="flex flex-col justify-center">
+                                <span class="text-slate-400 text-xs mb-4 uppercase tracking-widest">Acción de Precio
+                                    Intradía</span>
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-3 opacity-30 transition-all duration-500"
+                                        id="step-a">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-white">
+                                            A</div>
+                                        <div>
+                                            <p class="text-white text-sm font-bold">Acumulación</p>
+                                            <p class="text-slate-400 text-xs">Rango asiático plano.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 opacity-30 transition-all duration-500"
+                                        id="step-m">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-xs font-bold text-white">
+                                            M</div>
+                                        <div>
+                                            <p class="text-white text-sm font-bold">Manipulación</p>
+                                            <p class="text-slate-400 text-xs">Falso rompimiento (Judas Swing).</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 opacity-30 transition-all duration-500"
+                                        id="step-d">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-kawn-base flex items-center justify-center text-xs font-bold text-white">
+                                            D</div>
+                                        <div>
+                                            <p class="text-white text-sm font-bold">Distribución</p>
+                                            <p class="text-slate-400 text-xs">Movimiento real de expansión.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. Descuento y Premium -->
+                <section id="premium-discount" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="percent" class="text-kawn-base mr-3"></i> Zonas de Descuento y Premium
+                    </h2>
+                    <p class="mb-6 leading-7">
+                        Nunca compres caro ni vendas barato. Divide el rango reciente en dos:
+                        <br><strong>Premium (Superior 50%):</strong> Solo ventas.
+                        <br><strong>Descuento (Inferior 50%):</strong> Solo compras.
+                    </p>
+
+                    <!-- INTERACTIVE COMPONENT 2: PD Array Tool -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-4">Calculadora de Equilibrio</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Precio Mínimo (Low)</label>
+                                <input type="number" id="pd-low" value="100"
+                                    class="w-full p-2 border rounded font-mono text-sm focus:ring-2 focus:ring-kawn-base outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Precio Máximo (High)</label>
+                                <input type="number" id="pd-high" value="200"
+                                    class="w-full p-2 border rounded font-mono text-sm focus:ring-2 focus:ring-kawn-base outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Visual representation -->
+                        <div
+                            class="relative w-full h-40 rounded-lg overflow-hidden flex flex-col border border-slate-300">
+                            <div class="h-1/2 bg-red-100 flex items-center justify-center relative">
+                                <span class="text-red-800 font-bold text-xs">ZONA PREMIUM (VENDER)</span>
+                            </div>
+                            <div
+                                class="absolute top-1/2 w-full border-t-2 border-dashed border-slate-600 -mt-[1px] z-10">
+                            </div>
+                            <div class="absolute top-1/2 right-2 -mt-3 bg-white px-1 text-xs font-mono font-bold text-slate-700"
+                                id="eq-price">Eq: 150</div>
+                            <div class="h-1/2 bg-green-100 flex items-center justify-center relative">
+                                <span class="text-green-800 font-bold text-xs">ZONA DESCUENTO (COMPRAR)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. El Modelo ICT 2022 (SIMULADOR) -->
+                <section id="simulador" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="play-circle" class="text-kawn-base mr-3"></i> Estrategia Paso a Paso: Modelo
+                        2022
+                    </h2>
+
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl border border-slate-700 mb-8">
+                        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
+                            <div>
+                                <h3 class="text-white font-bold text-lg">Simulador de Trade Institucional</h3>
+                                <p class="text-slate-400 text-sm">Observa la secuencia: Liquidez -> BOS -> FVG ->
+                                    Entrada</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button id="start-sim-btn"
+                                    class="bg-kawn-base hover:bg-kawn-light hover:text-kawn-deep text-white px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2">
+                                    <i data-lucide="play" class="w-4 h-4"></i> Iniciar
+                                </button>
+                                <button id="reset-sim-btn"
+                                    class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all"
+                                    disabled>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="plotly-simulator" class="w-full h-[400px] bg-white rounded-lg"></div>
+
+                        <div id="sim-status"
+                            class="mt-4 p-3 bg-slate-800 rounded-lg border-l-4 border-slate-500 text-slate-300 text-sm transition-all">
+                            Esperando inicio de simulación...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Laboratorio de Inteligencia Artificial -->
+                <section id="laboratorio-ia" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="cpu" class="text-kawn-base mr-3"></i> Laboratorio de IA KawnBit
+                    </h2>
+                    <p class="mb-6 leading-7">
+                        Potencia tu aprendizaje con nuestras herramientas experimentales impulsadas por <strong>Google
+                            Gemini</strong>. Descubre insights que solo una IA entrenada puede ofrecer.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Herramienta 1: Analista de Escenarios -->
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-glow transition-shadow duration-300">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="microscope" class="text-kawn-dark"></i> Analista de Escenarios
+                            </h3>
+                            <p class="text-sm text-slate-500 mb-4">Describe una situación de mercado compleja y obtén un
+                                análisis institucional al instante.</p>
+                            <textarea id="scenario-input"
+                                class="w-full p-3 border border-slate-300 rounded-lg text-sm mb-4 h-32 focus:ring-2 focus:ring-kawn-base outline-none resize-none"
+                                placeholder="Ej: El precio rompió el máximo de ayer en la sesión de Londres, pero cerró con una mecha larga hacia abajo..."></textarea>
+                            <button id="btn-analyze"
+                                class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg transition-all flex justify-center items-center gap-2">
+                                <i data-lucide="sparkles" class="w-4 h-4 text-yellow-400"></i> Analizar Escenario ✨
+                            </button>
+                            <div id="scenario-output"
+                                class="mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded border border-slate-100 hidden">
+                            </div>
+                        </div>
+
+                        <!-- Herramienta 2: Generador de Analogías -->
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-glow transition-shadow duration-300">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="lightbulb" class="text-kawn-dark"></i> Conceptos Profundos
+                            </h3>
+                            <p class="text-sm text-slate-500 mb-4">¿Te cuesta entender un concepto abstracto? Pídele a
+                                la IA una analogía creativa.</p>
+                            <select id="concept-select"
+                                class="w-full p-3 border border-slate-300 rounded-lg text-sm mb-4 focus:ring-2 focus:ring-kawn-base outline-none bg-white">
+                                <option value="Liquidity Sweep">Barrido de Liquidez</option>
+                                <option value="Fair Value Gap (FVG)">Fair Value Gap (FVG)</option>
+                                <option value="Order Block">Order Block</option>
+                                <option value="Market Structure Shift">Cambio de Estructura</option>
+                                <option value="Power of Three (AMD)">Power of Three (AMD)</option>
+                            </select>
+                            <button id="btn-analogy"
+                                class="w-full bg-kawn-base hover:bg-kawn-dark text-white font-bold py-2 px-4 rounded-lg transition-all flex justify-center items-center gap-2">
+                                <i data-lucide="wand-2" class="w-4 h-4 text-yellow-200"></i> Generar Analogía ✨
+                            </button>
+                            <div id="analogy-output"
+                                class="mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded border border-slate-100 hidden">
+                            </div>
+                        </div>
+
+                        <!-- Herramienta 3: Quiz Dinámico -->
+                        <div
+                            class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 hover:shadow-glow transition-shadow duration-300 col-span-1 md:col-span-2">
+                            <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="brain-circuit" class="text-kawn-dark"></i> Quiz Dinámico Infinito
+                            </h3>
+                            <p class="text-sm text-slate-500 mb-4">Genera una pregunta nueva y única con IA para ponerte
+                                a prueba.</p>
+                            <button id="btn-quiz-gen"
+                                class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg transition-all flex justify-center items-center gap-2">
+                                <i data-lucide="refresh-cw" class="w-4 h-4 text-yellow-400"></i> Generar Pregunta ✨
+                            </button>
+                            <div id="quiz-gen-output"
+                                class="mt-4 hidden p-4 bg-slate-50 rounded-lg border border-slate-200"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. Kill Zones -->
+                <section id="kill-zones" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clock" class="text-kawn-base mr-3"></i> Kill Zones y Tiempo
+                    </h2>
+
+                    <div class="overflow-x-auto">
+                        <table
+                            class="w-full text-sm text-left text-slate-600 bg-white rounded-lg overflow-hidden shadow-lg">
+                            <thead class="text-xs text-slate-700 uppercase bg-kawn-light">
+                                <tr>
+                                    <th class="px-6 py-3">Sesión</th>
+                                    <th class="px-6 py-3">Horario (EST)</th>
+                                    <th class="px-6 py-3">Característica</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold">London Open</td>
+                                    <td class="px-6 py-4">2:00 AM - 5:00 AM</td>
+                                    <td class="px-6 py-4">Suele crear el máximo o mínimo del día.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold">New York Open</td>
+                                    <td class="px-6 py-4">7:00 AM - 10:00 AM</td>
+                                    <td class="px-6 py-4">Alta volatilidad, solapamiento con Londres.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-bold">London Close</td>
+                                    <td class="px-6 py-4">10:00 AM - 12:00 PM</td>
+                                    <td class="px-6 py-4">Posibles reversiones o continuación.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Glosario Accordion -->
+                <section id="glosario" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Glosario Esencial</h2>
+                    <div id="glossary-container" class="space-y-3">
+                        <!-- JS Generated -->
+                    </div>
+                </section>
+
+                <!-- Evaluación MEJORADA -->
+                <section id="evaluacion" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="award" class="text-kawn-base mr-3"></i> Validación del Conocimiento (Mastery
+                        Test)
+                    </h2>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800">Evaluación de Conceptos Institucionales
+                                </h3>
+                                <p class="text-sm text-slate-500 mt-1">Demuestra que piensas como el Smart Money. Lee
+                                    atentamente las explicaciones.</p>
+                            </div>
+                            <span id="quiz-score"
+                                class="text-sm font-bold text-kawn-deep bg-kawn-light px-4 py-2 rounded-full border border-kawn-base">Puntuación:
+                                0/6</span>
+                        </div>
+
+                        <!-- Contenedor dinámico de preguntas -->
+                        <div id="quiz-dynamic-container" class="space-y-8">
+                            <!-- Se llena con JS -->
+                        </div>
+
+                        <div id="quiz-completion"
+                            class="hidden mt-8 p-6 bg-slate-900 text-white rounded-xl text-center">
+                            <h4 class="text-2xl font-bold mb-2">¡Test Completado!</h4>
+                            <p class="mb-4 text-slate-300">Has dado el primer paso para dejar de ser liquidez y
+                                convertirte en operador.</p>
+                            <button onclick="window.kawnApp.resetQuiz()"
+                                class="bg-kawn-base hover:bg-kawn-light hover:text-kawn-deep text-white px-6 py-2 rounded-full font-bold transition-all">
+                                Reiniciar Test
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Conclusion -->
+                <section id="conclusion">
+                    <div class="bg-gradient-to-r from-slate-800 to-slate-900 p-8 rounded-xl text-white shadow-xl">
+                        <h2 class="text-2xl font-bold mb-4">Conclusión</h2>
+                        <p class="leading-relaxed opacity-90 mb-4">
+                            "El precio solo hace dos cosas: rebalancearse o buscar liquidez". Al seguir la narrativa del
+                            Smart Money, dejas de adivinar y empiezas a reaccionar a las huellas institucionales.
+                        </p>
+                        <p class="text-sm opacity-70 italic">Recuerda: La paciencia paga. Si no ves el setup completo
+                            (Barrido + Desplazamiento), no operes.</p>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Floating Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button id="ai-toggle"
+            class="bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all hover:scale-105 flex items-center gap-2 border border-kawn-base"
+            aria-label="Abrir Mentor IA">
+            <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+            <span class="font-bold hidden md:inline">Mentor ICT IA</span>
+        </button>
+    </div>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-80 md:w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[450px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="sparkles" class="text-kawn-base w-4 h-4"></i>
+                Asistente KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-base" aria-label="Cerrar Chat"><i data-lucide="x"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col gap-2">
+            <div class="ai-message chat-message shadow-sm">
+                Hola. Soy tu especialista en el Modelo ICT. ¿Tienes dudas sobre Order Blocks, FVG o Kill Zones?
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base focus:ring-1 focus:ring-kawn-base"
+                    placeholder="Pregunta sobre trading...">
+                <button id="send-ai" class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors"
+                    aria-label="Enviar Mensaje">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <p class="text-sm text-center md:text-right">
+                © <span id="current-year"></span> KawnBit Community.<br>
+                <span class="text-xs opacity-50">Educación financiera avanzada. No es consejo de inversión.</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- MAIN LOGIC SCRIPT -->
+    <script>
+            // IIFE to prevent global scope pollution
+            (function () {
+                // Global App Namespace
+                window.kawnApp = window.kawnApp || {};
+
+                // --- UTILS: TOAST NOTIFICATIONS ---
+                function showToast(message, type = 'info') {
+                    const container = document.getElementById('toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = `toast ${type}`;
+
+                    let icon = type === 'error' ? 'alert-circle' : 'check-circle';
+                    toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4"></i> <span>${message}</span>`;
+
+                    container.appendChild(toast);
+                    lucide.createIcons();
+
+                    setTimeout(() => {
+                        toast.style.opacity = '0';
+                        toast.style.transform = 'translateY(10px)';
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }
+
+                // --- 1. INITIALIZATION ---
+                document.addEventListener('DOMContentLoaded', () => {
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+                    initCharts();
+                    initEventListeners();
+                    renderQuiz();
+                    initGlossary();
+                });
+
+                // --- 2. ROBUST FETCH (TIMEOUT + ERROR HANDLING) ---
+                const gasEndpoint = "/.netlify/functions/gemini-proxy";
+
+                async function fetchGemini(prompt, systemInstruction = "Eres un experto en trading institucional.") {
+                    try {
+                        const response = await fetch(gasEndpoint, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: prompt }] }],
+                                systemInstruction: { parts: [{ text: systemInstruction }] }
+                            })
+                        });
+
+                        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                        const data = await response.json();
+                        return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "No se pudo generar respuesta.";
+
+                    } catch (error) {
+                        console.error("Gemini Error:", error);
+                        showToast('Error de conexión con IA.', 'error');
+                        throw error;
+                    }
+                }
+
+                // --- 3. CHART MANAGEMENT (MEMORY LEAK PREVENTION) ---
+                let charts = { structure: null, block: null };
+
+                function createOrUpdateChart(ctxId, config, chartKey) {
+                    const ctx = document.getElementById(ctxId)?.getContext('2d');
+                    if (!ctx) return;
+
+                    if (charts[chartKey]) {
+                        charts[chartKey].destroy();
+                    }
+                    charts[chartKey] = new Chart(ctx, config);
+                }
+
+                function initCharts() {
+                    // Structure Chart Data
+                    const dataBOS = { labels: ['L', 'H', 'HL', 'HH', 'HL', 'HH'], data: [10, 20, 15, 25, 20, 30], color: '#14b8a6' };
+
+                    createOrUpdateChart('structureChart', {
+                        type: 'line',
+                        data: {
+                            labels: dataBOS.labels,
+                            datasets: [{
+                                label: 'Precio',
+                                data: dataBOS.data,
+                                borderColor: dataBOS.color,
+                                backgroundColor: dataBOS.color + '20',
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+                    }, 'structure');
+
+                    // Block Chart Init
+                    window.kawnApp.updateBlockVisualizer('ob');
+                }
+
+                // --- 4. INTERACTIVE LOGIC ---
+
+                // Structure Chart Buttons
+                const btnBOS = document.getElementById('btn-bos');
+                const btnCHoCH = document.getElementById('btn-choch');
+
+                if (btnBOS && btnCHoCH) {
+                    btnBOS.addEventListener('click', () => updateStructure('bos'));
+                    btnCHoCH.addEventListener('click', () => updateStructure('choch'));
+                }
+
+                function updateStructure(type) {
+                    const data = type === 'bos'
+                        ? { l: ['L', 'H', 'HL', 'HH', 'HL', 'HH'], d: [10, 20, 15, 25, 20, 30], c: '#14b8a6', txt: 'Tendencia Alcista (BOS)' }
+                        : { l: ['L', 'H', 'HL', 'HH', 'LL', 'LH'], d: [10, 20, 15, 22, 12, 18], c: '#ef4444', txt: 'Reversión (CHoCH)' };
+
+                    const chart = charts['structure'];
+                    if (chart) {
+                        chart.data.labels = data.l;
+                        chart.data.datasets[0].data = data.d;
+                        chart.data.datasets[0].borderColor = data.c;
+                        chart.data.datasets[0].backgroundColor = data.c + '20';
+                        chart.update();
+                        document.getElementById('structure-desc').innerText = data.txt;
+                    }
+                }
+
+                // Block Visualizer Logic
+                const blockData = {
+                    ob: { labels: ['1', '2', '3', '4', '5'], data: [100, 95, 110, 96, 120], color: '#14b8a6', title: 'Bullish Order Block', desc: 'Última vela bajista antes del impulso.' },
+                    breaker: { labels: ['1', '2', '3', '4', '5', '6'], data: [105, 100, 110, 90, 99, 80], color: '#ef4444', title: 'Bearish Breaker', desc: 'Soporte roto que actúa como resistencia.' }
+                };
+
+                window.kawnApp.updateBlockVisualizer = (type) => {
+                    const data = blockData[type];
+                    const btnOB = document.getElementById('btn-ob');
+                    const btnBreaker = document.getElementById('btn-breaker');
+
+                    if (btnOB && btnBreaker) {
+                        if (type === 'ob') {
+                            btnOB.classList.replace('text-slate-500', 'text-kawn-deep');
+                            btnOB.classList.add('bg-white', 'shadow-sm');
+                            btnBreaker.classList.replace('text-slate-900', 'text-slate-500');
+                            btnBreaker.classList.remove('bg-white', 'shadow-sm');
+                        } else {
+                            btnBreaker.classList.replace('text-slate-500', 'text-slate-900');
+                            btnBreaker.classList.add('bg-white', 'shadow-sm');
+                            btnOB.classList.replace('text-kawn-deep', 'text-slate-500');
+                            btnOB.classList.remove('bg-white', 'shadow-sm');
+                        }
+                    }
+
+                    createOrUpdateChart('blockChart', {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Precio',
+                                data: data.data,
+                                borderColor: data.color,
+                                borderWidth: 3,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: data.color,
+                                pointRadius: 6,
+                                tension: 0.4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+                    }, 'block');
+
+                    const titleEl = document.getElementById('block-title');
+                    const descEl = document.getElementById('block-desc');
+                    if (titleEl) titleEl.innerText = data.title;
+                    if (descEl) descEl.innerText = data.desc;
+                };
+
+                // --- 5. AMD SIMULATOR ---
+                const btnAnimateAMD = document.getElementById('btn-animate-amd');
+                if (btnAnimateAMD) {
+                    btnAnimateAMD.addEventListener('click', () => {
+                        const elements = {
+                            wt: document.getElementById('amd-wick-top'),
+                            wb: document.getElementById('amd-wick-bottom'),
+                            body: document.getElementById('amd-body'),
+                            sa: document.getElementById('step-a'),
+                            sm: document.getElementById('step-m'),
+                            sd: document.getElementById('step-d')
+                        };
+
+                        // Reset Animation
+                        elements.wt.style.height = '0';
+                        elements.wb.style.height = '0';
+                        elements.body.style.height = '2px';
+                        elements.body.style.top = '50%';
+                        elements.body.className = "absolute w-8 bg-slate-500 transition-all duration-[1000ms]";
+
+                        [elements.sa, elements.sm, elements.sd].forEach(el => {
+                            el.className = "flex items-center gap-3 opacity-30 transition-all duration-500";
+                        });
+
+                        // Sequence
+                        setTimeout(() => elements.sa.style.opacity = '1', 500);
+
+                        setTimeout(() => {
+                            elements.sm.style.opacity = '1';
+                            elements.body.style.top = '70%';
+                            elements.body.classList.replace('bg-slate-500', 'bg-red-500');
+                        }, 1500);
+
+                        setTimeout(() => {
+                            elements.wb.style.height = '20%';
+                            elements.body.style.top = '50%';
+                        }, 2500);
+
+                        setTimeout(() => {
+                            elements.sd.style.opacity = '1';
+                            elements.body.classList.replace('bg-red-500', 'bg-green-500');
+                            elements.body.style.height = '40%';
+                            elements.body.style.top = '10%';
+                        }, 3500);
+                    });
+                }
+
+                // --- 6. PLOTLY RESIZE HANDLER ---
+                window.addEventListener('resize', () => {
+                    const plotDiv = document.getElementById('plotly-simulator');
+                    if (plotDiv) Plotly.Plots.resize(plotDiv);
+                });
+
+                // --- 7. AI FEATURES ---
+                const sendAi = document.getElementById('send-ai');
+                const userInput = document.getElementById('user-input');
+                const chatHistory = document.getElementById('chat-history');
+
+                async function handleChat() {
+                    const text = userInput.value.trim();
+                    if (!text) return;
+
+                    // User UI
+                    const uDiv = document.createElement('div');
+                    uDiv.className = 'user-message chat-message';
+                    uDiv.innerText = text;
+                    chatHistory.appendChild(uDiv);
+                    userInput.value = '';
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                    // Loading UI
+                    const lDiv = document.createElement('div');
+                    lDiv.className = 'ai-message chat-message animate-pulse';
+                    lDiv.innerText = 'Pensando...';
+                    chatHistory.appendChild(lDiv);
+
+                    try {
+                        const reply = await fetchGemini(`Alumno: "${text}". Sé socrático.`, "Mentor ICT.");
+                        lDiv.remove();
+
+                        const aiDiv = document.createElement('div');
+                        aiDiv.className = 'ai-message chat-message';
+                        aiDiv.innerText = reply;
+
+                        // TTS Button
+                        const ttsBtn = document.createElement('button');
+                        ttsBtn.innerHTML = '<i data-lucide="volume-2" class="w-3 h-3"></i>';
+                        ttsBtn.className = "ml-2 text-slate-400 hover:text-kawn-base transition-colors align-middle";
+                        ttsBtn.onclick = () => {
+                            speechSynthesis.cancel(); // Cancel previous speech
+                            const ut = new SpeechSynthesisUtterance(reply);
+                            ut.lang = 'es-ES';
+                            speechSynthesis.speak(ut);
+                        };
+                        aiDiv.appendChild(ttsBtn);
+
+                        chatHistory.appendChild(aiDiv);
+                        lucide.createIcons();
+                    } catch (e) {
+                        lDiv.innerText = "Error. Intenta de nuevo.";
+                    }
+                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                }
+
+                if (sendAi) sendAi.onclick = handleChat;
+                if (userInput) userInput.onkeypress = (e) => { if (e.key === 'Enter') handleChat(); };
+
+                // Quiz Generation
+                const btnQuizGen = document.getElementById('btn-quiz-gen');
+                const quizGenOutput = document.getElementById('quiz-gen-output');
+
+                if (btnQuizGen) {
+                    btnQuizGen.addEventListener('click', async () => {
+                        btnQuizGen.disabled = true;
+                        btnQuizGen.innerHTML = '<span class="spinner"></span> Generando...';
+
+                        try {
+                            const prompt = `Genera una pregunta difícil sobre ICT Trading. JSON: {"pregunta": "...", "opciones": ["...", "..."], "correcta": "...", "explicacion": "..."}`;
+                            const raw = await fetchGemini(prompt, "Generador JSON.");
+                            const clean = raw.replace(/```json|```/g, '').trim();
+                            const data = JSON.parse(clean);
+
+                            quizGenOutput.classList.remove('hidden');
+                            quizGenOutput.innerHTML = `
+                            <p class="font-bold text-slate-800 mb-2">${data.pregunta}</p>
+                            <ul class="space-y-1 mb-3 text-sm text-slate-600">
+                                ${data.opciones.map(o => `<li>• ${o}</li>`).join('')}
+                            </ul>
+                            <details class="text-xs text-kawn-dark cursor-pointer">
+                                <summary>Ver Respuesta</summary>
+                                <div class="mt-2 p-2 bg-green-50 border border-green-100 rounded">
+                                    <strong>${data.correcta}</strong>: ${data.explicacion}
+                                </div>
+                            </details>
+                        `;
+                            showToast('Pregunta generada con éxito', 'success');
+                        } catch (e) {
+                            quizGenOutput.innerText = "Error al generar pregunta.";
+                        } finally {
+                            btnQuizGen.disabled = false;
+                            btnQuizGen.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 text-yellow-400"></i> Generar Otra ✨';
+                            lucide.createIcons();
+                        }
+                    });
+                }
+
+                // --- 8. QUIZ & GLOSSARY DATA & LOGIC ---
+                const extendedQuizData = [
+                    { id: 1, q: "¿Qué implica un Desplazamiento tras barrido?", correct: 'b', explanation: "Confirma intención institucional.", options: [{ k: 'a', t: 'Indecisión' }, { k: 'b', t: 'Intención Institucional' }, { k: 'c', t: 'Volatilidad sin rumbo' }] },
+                    { id: 2, q: "¿Dónde comprar en tendencia alcista?", correct: 'a', explanation: "En zona de Descuento (<50%).", options: [{ k: 'a', t: 'Descuento' }, { k: 'b', t: 'Premium' }, { k: 'c', t: 'En el máximo' }] },
+                    { id: 3, q: "¿Función de Kill Zones?", correct: 'b', explanation: "Momentos de alta volatilidad real.", options: [{ k: 'a', t: 'Descanso' }, { k: 'b', t: 'Volatilidad Real' }, { k: 'c', t: 'Cierre mercado' }] },
+                    { id: 4, q: "¿Qué es un Breaker Block?", correct: 'c', explanation: "Un OB que falló y ahora actúa inverso.", options: [{ k: 'a', t: 'Un FVG' }, { k: 'b', t: 'Un soporte' }, { k: 'c', t: 'OB fallido reciclado' }] },
+                    { id: 5, q: "¿Judas Swing ocurre en...?", correct: 'a', explanation: "Fase de Manipulación.", options: [{ k: 'a', t: 'Manipulación' }, { k: 'b', t: 'Distribución' }, { k: 'c', t: 'Cierre' }] },
+                    { id: 6, q: "¿Objetivo del Smart Money?", correct: 'b', explanation: "Buscar liquidez para sus órdenes.", options: [{ k: 'a', t: 'Perder' }, { k: 'b', t: 'Liquidez' }, { k: 'c', t: 'Seguir indicadores' }] }
+                ];
+
+                function renderQuiz() {
+                    const container = document.getElementById('quiz-dynamic-container');
+                    if (!container) return;
+
+                    container.innerHTML = extendedQuizData.map(q => `
+                    <div class="border-b border-slate-100 pb-4 last:border-0" id="q-${q.id}">
+                        <p class="font-bold text-slate-800 mb-2">#${q.id} ${q.q}</p>
+                        <div class="space-y-2">
+                            ${q.options.map(o => `
+                                <button class="w-full text-left p-2 rounded border border-slate-200 hover:bg-slate-50 text-sm transition-colors quiz-opt" 
+                                    onclick="window.kawnApp.checkQ(${q.id}, '${o.k}', this)">
+                                    ${o.t}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="hidden mt-2 p-3 rounded text-sm feedback"></div>
+                    </div>
+                `).join('');
+                }
+
+                window.kawnApp.checkQ = (id, key, btn) => {
+                    const q = extendedQuizData.find(x => x.id === id);
+                    const parent = document.getElementById(`q-${id}`);
+                    const feedback = parent.querySelector('.feedback');
+
+                    // Disable all buttons in this question
+                    parent.querySelectorAll('button').forEach(b => {
+                        b.disabled = true;
+                        b.classList.add('opacity-50');
+                    });
+                    btn.classList.remove('opacity-50');
+
+                    if (key === q.correct) {
+                        btn.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                        feedback.className = "mt-2 p-3 rounded text-sm feedback bg-green-50 text-green-800 border border-green-200 block animate-fade-in";
+                        feedback.innerHTML = `<strong>¡Correcto!</strong> ${q.explanation}`;
+                        showToast('Respuesta Correcta', 'success');
+                    } else {
+                        btn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                        feedback.className = "mt-2 p-3 rounded text-sm feedback bg-red-50 text-red-800 border border-red-200 block animate-fade-in";
+                        feedback.innerHTML = `<strong>Incorrecto.</strong> ${q.explanation}`;
+                        showToast('Respuesta Incorrecta', 'error');
+                    }
+
+                    // Update Score logic simplified for robustness
+                    const scoreEl = document.getElementById('quiz-score');
+                    if (scoreEl) {
+                        const current = parseInt(scoreEl.innerText.split(':')[1]) || 0;
+                        if (key === q.correct) scoreEl.innerText = `Puntuación: ${current + 1}/6`;
+                    }
+                };
+
+                window.kawnApp.resetQuiz = () => {
+                    const scoreEl = document.getElementById('quiz-score');
+                    if (scoreEl) scoreEl.innerText = 'Puntuación: 0/6';
+                    document.getElementById('quiz-completion').classList.add('hidden');
+                    renderQuiz();
+                    showToast('Test Reiniciado');
+                };
+
+                // Glossary
+                function initGlossary() {
+                    const terms = [
+                        { t: "Smart Money", d: "Instituciones financieras (bancos, fondos) con capital suficiente para mover el mercado." },
+                        { t: "Liquidez", d: "Zonas con órdenes pendientes (Stops). El combustible del mercado." },
+                        { t: "FVG (Fair Value Gap)", d: "Ineficiencia o desequilibrio en el precio donde falta contrapartida." },
+                        { t: "Order Block", d: "Zona institucional de oferta/demanda. Última vela contraria antes de un impulso." },
+                        { t: "BOS", d: "Break of Structure. Ruptura de estructura que confirma la tendencia." },
+                        { t: "AMD", d: "Acumulación, Manipulación y Distribución." }
+                    ];
+
+                    const container = document.getElementById('glossary-container');
+                    if (container) {
+                        container.innerHTML = terms.map((item, idx) => `
+                        <div class="border border-slate-200 rounded-lg bg-white overflow-hidden">
+                            <button class="w-full px-4 py-3 text-left font-semibold text-slate-800 hover:bg-slate-50 flex justify-between items-center" 
+                                onclick="document.getElementById('desc-${idx}').classList.toggle('hidden')">
+                                ${item.t}
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-kawn-base"></i>
+                            </button>
+                            <div id="desc-${idx}" class="hidden px-4 py-3 bg-slate-50 text-sm text-slate-600 border-t border-slate-100 animate-slide-up">
+                                ${item.d}
+                            </div>
+                        </div>
+                    `).join('');
+                    }
+                }
+
+                // --- 9. EVENT LISTENERS INITIALIZATION ---
+                function initEventListeners() {
+                    // TOC Generator
+                    const tocContainer = document.getElementById('toc-container');
+                    const headers = document.querySelectorAll('main section h2');
+                    if (tocContainer) {
+                        headers.forEach(h => {
+                            const id = h.parentElement.id;
+                            const a = document.createElement('a');
+                            a.href = `#${id}`;
+                            a.textContent = h.textContent;
+                            a.className = "toc-link block py-1.5 pl-4 text-slate-500 hover:text-slate-900 text-xs";
+                            tocContainer.appendChild(a);
+                        });
+                    }
+
+                    // AI Modal Toggles
+                    const aiModal = document.getElementById('ai-modal');
+                    const aiToggle = document.getElementById('ai-toggle');
+                    const closeAi = document.getElementById('close-ai');
+
+                    if (aiToggle && aiModal) {
+                        aiToggle.onclick = () => aiModal.classList.remove('hidden');
+                        closeAi.onclick = () => aiModal.classList.add('hidden');
+                    }
+
+                    // Mobile Menu
+                    const menuBtn = document.getElementById('mobile-menu-btn');
+                    const aside = document.querySelector('aside');
+                    if (menuBtn && aside) {
+                        menuBtn.onclick = () => {
+                            aside.classList.toggle('hidden');
+                            aside.classList.toggle('fixed');
+                            aside.classList.toggle('inset-0');
+                            aside.classList.toggle('bg-white');
+                            aside.classList.toggle('z-50');
+                            aside.classList.toggle('p-6');
+                            aside.classList.toggle('w-full');
+                        };
+                    }
+
+                    // Scroll Spy Logic
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                                const link = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                                if (link) link.classList.add('active');
+                            }
+                        });
+                    }, { rootMargin: '-20% 0px -60% 0px' });
+                    document.querySelectorAll('main section').forEach(s => observer.observe(s));
+                }
+
+            })();
+    </script>
+</body>
+
+</html>

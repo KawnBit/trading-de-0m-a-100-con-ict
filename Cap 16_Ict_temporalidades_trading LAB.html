@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 16: Temporalidades en el Trading. Dominando el análisis multi-temporal y la fractales del mercado. Aplicación educativa interactiva.">
+    <title>KawnBit | Cap 16: Temporalidades en el Trading</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas (Con atributos de integridad omitidos para simplicidad en este entorno, pero recomendados en prod) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base y Utilidades */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation CSS */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-15deg);
+            top: 10px;
+            left: 10px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TOC Activo */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Callouts y Tarjetas */
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.2s ease;
+        }
+
+        .card-concept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            background-color: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Interactive Components Specifics */
+        .tab-btn.active {
+            background-color: #14b8a6;
+            color: white;
+            border-color: #14b8a6;
+        }
+
+        .quiz-option {
+            transition: all 0.2s;
+        }
+
+        .quiz-feedback {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Pros/Cons Badges */
+        .badge-pro {
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .badge-con {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* Fractal Styles */
+        .fractal-candle {
+            transition: all 0.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        .fractal-candle:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar Sticky -->
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="kawn-logo-wrapper select-none">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-kawn-base"
+                    aria-label="Menú principal">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SMC Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 16</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Práctica</a>
+                    <a href="#pro-tips" class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Pro
+                        Tips 2025</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside id="sidebar-toc" class="hidden md:block w-64 flex-shrink-0 transition-transform duration-300">
+                <div class="sticky top-28">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">
+                        Contenido del capítulo</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Generado dinámicamente -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        16</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        Temporalidades en el trading
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        Comprende la fractales del mercado. Aprende a alinear diferentes marcos temporales para filtrar
+                        el ruido y ejecutar con la precisión de un francotirador.
+                    </p>
+                </section>
+
+                <!-- Sección 1: Qué son -->
+                <section id="que-son" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clock" class="text-kawn-base mr-3"></i> ¿Qué son y por qué importan?
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">En trading, la <strong>temporalidad</strong> (o <em>time frame</em>) se refiere
+                            al intervalo de tiempo que representa cada vela o barra en un gráfico. Por ejemplo, en un
+                            gráfico de 1 hora (H1) cada vela muestra la acción del precio durante una hora; en uno
+                            diario, cada vela corresponde a un día completo. Existen temporalidades estándar ampliamente
+                            utilizadas (1 minuto, 5 minutos, 15 minutos, 1 hora, 4 horas, 1 día, 1 semana, 1 mes, etc.),
+                            aunque técnicamente cualquier periodo es posible.</p>
+
+                        <div class="card-concept">
+                            <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="zoom-in"
+                                    class="w-5 h-5 text-kawn-dark"></i> La paradoja del zoom</h4>
+                            <p class="text-sm">Elegir una temporalidad u otra condiciona la interpretación del
+                                movimiento del precio: es totalmente posible que un activo parezca alcista en un marco
+                                temporal corto pero bajista en uno largo al mismo tiempo. Lo que parece una tormenta en
+                                un gráfico de 5 minutos podría verse solo como una pequeña ondulación en un gráfico
+                                diario.</p>
+                        </div>
+
+                        <p class="mb-4">La importancia estratégica radica en que afectan prácticamente todos los
+                            aspectos de la operativa: número de operaciones, duración, volatilidad, herramientas y
+                            gestión emocional. Un marco temporal inapropiado puede dificultar alcanzar consistencia, ya
+                            que puede no alinearse con tu disponibilidad o tolerancia al estrés.</p>
+                    </div>
+
+                    <!-- INTERACTIVO 1: VISUALIZADOR DE RUIDO -->
+                    <div class="mt-8 bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Visualizador: Ruido vs. Estructura</h3>
+                            <span
+                                class="text-xs bg-kawn-light text-kawn-deep px-2 py-1 rounded-full font-bold">Interactivo</span>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-4">Compara cómo el mismo movimiento de precios se ve caótico
+                            en temporalidades bajas (Ruido) y claro en altas (Estructura).</p>
+                        <div class="relative h-64 w-full">
+                            <canvas id="noiseChart"></canvas>
+                        </div>
+                        <div class="flex justify-center gap-4 mt-2">
+                            <button onclick="window.updateChart && window.updateChart('noise')"
+                                class="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-600 font-bold transition">Ver
+                                M5 (Ruido)</button>
+                            <button onclick="window.updateChart && window.updateChart('structure')"
+                                class="text-xs px-3 py-1 bg-kawn-light hover:bg-kawn-base hover:text-white rounded text-kawn-deep font-bold transition">Ver
+                                H4 (Estructura)</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN 1.1: FRACTALIDAD -->
+                <section id="fractalidad" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="box" class="text-kawn-base mr-3"></i> La Fractalidad del Mercado
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">El mercado es <strong>fractal</strong>: los mismos patrones se repiten en todas
+                            las escalas temporales. Una vela diaria alcista no es un bloque sólido verde; en su interior
+                            contiene tendencias, retrocesos y consolidaciones de temporalidades menores.</p>
+                        <p class="mb-6">Comprender esto es como abrir una "Matrioska" rusa: dentro de la vela D1 hay 6
+                            velas de H4, y dentro de cada vela H4 hay 4 velas de H1. El dinero inteligente (Smart Money)
+                            utiliza esta propiedad para esconder sus huellas en marcos grandes y ejecutar con precisión
+                            en marcos pequeños.</p>
+                    </div>
+
+                    <!-- NUEVO INTERACTIVO: EXPLORADOR FRACTAL -->
+                    <div
+                        class="bg-slate-900 rounded-xl p-6 shadow-2xl border border-slate-700 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6 z-10 relative">
+                            <h3 class="text-white font-bold text-lg">Explorador Fractal: Anatomía de una Vela</h3>
+                            <div class="flex gap-2">
+                                <button id="zoom-in-fractal"
+                                    class="bg-kawn-base hover:bg-kawn-dark text-white text-xs px-3 py-1.5 rounded-full transition-colors font-bold flex items-center gap-1">
+                                    <i data-lucide="zoom-in" class="w-3 h-3"></i> Profundizar
+                                </button>
+                                <button id="zoom-reset-fractal"
+                                    class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-full transition-colors font-bold hidden">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Reiniciar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="fractal-container"
+                            class="h-64 flex items-center justify-center relative bg-slate-800 rounded-lg border border-slate-600">
+                            <!-- Nivel 1: Vela D1 -->
+                            <div id="level-d1"
+                                class="absolute inset-0 flex items-center justify-center transition-all duration-700">
+                                <div
+                                    class="relative w-24 h-48 bg-green-500 rounded-sm shadow-[0_0_20px_rgba(34,197,94,0.3)] flex items-center justify-center group fractal-candle">
+                                    <div
+                                        class="absolute top-0 bottom-0 w-1 bg-green-500 -z-10 h-[120%] -translate-y-[10%]">
+                                    </div>
+                                    <span class="text-white font-black text-2xl drop-shadow-md">D1</span>
+                                    <span class="absolute -bottom-8 text-green-400 text-xs font-mono">1 Día</span>
+                                </div>
+                            </div>
+
+                            <!-- Nivel 2: Velas H4 (Oculto) -->
+                            <div id="level-h4"
+                                class="absolute inset-0 flex items-center justify-center gap-2 opacity-0 scale-50 pointer-events-none transition-all duration-700">
+                                <!-- 6 Velas simulando el movimiento de la D1 -->
+                                <div class="w-8 h-12 bg-green-500 relative rounded-sm">
+                                    <div class="absolute w-0.5 bg-green-500 h-[140%] -top-[20%] left-1/2"></div>
+                                </div>
+                                <div class="w-8 h-8 bg-red-500 relative rounded-sm mt-4">
+                                    <div class="absolute w-0.5 bg-red-500 h-[140%] -top-[20%] left-1/2"></div>
+                                </div> <!-- Retroceso -->
+                                <div class="w-8 h-16 bg-green-500 relative rounded-sm -mt-6">
+                                    <div class="absolute w-0.5 bg-green-500 h-[120%] -top-[10%] left-1/2"></div>
+                                </div>
+                                <div class="w-8 h-20 bg-green-500 relative rounded-sm -mt-8">
+                                    <div class="absolute w-0.5 bg-green-500 h-[110%] -top-[5%] left-1/2"></div>
+                                </div> <!-- Expansion -->
+                                <div class="w-8 h-10 bg-red-500 relative rounded-sm">
+                                    <div class="absolute w-0.5 bg-red-500 h-[130%] -top-[15%] left-1/2"></div>
+                                </div>
+                                <div class="w-8 h-14 bg-green-500 relative rounded-sm -mt-4">
+                                    <div class="absolute w-0.5 bg-green-500 h-[120%] -top-[10%] left-1/2"></div>
+                                </div>
+                                <div
+                                    class="absolute bottom-4 left-4 text-kawn-base font-bold text-xs bg-slate-900/80 px-2 py-1 rounded">
+                                    Visión H4 (x6 velas)</div>
+                            </div>
+                        </div>
+                        <p id="fractal-desc" class="text-slate-400 text-xs mt-3 text-center">La vela diaria parece un
+                            solo movimiento, pero dentro esconde una estructura compleja operable.</p>
+                    </div>
+                </section>
+
+                <!-- Sección 2: Análisis de Temporalidades -->
+                <section id="analisis-temporalidades" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="bar-chart-2" class="text-kawn-base mr-3"></i> Análisis de las temporalidades
+                    </h2>
+                    <p class="mb-6 text-slate-600">Desde el frenesí del scalping hasta la calma de la inversión
+                        posicional. Desglosamos las ocho temporalidades más comunes.</p>
+
+                    <!-- Tabs para navegar temporalidades y ahorrar scroll -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden mb-8">
+                        <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-50 scrollbar-hide">
+                            <button onclick="window.switchTimeframe && window.switchTimeframe('scalping')"
+                                class="tf-tab active px-6 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent whitespace-nowrap">Scalping
+                                (M1-M5)</button>
+                            <button onclick="window.switchTimeframe && window.switchTimeframe('intradia')"
+                                class="tf-tab px-6 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent whitespace-nowrap">Intradía
+                                (M15-H1)</button>
+                            <button onclick="window.switchTimeframe && window.switchTimeframe('swing')"
+                                class="tf-tab px-6 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent whitespace-nowrap">Swing
+                                (H4-D1)</button>
+                            <button onclick="window.switchTimeframe && window.switchTimeframe('macro')"
+                                class="tf-tab px-6 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent whitespace-nowrap">Macro
+                                (W1-MN)</button>
+                        </div>
+
+                        <div class="p-6 min-h-[400px]">
+                            <!-- CONTENIDO SCALPING -->
+                            <div id="tf-scalping" class="tf-content animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-800 mb-4">El mundo del ultra corto plazo (M1 -
+                                    M5)</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico de 1 Minuto (M1)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Dominio del scalping extremo y algoritmos
+                                            HFT. Muestra el detalle máximo.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Feedback rápido, multitud de oportunidades.</span>
+                                            </div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Ruido extremo, estrés mental, costes (spread)
+                                                    altos.</span></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico de 5 Minutos (M5)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Favorito de scalpers y day traders
+                                            agresivos. Ligeramente más estable que M1.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Filtra algo de ruido, permite pensar más que en
+                                                    M1.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Requiere atención constante, operativa intensiva
+                                                    en comisiones.</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CONTENIDO INTRADIA -->
+                            <div id="tf-intradia" class="tf-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-800 mb-4">El equilibrio operativo (M15 - H1)
+                                </h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico de 15 Minutos (M15)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Término medio entre rapidez y fiabilidad.
+                                            Popular para day trading clásico.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Buen balance señal/ruido, facilita gestión sin
+                                                    pánico.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Expuesto a ruido de noticias intradía, requiere
+                                                    disponibilidad.</span></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico de 1 Hora (H1)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">El puente entre intradía y swing. Pilar
+                                            del análisis técnico estructural.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Alta claridad estructural, reduce estrés, ideal para
+                                                    empezar.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Menor resolución para entradas "sniper", requiere
+                                                    paciencia.</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CONTENIDO SWING -->
+                            <div id="tf-swing" class="tf-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-800 mb-4">Capturando tendencias (H4 - D1)</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico de 4 Horas (H4)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Swing trading ágil. Filtra la mayor parte
+                                            del ruido intradía.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Patrones definidos, permite revisar 2-4 veces al
+                                                    día.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Menos oportunidades, paciencia necesaria.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico Diario (D1)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Swing trading lento y posición.
+                                            Referencia para grandes fondos.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Señales muy fiables, elimina ruido, compatible con
+                                                    empleo.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Feedback muy lento, riesgo de gaps nocturnos/fin
+                                                    de semana.</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CONTENIDO MACRO -->
+                            <div id="tf-macro" class="tf-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-800 mb-4">Visión de águila (W1 - MN)</h3>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico Semanal (W1)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Tendencias de largo plazo. Preferida de
+                                            inversores y position traders.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Visión de ciclos económicos, niveles históricos muy
+                                                    respetados.</span></div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Excesivamente lento para activos, stops muy
+                                                    amplios.</span></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-kawn-deep mb-2">Gráfico Mensual (MN)</h4>
+                                        <p class="text-sm text-slate-600 mb-3">Visión macroeconómica. Solo para contexto
+                                            general.</p>
+                                        <div class="space-y-2">
+                                            <div class="flex items-start gap-2"><span class="badge-pro">Pro</span> <span
+                                                    class="text-xs">Claridad máxima de ciclo (burbujas, crash).</span>
+                                            </div>
+                                            <div class="flex items-start gap-2"><span class="badge-con">Contra</span>
+                                                <span class="text-xs">Impracticable para trading activo, riesgo de
+                                                    drawdown grande.</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 3: Elegir según perfil (COMPARADOR) -->
+                <section id="elegir-perfil" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="users" class="text-kawn-base mr-3"></i> ¿Qué temporalidad elegir?
+                    </h2>
+                    <p class="mb-6 text-slate-600">Tu personalidad dicta tu temporalidad. Selecciona un perfil para ver
+                        sus métricas.</p>
+
+                    <!-- COMPONENTE INTERACTIVO 2: PERFILADOR -->
+                    <div class="bg-slate-900 text-white rounded-xl shadow-2xl p-6 border border-slate-700">
+                        <div class="flex flex-wrap gap-2 mb-6 justify-center">
+                            <button onclick="window.setProfile && window.setProfile('scalper')"
+                                class="profile-btn bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-bold transition border border-slate-600 focus:ring-2 focus:ring-kawn-base">Scalper</button>
+                            <button onclick="window.setProfile && window.setProfile('day')"
+                                class="profile-btn bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-bold transition border border-slate-600 focus:ring-2 focus:ring-kawn-base">Day
+                                Trader</button>
+                            <button onclick="window.setProfile && window.setProfile('swing')"
+                                class="profile-btn bg-kawn-base text-white px-4 py-2 rounded-lg text-sm font-bold transition border border-kawn-light shadow-glow">Swing
+                                Trader</button>
+                            <button onclick="window.setProfile && window.setProfile('position')"
+                                class="profile-btn bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg text-sm font-bold transition border border-slate-600 focus:ring-2 focus:ring-kawn-base">Inversionista</button>
+                        </div>
+
+                        <div id="profile-display" class="grid md:grid-cols-2 gap-8 items-center animate-fade-in">
+                            <div>
+                                <h3 id="p-title" class="text-2xl font-black text-kawn-light mb-2">Swing Trader</h3>
+                                <p id="p-desc" class="text-slate-300 text-sm mb-4">Busca capturar movimientos de varios
+                                    días. Tolerancia a mantener posiciones nocturnas. Valora la calma y la estrategia.
+                                </p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-center gap-2"><i data-lucide="check"
+                                            class="w-4 h-4 text-kawn-base"></i> <strong>TF Principal:</strong> <span
+                                            id="p-tf">H4 - D1</span></li>
+                                    <li class="flex items-center gap-2"><i data-lucide="check"
+                                            class="w-4 h-4 text-kawn-base"></i> <strong>Tiempo/Día:</strong> <span
+                                            id="p-time">30 min - 1 hora</span></li>
+                                    <li class="flex items-center gap-2"><i data-lucide="check"
+                                            class="w-4 h-4 text-kawn-base"></i> <strong>Estrés:</strong> <span
+                                            id="p-stress">Bajo/Medio</span></li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-600">
+                                <!-- Barras de stats simuladas con CSS -->
+                                <div class="mb-3">
+                                    <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Frecuencia
+                                            Operativa</span><span id="stat-freq-val">Media</span></div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div id="stat-freq"
+                                            class="bg-kawn-base h-2 rounded-full transition-all duration-500"
+                                            style="width: 40%"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Riesgo por
+                                            Ruido</span><span id="stat-noise-val">Bajo</span></div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div id="stat-noise"
+                                            class="bg-purple-500 h-2 rounded-full transition-all duration-500"
+                                            style="width: 20%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Paciencia
+                                            Requerida</span><span id="stat-patience-val">Alta</span></div>
+                                    <div class="w-full bg-slate-700 rounded-full h-2">
+                                        <div id="stat-patience"
+                                            class="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                                            style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 4: Top-Down Analysis -->
+                <section id="top-down" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> Análisis Top-Down (Triple Pantalla)
+                    </h2>
+                    <p class="text-slate-600 mb-6">La regla de oro: nunca operes en contra de la tendencia superior.
+                        Integra tres "lentes" para filtrar señales falsas.</p>
+
+                    <div class="bg-white p-6 rounded-xl shadow-card border border-slate-200 mb-6">
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="text-kawn-dark font-black text-4xl mb-2">1</div>
+                                <h4 class="font-bold text-slate-800">Visión Global</h4>
+                                <p class="text-xs text-slate-500 mt-2">Define la tendencia (Alcista/Bajista).<br>Ej:
+                                    Gráfico Diario.</p>
+                            </div>
+                            <div class="flex flex-col justify-center items-center">
+                                <i data-lucide="arrow-down" class="w-8 h-8 text-kawn-base animate-bounce"></i>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="text-kawn-dark font-black text-4xl mb-2">2</div>
+                                <h4 class="font-bold text-slate-800">Estructura</h4>
+                                <p class="text-xs text-slate-500 mt-2">Identifica zonas (Soportes/Resistencias).<br>Ej:
+                                    Gráfico H1.</p>
+                            </div>
+                            <!-- Mobile fix: hidden row visualizer -->
+                        </div>
+                        <div class="flex justify-center my-4 md:hidden"><i data-lucide="arrow-down"
+                                class="w-6 h-6 text-kawn-base"></i></div>
+                        <div
+                            class="md:w-1/3 mx-auto p-4 bg-kawn-light rounded-lg border border-kawn-base text-center mt-4 md:mt-0">
+                            <div class="text-kawn-deep font-black text-4xl mb-2">3</div>
+                            <h4 class="font-bold text-slate-800">Ejecución</h4>
+                            <p class="text-xs text-slate-600 mt-2">Timing preciso (Entrada/Stop).<br>Ej: Gráfico M15.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVO 3: SIMULADOR TOP-DOWN (Plotly MEJORADO) -->
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl border border-slate-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-white font-bold"><i data-lucide="activity"
+                                    class="inline w-5 h-5 mr-2 text-kawn-base"></i>Simulador: Alineación de
+                                Temporalidades</h3>
+                            <span class="text-xs text-slate-400 font-mono">LIVE FEED: M15</span>
+                        </div>
+
+                        <p class="text-slate-400 text-sm mb-4">La tendencia en D1 es alcista. En H4 el precio retrocede
+                            a una <span class="text-kawn-base font-bold">Zona de Demanda</span>. ¿Cuándo entras en M15?
+                        </p>
+
+                        <!-- Contenedor del Gráfico -->
+                        <div id="topDownPlot"
+                            class="w-full h-96 bg-slate-800 rounded-lg overflow-hidden border border-slate-700 relative">
+                            <!-- Loading Placeholder -->
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-500 text-xs">
+                                Cargando datos institucionales...</div>
+                        </div>
+
+                        <!-- Controles -->
+                        <div class="flex gap-4 mt-6">
+                            <button id="btn-buy"
+                                class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition shadow-lg flex justify-center items-center gap-2 group"
+                                onclick="window.triggerTrade && window.triggerTrade('buy')">
+                                <span>COMPRAR (Long)</span>
+                                <i data-lucide="trending-up"
+                                    class="w-4 h-4 group-hover:-translate-y-1 transition-transform"></i>
+                            </button>
+                            <button id="btn-sell"
+                                class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition shadow-lg flex justify-center items-center gap-2 group"
+                                onclick="window.triggerTrade && window.triggerTrade('sell')">
+                                <span>VENDER (Short)</span>
+                                <i data-lucide="trending-down"
+                                    class="w-4 h-4 group-hover:translate-y-1 transition-transform"></i>
+                            </button>
+                        </div>
+
+                        <!-- Resultado -->
+                        <div id="trade-result"
+                            class="mt-4 p-4 rounded-lg hidden text-sm font-bold text-center border animate-fade-in-up">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN 4.1: SEMÁFORO DE ALINEACIÓN + IA -->
+                <section id="sincronizacion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="git-merge" class="text-kawn-base mr-3"></i> Sincronización Estructural
+                    </h2>
+                    <p class="mb-4 text-slate-600">No basta con mirar tres gráficos; deben "hablar" el mismo idioma. Usa
+                        este semáforo mental antes de ejecutar cualquier operación.</p>
+
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+                        <h4 class="font-bold text-slate-800 mb-4 text-center">Calculadora de Confluencia</h4>
+
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <!-- Selector D1 -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 uppercase text-center">Diario
+                                    (D1)</label>
+                                <select id="sel-d1"
+                                    class="p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-kawn-base outline-none bg-slate-50">
+                                    <option value="up">Alcista</option>
+                                    <option value="down">Bajista</option>
+                                    <option value="range">Rango</option>
+                                </select>
+                            </div>
+                            <!-- Selector H4 -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 uppercase text-center">H4
+                                    (Estructura)</label>
+                                <select id="sel-h4"
+                                    class="p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-kawn-base outline-none bg-slate-50">
+                                    <option value="up">Alcista</option>
+                                    <option value="down">Bajista</option>
+                                    <option value="range">Rango</option>
+                                </select>
+                            </div>
+                            <!-- Selector M15 -->
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-bold text-slate-500 uppercase text-center">M15
+                                    (Entrada)</label>
+                                <select id="sel-m15"
+                                    class="p-2 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-kawn-base outline-none bg-slate-50">
+                                    <option value="up">Alcista</option>
+                                    <option value="down">Bajista</option>
+                                    <option value="range">Rango</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Resultado Semáforo -->
+                        <div id="semaforo-result"
+                            class="p-4 rounded-lg bg-slate-100 text-center border border-slate-200 transition-all duration-300">
+                            <div class="flex flex-col items-center">
+                                <div id="semaforo-icon"
+                                    class="w-12 h-12 rounded-full bg-slate-300 mb-2 flex items-center justify-center">
+                                    <i data-lucide="minus" class="text-white"></i>
+                                </div>
+                                <span id="semaforo-text" class="font-bold text-slate-600">Configura los marcos
+                                    temporales</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="window.calcConfluence && window.calcConfluence()"
+                                class="flex-1 bg-slate-800 text-white py-2 rounded-lg font-bold hover:bg-slate-700 transition text-sm">Verificar
+                                Estado</button>
+                            <!-- NEW AI BUTTON -->
+                            <button id="ai-analyze-btn"
+                                class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-2 rounded-lg font-bold hover:from-indigo-600 hover:to-purple-700 transition text-sm flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> Analista IA
+                            </button>
+                        </div>
+
+                        <!-- AI Result Container -->
+                        <div id="ai-confluence-result"
+                            class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg text-sm text-slate-700 animate-fade-in-up">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN 4.2: POWER OF 3 (AMD) -->
+                <section id="amd" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="zap" class="text-kawn-base mr-3"></i> Power of 3: Anatomía Inter-temporal
+                    </h2>
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="md:w-1/2 prose text-slate-600">
+                            <p>El concepto <strong>AMD (Acumulación, Manipulación, Distribución)</strong> de ICT explica
+                                cómo se forma una vela diaria vista desde temporalidades menores.</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>Acumulación:</strong> Rango asiático. Pocos participantes.</li>
+                                <li><strong>Manipulación (Judas Swing):</strong> Falso movimiento en apertura de Londres
+                                    (crea la mecha de la vela diaria).</li>
+                                <li><strong>Distribución:</strong> Movimiento real de la sesión de Nueva York (crea el
+                                    cuerpo).</li>
+                            </ul>
+                            <p class="text-sm mt-4 bg-kawn-light p-3 rounded border border-kawn-base text-kawn-deep">
+                                <strong>Pro Tip:</strong> Si D1 es alcista, espera que Londres manipule por debajo del
+                                precio de apertura (Open) para comprar barato.</p>
+                        </div>
+                        <div class="md:w-1/2 w-full bg-slate-900 rounded-xl p-4 border border-slate-700 shadow-lg">
+                            <h4 class="text-white text-xs font-bold mb-2 uppercase tracking-widest text-center">
+                                Esquemática AMD Intradía</h4>
+                            <!-- Gráfico SVG simple pero efectivo para AMD -->
+                            <svg viewBox="0 0 400 200" class="w-full h-auto">
+                                <!-- Grid -->
+                                <line x1="0" y1="100" x2="400" y2="100" stroke="#334155" stroke-width="1"
+                                    stroke-dasharray="4" />
+
+                                <!-- Accumulation (Asian Range) -->
+                                <rect x="20" y="80" width="80" height="40" fill="rgba(148, 163, 184, 0.2)"
+                                    stroke="#94a3b8" stroke-dasharray="2" />
+                                <text x="60" y="70" text-anchor="middle" fill="#94a3b8" font-size="10">Asia (A)</text>
+
+                                <!-- Manipulation (Judas Swing) -->
+                                <path d="M 100 100 L 120 110 L 140 140 L 160 90" fill="none" stroke="#ef4444"
+                                    stroke-width="2" />
+                                <text x="140" y="160" text-anchor="middle" fill="#ef4444" font-size="10">Manipulación
+                                    (M)</text>
+
+                                <!-- Distribution (Trend) -->
+                                <path d="M 160 90 L 200 50 L 250 30 L 300 40" fill="none" stroke="#22c55e"
+                                    stroke-width="2" />
+                                <text x="250" y="20" text-anchor="middle" fill="#22c55e" font-size="10">Distribución
+                                    (D)</text>
+
+                                <!-- Daily Candle Representation on the Right -->
+                                <g transform="translate(340, 20)">
+                                    <line x1="15" y1="10" x2="15" y2="140" stroke="#22c55e" stroke-width="2" />
+                                    <!-- Mechas -->
+                                    <rect x="5" y="40" width="20" height="80" fill="#22c55e" /> <!-- Cuerpo -->
+                                    <text x="15" y="160" text-anchor="middle" fill="white" font-size="10">Vela D1</text>
+
+                                    <!-- Connectors -->
+                                    <line x1="-40" y1="120" x2="5" y2="120" stroke="#ef4444" stroke-width="1"
+                                        stroke-dasharray="2" opacity="0.5" />
+                                    <text x="-60" y="125" fill="#ef4444" font-size="8">Low (M)</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 5: Peligros Comunes -->
+                <section id="peligros" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 text-red-700 flex items-center">
+                        <i data-lucide="alert-triangle" class="mr-3"></i> Peligros y errores comunes
+                    </h2>
+                    <ul class="space-y-4">
+                        <li class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <strong class="text-red-900 block mb-1">El "Limbo" Temporal</strong>
+                            <span class="text-sm text-red-700">Planificar en diario pero salir por miedo al ver una vela
+                                roja en 5 minutos. Regla: Gestiona en el mismo marco donde planificaste.</span>
+                        </li>
+                        <li class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <strong class="text-red-900 block mb-1">Sobreoperar en TF bajos</strong>
+                            <span class="text-sm text-red-700">Creer que M1 ofrece "más dinero". Solo ofrece más señales
+                                falsas y comisiones para el broker si no tienes experiencia.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Sección 6: Pro Tips 2025 -->
+                <section id="pro-tips" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Consejos Profesionales 2025</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 border-l-4 border-kawn-base bg-white shadow-sm">
+                            <h4 class="font-bold text-slate-800">Kill Zones</h4>
+                            <p class="text-sm text-slate-600">Alinea tu temporalidad intradía con las sesiones de
+                                Londres y Nueva York para tener volatilidad real.</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-purple-500 bg-white shadow-sm">
+                            <h4 class="font-bold text-slate-800">Zoom Out</h4>
+                            <p class="text-sm text-slate-600">Ante la duda o ansiedad en M5, sube inmediatamente a H1.
+                                Si la estructura no ha cambiado, mantén la calma.</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-blue-500 bg-white shadow-sm">
+                            <h4 class="font-bold text-slate-800">Costes Ocultos</h4>
+                            <p class="text-sm text-slate-600">En scalping, el spread es el 40% de tu movimiento. En
+                                swing, el swap te cobra por esperar. Calcula esto antes de elegir.</p>
+                        </div>
+                        <div class="p-4 border-l-4 border-orange-500 bg-white shadow-sm">
+                            <h4 class="font-bold text-slate-800">Multi-Screen</h4>
+                            <p class="text-sm text-slate-600">Usa layouts de TradingView con 3 ventanas (D1, H1, M5)
+                                simultáneas para no perder el contexto nunca.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 7: Ejercicios -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="edit-3" class="text-kawn-base mr-3"></i> Validación del conocimiento
+                    </h2>
+
+                    <!-- Ejercicio de Reflexión + IA -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Definición de Estilo & Escenarios</h3>
+                            <!-- NEW AI BUTTON -->
+                            <button id="ai-scenario-btn"
+                                class="bg-kawn-light text-kawn-deep hover:bg-kawn-base hover:text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-2 border border-kawn-base disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="dices" class="w-4 h-4"></i> Generar Escenario IA
+                            </button>
+                        </div>
+
+                        <!-- AI SCENARIO CONTAINER -->
+                        <div id="ai-scenario-display"
+                            class="hidden mb-4 p-4 bg-slate-50 border-l-4 border-kawn-base text-slate-700 text-sm rounded-r-lg italic animate-fade-in-up">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <p class="text-sm text-slate-600 mb-2">Basado en el escenario o tu rutina, define tu tríada de
+                            temporalidades:</p>
+                        <textarea
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base outline-none"
+                            rows="3" placeholder="Ej: Ante un escenario D1 alcista y H4 en rango..."></textarea>
+                    </div>
+
+                    <!-- QUIZ -->
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Test de asimilación</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/5</span>
+                        </div>
+                        <div id="quiz-container" class="space-y-6">
+                            <!-- Inyectado por JS -->
+                        </div>
+                        <div id="quiz-complete" class="hidden text-center mt-6">
+                            <p class="text-2xl font-bold mb-2">¡Completado!</p>
+                            <button onclick="window.location.reload()"
+                                class="bg-white text-kawn-deep px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">Reiniciar</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Float -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col chat-container">
+            <div class="ai-msg message-bubble shadow-sm">
+                Hola. Soy tu especialista en temporalidades. ¿Dudas sobre si eres Scalper o Swing Trader? Pregúntame.
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base transition-all"
+                    placeholder="Ej: ¿Qué es el análisis Top-Down?">
+                <button id="send-ai"
+                    class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors disabled:opacity-50">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+                Pensando...
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo. No constituye asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 0. Inicializar Iconos
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // ==========================================
+            // CONFIGURACIÓN DE PROXY PARA IA
+            // ==========================================
+            const PROXY_URL = '/.netlify/functions/gemini-proxy';
+
+            async function callAI(promptText, systemInstruction = "Eres un mentor experto en trading institucional (SMC).") {
+                try {
+                    const response = await fetch(PROXY_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: promptText }] }],
+                            systemInstruction: { parts: [{ text: systemInstruction }] }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error("Error en conexión con IA");
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "Lo siento, no pude procesar la solicitud.";
+                } catch (e) {
+                    console.error("AI Error:", e);
+                    return "Error de conexión. Asegúrate de estar conectado a la red.";
+                }
+            }
+
+            // 1. TOC Dinámico
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+            if (tocContainer) {
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        // Limpiar iconos del texto del TOC para que quede limpio
+                        link.textContent = h2.innerText;
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all truncate`;
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                        });
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                // Active State Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                            const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(section => observer.observe(section));
+            }
+
+            // Mobile Menu
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    const sidebar = document.getElementById('sidebar-toc');
+                    if (!sidebar) return;
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('fixed');
+                    sidebar.classList.toggle('inset-0');
+                    sidebar.classList.toggle('z-50');
+                    sidebar.classList.toggle('bg-white');
+                    sidebar.classList.toggle('p-6');
+
+                    // Add close button if not exists
+                    if (!sidebar.querySelector('.mobile-close-btn') && !sidebar.classList.contains('hidden')) {
+                        const close = document.createElement('button');
+                        close.innerHTML = '<i data-lucide="x"></i>';
+                        close.className = 'mobile-close-btn absolute top-4 right-4 p-2';
+                        close.onclick = () => mobileBtn.click();
+                        sidebar.appendChild(close);
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+                });
+            }
+
+            // 2. CHART.JS: Ruido vs Estructura (Robusto)
+            const ctxNoise = document.getElementById('noiseChart');
+            if (ctxNoise && typeof Chart !== 'undefined') {
+                try {
+                    const noiseData = Array.from({ length: 50 }, () => Math.random() * 20 + 40);
+                    const structureData = noiseData.map((val, i) => (i > 0 ? (val + noiseData[i - 1]) / 2 : val)).map((v, i) => 50 + i * 0.5);
+
+                    const gradient = ctxNoise.getContext('2d').createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, 'rgba(20, 184, 166, 0.4)');
+                    gradient.addColorStop(1, 'rgba(20, 184, 166, 0.0)');
+
+                    window.myChart = new Chart(ctxNoise, {
+                        type: 'line',
+                        data: {
+                            labels: Array.from({ length: 50 }, (_, i) => i),
+                            datasets: [{
+                                label: 'Precio (M5 - Ruido)',
+                                data: noiseData,
+                                borderColor: '#cbd5e1',
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { intersect: false, mode: 'index' },
+                            plugins: { legend: { display: true, labels: { font: { family: 'Inter' } } } },
+                            scales: { x: { display: false }, y: { display: false } }
+                        }
+                    });
+
+                    // Global function attached to window for HTML access, safely defined
+                    window.updateChart = function (mode) {
+                        if (!window.myChart) return;
+
+                        if (mode === 'noise') {
+                            window.myChart.data.datasets = [{
+                                label: 'Precio (M5 - Ruido)',
+                                data: noiseData,
+                                borderColor: '#94a3b8',
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                tension: 0.4,
+                                fill: false
+                            }];
+                        } else {
+                            window.myChart.data.datasets = [{
+                                label: 'Estructura (H4 - Tendencia)',
+                                data: structureData,
+                                borderColor: '#14b8a6',
+                                borderWidth: 3,
+                                backgroundColor: gradient,
+                                fill: true,
+                                pointRadius: 0,
+                                tension: 0.4
+                            }, {
+                                label: 'Ruido Subyacente',
+                                data: noiseData,
+                                borderColor: 'rgba(203, 213, 225, 0.2)',
+                                borderWidth: 1,
+                                pointRadius: 0,
+                                borderDash: [5, 5]
+                            }];
+                        }
+                        window.myChart.update();
+                    }
+                } catch (e) {
+                    console.error("Error inicializando Chart.js:", e);
+                    ctxNoise.parentElement.innerHTML = "<p class='text-red-500 text-sm text-center'>Error cargando gráfico.</p>";
+                }
+            }
+
+            // 3. EXPLORADOR FRACTAL
+            const zoomInBtn = document.getElementById('zoom-in-fractal');
+            const zoomResetBtn = document.getElementById('zoom-reset-fractal');
+            const levelD1 = document.getElementById('level-d1');
+            const levelH4 = document.getElementById('level-h4');
+            const fractalDesc = document.getElementById('fractal-desc');
+
+            if (zoomInBtn && levelD1 && levelH4) {
+                zoomInBtn.addEventListener('click', () => {
+                    levelD1.style.opacity = '0';
+                    levelD1.style.transform = 'scale(2)';
+
+                    levelH4.classList.remove('opacity-0', 'scale-50', 'pointer-events-none');
+                    levelH4.style.opacity = '1';
+                    levelH4.style.transform = 'scale(1)';
+
+                    if (fractalDesc) fractalDesc.innerText = "Ahora ves las 6 velas H4 (24h) que componen esa vela diaria. ¡El ruido tiene estructura!";
+                    zoomInBtn.classList.add('hidden');
+                    zoomResetBtn.classList.remove('hidden');
+                });
+            }
+
+            if (zoomResetBtn && levelD1 && levelH4) {
+                zoomResetBtn.addEventListener('click', () => {
+                    levelD1.style.opacity = '1';
+                    levelD1.style.transform = 'scale(1)';
+
+                    levelH4.style.opacity = '0';
+                    levelH4.style.transform = 'scale(50)';
+
+                    if (fractalDesc) fractalDesc.innerText = "La vela diaria parece un solo movimiento, pero dentro esconde una estructura compleja operable.";
+                    zoomInBtn.classList.remove('hidden');
+                    zoomResetBtn.classList.add('hidden');
+                });
+            }
+
+            // 4. COMPARADOR DE PERFILES (JS Simple)
+            const profiles = {
+                scalper: {
+                    title: "Scalper",
+                    desc: "Busca adrenalina y acción constante. Captura movimientos de pips en segundos.",
+                    tf: "M1 - M5",
+                    time: "Full time (Sesión)",
+                    stress: "Alto/Extremo",
+                    stats: { freq: "100%", noise: "90%", patience: "10%" },
+                    vals: { freq: "Alta", noise: "Alto", patience: "Baja" },
+                    color: "bg-red-500"
+                },
+                day: {
+                    title: "Day Trader",
+                    desc: "Equilibrio entre acción y análisis. Cierra todo antes de dormir.",
+                    tf: "M15 - H1",
+                    time: "2-4 horas/día",
+                    stress: "Medio",
+                    stats: { freq: "60%", noise: "50%", patience: "40%" },
+                    vals: { freq: "Media", noise: "Medio", patience: "Media" },
+                    color: "bg-blue-500"
+                },
+                swing: {
+                    title: "Swing Trader",
+                    desc: "Estratega. Busca movimientos de varios días. Revisa gráficos esporádicamente.",
+                    tf: "H4 - D1",
+                    time: "30-60 min/día",
+                    stress: "Bajo",
+                    stats: { freq: "30%", noise: "20%", patience: "80%" },
+                    vals: { freq: "Baja", noise: "Bajo", patience: "Alta" },
+                    color: "bg-kawn-base"
+                },
+                position: {
+                    title: "Inversionista",
+                    desc: "Visión macro. Compra valor y mantiene por meses o años.",
+                    tf: "W1 - MN",
+                    time: "Semanal",
+                    stress: "Mínimo",
+                    stats: { freq: "10%", noise: "5%", patience: "100%" },
+                    vals: { freq: "Muy Baja", noise: "Nulo", patience: "Extrema" },
+                    color: "bg-green-500"
+                }
+            };
+
+            window.setProfile = function (key) {
+                if (!profiles[key]) return;
+                const p = profiles[key];
+
+                // Safe DOM updates
+                const updateText = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
+                const updateStyle = (id, width) => { const el = document.getElementById(id); if (el) el.style.width = width; };
+
+                updateText('p-title', p.title);
+                updateText('p-desc', p.desc);
+                updateText('p-tf', p.tf);
+                updateText('p-time', p.time);
+                updateText('p-stress', p.stress);
+
+                updateStyle('stat-freq', p.stats.freq);
+                updateStyle('stat-noise', p.stats.noise);
+                updateStyle('stat-patience', p.stats.patience);
+
+                updateText('stat-freq-val', p.vals.freq);
+                updateText('stat-noise-val', p.vals.noise);
+                updateText('stat-patience-val', p.vals.patience);
+
+                // Update active button state
+                document.querySelectorAll('.profile-btn').forEach(btn => {
+                    // Cleaner class manipulation
+                    const isSelected = btn.onclick.toString().includes(key);
+                    if (isSelected) {
+                        btn.classList.remove('bg-slate-800', 'border-slate-600');
+                        btn.classList.add('bg-kawn-base', 'border-kawn-light', 'shadow-glow');
+                    } else {
+                        btn.classList.add('bg-slate-800', 'border-slate-600');
+                        btn.classList.remove('bg-kawn-base', 'border-kawn-light', 'shadow-glow');
+                    }
+                });
+            }
+
+            // 5. PLOTLY: Top-Down Simulator (Robusto con ResizeObserver)
+            if (typeof Plotly !== 'undefined' && document.getElementById('topDownPlot')) {
+                try {
+                    // OHLC Data generation for a Bullish setup with pullback
+                    const xVals = ['10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30', '11:45', '12:00', '12:15'];
+                    const openData = [1.0550, 1.0560, 1.0555, 1.0540, 1.0520, 1.0505, 1.0500, 1.0525, 1.0540, 1.0555];
+                    const closeData = [1.0560, 1.0555, 1.0540, 1.0520, 1.0505, 1.0500, 1.0525, 1.0540, 1.0555, 1.0570];
+                    const highData = [1.0565, 1.0565, 1.0560, 1.0545, 1.0525, 1.0510, 1.0530, 1.0550, 1.0565, 1.0580];
+                    const lowData = [1.0545, 1.0550, 1.0535, 1.0515, 1.0500, 1.0495, 1.0500, 1.0520, 1.0535, 1.0550];
+
+                    const traceCandles = {
+                        x: xVals,
+                        close: closeData,
+                        decreasing: { line: { color: '#ef4444', width: 1 }, fillcolor: '#ef4444' },
+                        increasing: { line: { color: '#14b8a6', width: 1 }, fillcolor: '#14b8a6' },
+                        high: highData,
+                        low: lowData,
+                        open: openData,
+                        type: 'candlestick',
+                        name: 'M15',
+                        xaxis: 'x',
+                        yaxis: 'y'
+                    };
+
+                    const layout = {
+                        dragmode: 'pan',
+                        showlegend: false,
+                        xaxis: {
+                            rangeslider: { visible: false },
+                            gridcolor: '#334155',
+                            showgrid: true,
+                            color: '#94a3b8',
+                            type: 'category'
+                        },
+                        yaxis: {
+                            gridcolor: '#334155',
+                            showgrid: true,
+                            zeroline: false,
+                            color: '#94a3b8',
+                            range: [1.0490, 1.0600]
+                        },
+                        paper_bgcolor: 'rgba(0,0,0,0)',
+                        plot_bgcolor: 'rgba(0,0,0,0)',
+                        font: { family: 'Inter', color: '#94a3b8' },
+                        margin: { t: 30, l: 40, r: 40, b: 30 },
+                        // INSTITUTIONAL ZONES
+                        shapes: [
+                            {
+                                type: 'rect',
+                                xref: 'paper', yref: 'y',
+                                x0: 0, x1: 1,
+                                y0: 1.0495, y1: 1.0505,
+                                fillcolor: 'rgba(20, 184, 166, 0.15)',
+                                line: { width: 0 },
+                                layer: 'below'
+                            }
+                        ],
+                        annotations: [
+                            {
+                                x: 0.1, y: 1.0505,
+                                xref: 'paper', yref: 'y',
+                                text: 'Zona de Demanda H4',
+                                showarrow: false,
+                                xanchor: 'left',
+                                font: { size: 10, color: '#14b8a6' }
+                            }
+                        ]
+                    };
+
+                    const config = { responsive: true, displayModeBar: false };
+                    const plotDiv = document.getElementById('topDownPlot');
+
+                    Plotly.newPlot('topDownPlot', [traceCandles], layout, config);
+
+                    // Robust Resize Observer
+                    const resizeObserver = new ResizeObserver(() => {
+                        Plotly.Plots.resize(plotDiv);
+                    });
+                    resizeObserver.observe(plotDiv);
+
+                    window.triggerTrade = function (action) {
+                        const res = document.getElementById('trade-result');
+                        if (!res) return;
+
+                        res.classList.remove('hidden', 'bg-green-900/30', 'text-green-400', 'border-green-600', 'bg-red-900/30', 'text-red-400', 'border-red-600');
+                        res.classList.add('border');
+
+                        // Reset annotations to avoid duplicates if clicked multiple times
+                        // Simplification: In a full app, we'd manage trace indices carefully.
+                        // Here we just add new visual elements on top.
+
+                        if (action === 'buy') {
+                            res.classList.add('bg-green-900/30', 'text-green-400', 'border-green-600');
+                            res.innerHTML = "<div class='flex flex-col items-center'><i data-lucide='check-circle' class='w-8 h-8 mb-2'></i><span>¡EJECUCIÓN PERFECTA!</span><span class='text-xs opacity-75 mt-1'>Has comprado en el re-test de la zona de H4 alineado con la tendencia D1.</span></div>";
+
+                            const tradeShape = {
+                                type: 'line',
+                                x0: '11:15', y0: 1.0500,
+                                x1: '12:15', y1: 1.0580,
+                                line: { color: '#22c55e', width: 2, dash: 'dot' }
+                            };
+                            const entryMarker = {
+                                x: ['11:15'], y: [1.0500],
+                                mode: 'markers+text',
+                                text: ['Entry'], textposition: 'bottom center',
+                                marker: { color: '#22c55e', size: 10, symbol: 'triangle-up' },
+                                type: 'scatter', name: 'Trade'
+                            };
+
+                            Plotly.addTraces('topDownPlot', entryMarker);
+                            Plotly.relayout('topDownPlot', { 'shapes[1]': tradeShape });
+
+                        } else {
+                            res.classList.add('bg-red-900/30', 'text-red-400', 'border-red-600');
+                            res.innerHTML = "<div class='flex flex-col items-center'><i data-lucide='x-circle' class='w-8 h-8 mb-2'></i><span>ERROR DE CONTEXTO</span><span class='text-xs opacity-75 mt-1'>La tendencia mayor (D1) es alcista. Vender aquí es operar contra la fuerza institucional.</span></div>";
+
+                            const tradeShape = {
+                                type: 'line',
+                                x0: '11:15', y0: 1.0500,
+                                x1: '12:15', y1: 1.0450,
+                                line: { color: '#ef4444', width: 2, dash: 'dot' }
+                            };
+                            const entryMarker = {
+                                x: ['11:15'], y: [1.0500],
+                                mode: 'markers',
+                                marker: { color: '#ef4444', size: 10, symbol: 'x' },
+                                type: 'scatter', name: 'Stop Loss'
+                            };
+                            Plotly.addTraces('topDownPlot', entryMarker);
+                            Plotly.relayout('topDownPlot', { 'shapes[1]': tradeShape });
+                        }
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+                } catch (e) {
+                    console.error("Error con Plotly:", e);
+                    document.getElementById('topDownPlot').innerText = "Error cargando gráfico interactivo.";
+                }
+            }
+
+            // 6. SEMÁFORO DE ALINEACIÓN + LOGICA IA
+            window.calcConfluence = function () {
+                const getVal = (id) => document.getElementById(id).value;
+                const d1 = getVal('sel-d1');
+                const h4 = getVal('sel-h4');
+                const m15 = getVal('sel-m15');
+                const resBox = document.getElementById('semaforo-result');
+                const icon = document.getElementById('semaforo-icon');
+                const text = document.getElementById('semaforo-text');
+
+                if (!resBox || !icon || !text) return;
+
+                resBox.classList.remove('bg-slate-100', 'bg-green-100', 'bg-red-100', 'bg-yellow-100', 'border-slate-200', 'border-green-400', 'border-red-400', 'border-yellow-400');
+                icon.innerHTML = '';
+
+                // Lógica de Confluencia
+                if (d1 === h4 && h4 === m15 && d1 !== 'range') {
+                    resBox.classList.add('bg-green-100', 'border-green-400');
+                    icon.classList.remove('bg-slate-300', 'bg-red-500', 'bg-yellow-500');
+                    icon.classList.add('bg-green-500');
+                    icon.innerHTML = '<i data-lucide="check" class="text-white w-6 h-6"></i>';
+                    text.innerText = "ALTA PROBABILIDAD: Alineación Total. Ejecuta con confianza.";
+                } else if (d1 === h4 && m15 !== d1 && d1 !== 'range') {
+                    resBox.classList.add('bg-yellow-100', 'border-yellow-400');
+                    icon.classList.remove('bg-slate-300', 'bg-green-500', 'bg-red-500');
+                    icon.classList.add('bg-yellow-500');
+                    icon.innerHTML = '<i data-lucide="clock" class="text-white w-6 h-6"></i>';
+                    text.innerText = "ESPERA: M15 está en retroceso contra la tendencia mayor. Espera alineación.";
+                } else if (d1 !== h4) {
+                    resBox.classList.add('bg-red-100', 'border-red-400');
+                    icon.classList.remove('bg-slate-300', 'bg-green-500', 'bg-yellow-500');
+                    icon.classList.add('bg-red-500');
+                    icon.innerHTML = '<i data-lucide="x" class="text-white w-6 h-6"></i>';
+                    text.innerText = "PELIGRO: Conflicto entre Diario y H4. Mercado mixto o cambio de tendencia.";
+                } else {
+                    resBox.classList.add('bg-slate-200', 'border-slate-400');
+                    icon.classList.remove('bg-green-500', 'bg-red-500', 'bg-yellow-500');
+                    icon.classList.add('bg-slate-500');
+                    icon.innerHTML = '<i data-lucide="minus-circle" class="text-white w-6 h-6"></i>';
+                    text.innerText = "BAJA PROBABILIDAD: Mercado en Rango. Mejor esperar ruptura.";
+                }
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+
+            // AI ANALYST FUNCTIONALITY
+            const aiAnalyzeBtn = document.getElementById('ai-analyze-btn');
+            const aiConfluenceResult = document.getElementById('ai-confluence-result');
+
+            if (aiAnalyzeBtn) {
+                aiAnalyzeBtn.addEventListener('click', async () => {
+                    const d1 = document.getElementById('sel-d1').value;
+                    const h4 = document.getElementById('sel-h4').value;
+                    const m15 = document.getElementById('sel-m15').value;
+
+                    aiAnalyzeBtn.disabled = true;
+                    aiAnalyzeBtn.classList.add('btn-disabled');
+                    aiAnalyzeBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Analizando...`;
+                    aiConfluenceResult.classList.remove('hidden');
+                    aiConfluenceResult.textContent = "Conectando con el cerebro institucional...";
+
+                    const prompt = `
+                        Actúa como un trader institucional experto (SMC).
+                        El alumno tiene la siguiente estructura de mercado:
+                        - Diario (D1): ${d1}
+                        - H4: ${h4}
+                        - M15: ${m15}
+                        
+                        Analiza brevemente (max 40 palabras) la probabilidad de éxito y sugiere qué buscar específicamente (ej. liquidez, order blocks, esperar). Sé directo.
+                    `;
+
+                    const reply = await callAI(prompt);
+
+                    aiConfluenceResult.innerHTML = `<strong class="text-indigo-600 block mb-1">Opinión IA:</strong> ${reply}`;
+                    aiAnalyzeBtn.disabled = false;
+                    aiAnalyzeBtn.classList.remove('btn-disabled');
+                    aiAnalyzeBtn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Analista IA`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                });
+            }
+
+
+            // 7. TABS Temporalidades
+            window.switchTimeframe = function (id) {
+                document.querySelectorAll('.tf-content').forEach(el => el.classList.add('hidden'));
+                const target = document.getElementById(`tf-${id}`);
+                if (target) target.classList.remove('hidden');
+
+                document.querySelectorAll('.tf-tab').forEach(btn => {
+                    btn.classList.remove('active', 'border-kawn-base', 'text-kawn-base');
+                    if (btn.onclick && btn.onclick.toString().includes(id)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+
+            // 8. QUIZ
+            const quizData = [
+                {
+                    q: "¿Qué temporalidad es mejor para un trader con trabajo de tiempo completo?",
+                    opts: ["M1 (1 Minuto)", "M5 (5 Minutos)", "D1 (Diario)"],
+                    correct: 2,
+                    expl: "El gráfico diario permite analizar y operar una vez al día (cierre de mercado), ideal para agendas ocupadas."
+                },
+                {
+                    q: "Si el gráfico Semanal es Alcista, pero H1 es Bajista, ¿qué está pasando probablemente?",
+                    opts: ["Cambio de tendencia total", "Un retroceso/corrección dentro de la tendencia mayor", "Error del broker"],
+                    correct: 1,
+                    expl: "Los movimientos contrarios en temporalidades menores suelen ser correcciones (pullbacks) de la tendencia mayor."
+                },
+                {
+                    q: "¿Cuál es el principal peligro de operar en M1 sin experiencia?",
+                    opts: ["El precio se mueve muy lento", "El ruido de mercado y señales falsas", "No hay volatilidad"],
+                    correct: 1,
+                    expl: "M1 está lleno de 'ruido' aleatorio que no refleja la intención real institucional."
+                },
+                {
+                    q: "En el análisis Top-Down, ¿cuál es el orden correcto?",
+                    opts: ["M5 -> H1 -> D1", "D1 -> H1 -> M15", "H1 -> D1 -> Semanal"],
+                    correct: 1,
+                    expl: "Siempre de mayor a menor: Contexto (D1) -> Estructura (H1) -> Ejecución (M15)."
+                },
+                {
+                    q: "¿Qué sucede con los costos (spread) en temporalidades bajas?",
+                    opts: ["Representan un % mayor de la ganancia potencial", "Son irrelevantes", "Son más baratos"],
+                    correct: 0,
+                    expl: "Si buscas ganar 5 pips y el spread es 2, pagas el 40% en costos. En Swing (ganar 100 pips), el spread es marginal."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+            let score = 0;
+
+            if (quizContainer) {
+                quizData.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = "bg-white/10 p-6 rounded-xl border border-white/10 quiz-item";
+                    div.innerHTML = `
+                        <p class="font-bold text-lg mb-4 text-kawn-light">${idx + 1}. ${item.q}</p>
+                        <div class="space-y-2">
+                            ${item.opts.map((opt, i) => `
+                                <button onclick="window.checkAnswer && window.checkAnswer(${idx}, ${i}, this)" class="w-full text-left p-3 rounded bg-slate-800 hover:bg-slate-700 text-sm transition border border-transparent" data-idx="${idx}">${opt}</button>
+                            `).join('')}
+                        </div>
+                        <div id="feedback-${idx}" class="hidden mt-4 p-3 bg-slate-900 border-l-4 border-kawn-base text-sm text-slate-300">
+                            ${item.expl}
+                        </div>
+                    `;
+                    quizContainer.appendChild(div);
+                });
+            }
+
+            window.checkAnswer = function (qIdx, optIdx, btn) {
+                const q = quizData[qIdx];
+                const parent = btn.parentElement;
+                const buttons = parent.querySelectorAll('button');
+                buttons.forEach(b => b.disabled = true);
+
+                if (optIdx === q.correct) {
+                    btn.classList.add('bg-green-600', 'border-green-400');
+                    btn.innerHTML += " ✅";
+                    score++;
+                } else {
+                    btn.classList.add('bg-red-600', 'border-red-400');
+                    btn.innerHTML += " ❌";
+                }
+
+                document.getElementById(`feedback-${qIdx}`).classList.remove('hidden');
+                document.getElementById('quiz-score').innerText = `Score: ${score}/${quizData.length}`;
+
+                // Check completion
+                const allDisabled = document.querySelectorAll('.quiz-item button:not([disabled])').length === 0;
+                if (allDisabled) document.getElementById('quiz-complete').classList.remove('hidden');
+            }
+
+            // AI SCENARIO GENERATOR
+            const aiScenarioBtn = document.getElementById('ai-scenario-btn');
+            const aiScenarioDisplay = document.getElementById('ai-scenario-display');
+
+            if (aiScenarioBtn) {
+                aiScenarioBtn.addEventListener('click', async () => {
+                    aiScenarioBtn.disabled = true;
+                    aiScenarioBtn.classList.add('btn-disabled');
+                    aiScenarioBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generando...`;
+                    aiScenarioDisplay.classList.remove('hidden');
+                    aiScenarioDisplay.textContent = "Diseñando escenario de mercado...";
+
+                    const prompt = `
+                        Genera un escenario de trading breve y desafiante (máximo 40 palabras) en español para que un estudiante practique análisis multi-temporal.
+                        Ejemplo: "EURUSD. Diario alcista llegando a resistencia. H4 muestra divergencia bajista. M15 rompe estructura a la baja..."
+                        Varía entre escenarios de continuación y reversión. NO des la respuesta.
+                    `;
+
+                    const reply = await callAI(prompt);
+
+                    aiScenarioDisplay.innerHTML = `<span class="font-bold text-kawn-deep">Escenario Práctico:</span> ${reply}`;
+
+                    aiScenarioBtn.disabled = false;
+                    aiScenarioBtn.classList.remove('btn-disabled');
+                    aiScenarioBtn.innerHTML = `<i data-lucide="dices" class="w-4 h-4"></i> Generar Escenario IA`;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                });
+            }
+
+            // 9. AI MENTOR (Proxy Netlify)
+            const aiModal = document.getElementById('ai-modal');
+            const aiToggle = document.getElementById('ai-toggle');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            if (aiToggle) aiToggle.addEventListener('click', () => aiModal.classList.remove('hidden'));
+            if (closeAi) closeAi.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+            async function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                // User Msg
+                const uDiv = document.createElement('div');
+                uDiv.className = "message-bubble user-msg fade-in-up";
+                uDiv.innerText = text;
+                chatHistory.appendChild(uDiv);
+                userInput.value = '';
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+
+                // Loading
+                aiLoading.classList.remove('hidden');
+                sendAi.disabled = true;
+
+                // Use helper function
+                const prompt = `Actúa como un mentor experto en trading institucional (SMC). Responde brevemente a: ${text}`;
+                const reply = await callAI(prompt);
+
+                // AI Msg
+                const aDiv = document.createElement('div');
+                aDiv.className = "message-bubble ai-msg fade-in-up";
+                aDiv.innerHTML = reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                chatHistory.appendChild(aDiv);
+
+                aiLoading.classList.add('hidden');
+                sendAi.disabled = false;
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            if (sendAi) sendAi.addEventListener('click', sendMessage);
+            if (userInput) userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage() });
+        });
+    </script>
+</body>
+
+</html>

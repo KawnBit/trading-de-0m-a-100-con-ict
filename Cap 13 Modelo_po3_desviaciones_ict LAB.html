@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 13: Modelo PO3 para Desviaciones ICT. Aprende a identificar Acumulación, Manipulación y Distribución con precisión institucional.">
+    <title>KawnBit | Cap 13: Modelo PO3 y Desviaciones</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base y Utilidades */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation CSS */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-15deg);
+            top: 10px;
+            left: 10px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TOC Activo */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Callouts y Tarjetas */
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.2s;
+        }
+
+        .card-concept:hover {
+            transform: translateY(-2px);
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            background: #f0fdfa;
+            padding: 1.5rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        /* Flip Cards Styles (Mejorado para móvil) */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* Rotación al hacer hover (Desktop) O al tener la clase .flipped (Móvil) */
+        .flip-card:hover .flip-card-inner,
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flip-card-front {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .flip-card-back {
+            background-color: #0f766e;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Interactive Components Specifics */
+        .tab-btn.active {
+            background-color: #14b8a6;
+            color: white;
+            border-color: #14b8a6;
+        }
+
+        /* Disabled State */
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar Sticky -->
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="kawn-logo-wrapper select-none cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-kawn-base"
+                    aria-label="Menú principal">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SMC Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 13</a>
+                    <a href="#simulacion"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Simulador</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Ejercicios</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside id="sidebar-toc" class="hidden md:block w-64 flex-shrink-0 transition-transform duration-300">
+                <div class="sticky top-28">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">
+                        Contenido del capítulo</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Generado por JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        13</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        Modelo PO3 para <br><span class="text-kawn-base">Desviaciones ICT</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        Un enfoque estructurado para analizar la acción del precio que divide el movimiento del mercado
+                        en tres fases: <strong>Acumulación, Manipulación y Distribución</strong>.
+                    </p>
+                </section>
+
+                <!-- Introducción -->
+                <section id="introduccion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> Introducción al modelo PO3
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">
+                            El <strong>Modelo Power of Three (PO3)</strong>, originado en la metodología ICT (Inner
+                            Circle Trader), busca interpretar el comportamiento institucional (el <em>smart money</em>)
+                            dentro de cada jornada de trading. En esencia, PO3 ofrece un marco para entender cómo el
+                            “dinero inteligente” acumula posiciones, provoca desviaciones engañosas y finalmente impulsa
+                            la tendencia verdadera.
+                        </p>
+                        <p class="mb-4">
+                            Para emprendedores y profesionales de negocios, el modelo PO3 proporciona lecciones valiosas
+                            sobre <strong>gestión de riesgos</strong>, <strong>optimización de procesos</strong> y
+                            <strong>toma de decisiones</strong>. Identificar el contexto (sesgo) y esperar
+                            confirmaciones antes de actuar puede marcar la diferencia entre el éxito y el fracaso.
+                        </p>
+
+                        <!-- COMPONENTE INTERACTIVO 1: VISUALIZADOR PO3 -->
+                        <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6 my-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-slate-800 text-lg">Visualizador: El ciclo PO3</h3>
+                                <span
+                                    class="bg-kawn-light text-kawn-deep text-xs px-2 py-1 rounded font-bold">Interactivo</span>
+                            </div>
+                            <p class="text-sm text-slate-500 mb-4">Gráfico conceptual de una sesión alcista típica bajo
+                                el modelo PO3.</p>
+                            <div class="relative h-72 w-full">
+                                <canvas id="po3Chart"></canvas>
+                            </div>
+                            <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs font-bold">
+                                <div class="text-slate-500 border-t-2 border-slate-300 pt-1">Acumulación (Asia)</div>
+                                <div class="text-red-500 border-t-2 border-red-400 pt-1">Manipulación (Londres)</div>
+                                <div class="text-kawn-base border-t-2 border-kawn-base pt-1">Distribución (NY)</div>
+                            </div>
+                        </div>
+
+                        <p>
+                            En este capítulo exploraremos cómo determinar el <strong>sesgo diario</strong> a partir de
+                            la barra del día anterior, cómo reconocer las distintas interacciones del precio y aplicar
+                            estrategias prácticas.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Fundamentos y Sesgo -->
+                <section id="fundamentos-sesgo" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="compass" class="text-kawn-base mr-3"></i> Fundamentos y sesgo diario
+                    </h2>
+                    <p class="mb-4 text-slate-600 leading-7">
+                        El <strong>sesgo diario</strong> es la expectativa informada sobre la dirección predominante del
+                        precio, basada en la información del día anterior. Actúa como filtro maestro: si es alcista,
+                        priorizamos compras; si es bajista, ventas.
+                    </p>
+                    <div class="card-concept bg-slate-50 border-kawn-base">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+                            <i data-lucide="key" class="w-5 h-5 text-kawn-dark"></i> La premisa central
+                        </h4>
+                        <p class="text-sm text-slate-700">
+                            La barra del día anterior es la referencia clave. El máximo y el mínimo de la sesión previa
+                            definen un rango. La pregunta fundamental es: <strong>¿Está el precio rompiendo el rango del
+                                día anterior o permaneciendo dentro, y cómo lo hace?</strong>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Escenarios de Interacción -->
+                <section id="escenarios" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="git-branch" class="text-kawn-base mr-3"></i> Los 4 escenarios de interacción
+                    </h2>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Escenario 1 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <div
+                                class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold mb-4">
+                                1</div>
+                            <h3 class="font-bold text-slate-800 mb-2">Consolidación</h3>
+                            <p class="text-sm text-slate-600">
+                                El precio se mantiene <strong>completamente dentro</strong> del rango anterior. El
+                                mercado toma una pausa. Clave: vigilar el equilibrio (50%). Si se respeta como soporte,
+                                sugiere sesgo levemente alcista.
+                            </p>
+                        </div>
+
+                        <!-- Escenario 2 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <div
+                                class="w-10 h-10 rounded-full bg-kawn-light flex items-center justify-center text-kawn-deep font-bold mb-4">
+                                2</div>
+                            <h3 class="font-bold text-slate-800 mb-2">Rotura por arriba (Impulso)</h3>
+                            <p class="text-sm text-slate-600">
+                                Cierra por encima del máximo anterior. <strong>Crucial:</strong> Requiere
+                                "desplazamiento" (velocidad, decisión). Si es lento y con mechas, puede ser una trampa
+                                alcista.
+                            </p>
+                        </div>
+
+                        <!-- Escenario 3 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <div
+                                class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mb-4">
+                                3</div>
+                            <h3 class="font-bold text-slate-800 mb-2">Rotura por abajo (Presión)</h3>
+                            <p class="text-sm text-slate-600">
+                                Cierra por debajo del mínimo anterior. Si tras romper revierte de inmediato (Swing
+                                Failure Pattern), es una falsa toma de liquidez y posible reversión alcista.
+                            </p>
+                        </div>
+
+                        <!-- Escenario 4 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <div
+                                class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold mb-4">
+                                4</div>
+                            <h3 class="font-bold text-slate-800 mb-2">Día de expansión (Ambos lados)</h3>
+                            <p class="text-sm text-slate-600">
+                                Rompe ambos extremos. Típicamente: <strong>Manipulación</strong> (falso) ->
+                                <strong>Distribución</strong> (real). Común en noticias o inicio de semana. Limpieza de
+                                liquidez bilateral.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Psicología AMD -->
+                <section id="psicologia-amd" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="brain-circuit" class="text-kawn-base mr-3"></i> La psicología detrás de AMD
+                    </h2>
+                    <p class="text-slate-600 mb-8">
+                        Para dominar el PO3, es vital comprender la "guerra" psicológica entre el <em>Smart Money</em>
+                        (instituciones) y el <em>Retail</em> (traders minoristas). Haz clic o toca las tarjetas para
+                        revelar la intención oculta detrás de cada fase.
+                    </p>
+
+                    <div class="grid md:grid-cols-3 gap-6 h-80">
+                        <!-- Card 1: Acumulación -->
+                        <div class="flip-card cursor-pointer perspective-1000">
+                            <div class="flip-card-inner h-full shadow-card rounded-xl">
+                                <div class="flip-card-front">
+                                    <div
+                                        class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                                        <i data-lucide="box" class="w-6 h-6 text-slate-600"></i>
+                                    </div>
+                                    <h3 class="text-xl font-black text-slate-800 mb-2">Acumulación</h3>
+                                    <p class="text-sm text-slate-500">¿Qué ve el Trader Retail?</p>
+                                    <p class="mt-4 text-slate-700 font-medium">"El mercado está aburrido, lateral. No
+                                        hay tendencia definida. Esperaré a que rompa."</p>
+                                </div>
+                                <div class="flip-card-back">
+                                    <h3 class="text-xl font-bold mb-4">Visión Smart Money</h3>
+                                    <p class="text-sm leading-relaxed">
+                                        Estamos construyendo liquidez a ambos lados. Mantenemos el precio en rango
+                                        estrecho para que los stops se acumulen justo arriba y abajo. Es la fase de
+                                        carga de posiciones.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Manipulación -->
+                        <div class="flip-card cursor-pointer perspective-1000">
+                            <div class="flip-card-inner h-full shadow-card rounded-xl">
+                                <div class="flip-card-front">
+                                    <div
+                                        class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                                        <i data-lucide="alert-octagon" class="w-6 h-6 text-red-600"></i>
+                                    </div>
+                                    <h3 class="text-xl font-black text-slate-800 mb-2">Manipulación</h3>
+                                    <p class="text-sm text-slate-500">¿Qué ve el Trader Retail?</p>
+                                    <p class="mt-4 text-slate-700 font-medium">"¡Ruptura confirmada! El precio está
+                                        saliendo del rango con fuerza. Voy a entrar ya para no perderme el movimiento."
+                                    </p>
+                                </div>
+                                <div class="flip-card-back bg-red-700">
+                                    <h3 class="text-xl font-bold mb-4">Visión Smart Money</h3>
+                                    <p class="text-sm leading-relaxed">
+                                        Inducimos una ruptura falsa ("Judas Swing") en dirección contraria a la real.
+                                        Activamos las órdenes de breakout retail para usarlas como contrapartida y
+                                        llenar nuestras posiciones grandes al mejor precio.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Distribución -->
+                        <div class="flip-card cursor-pointer perspective-1000">
+                            <div class="flip-card-inner h-full shadow-card rounded-xl">
+                                <div class="flip-card-front">
+                                    <div
+                                        class="w-12 h-12 bg-kawn-light rounded-full flex items-center justify-center mb-4">
+                                        <i data-lucide="trending-up" class="w-6 h-6 text-kawn-deep"></i>
+                                    </div>
+                                    <h3 class="text-xl font-black text-slate-800 mb-2">Distribución</h3>
+                                    <p class="text-sm text-slate-500">¿Qué ve el Trader Retail?</p>
+                                    <p class="mt-4 text-slate-700 font-medium">"Me sacó el stop loss... y ahora el
+                                        precio se va sin mí en la dirección contraria. ¡Está manipulado!"</p>
+                                </div>
+                                <div class="flip-card-back bg-kawn-deep">
+                                    <h3 class="text-xl font-bold mb-4">Visión Smart Money</h3>
+                                    <p class="text-sm leading-relaxed">
+                                        Con nuestras posiciones llenas tras la manipulación, liberamos el precio hacia
+                                        el objetivo real. Aquí es donde obtenemos beneficio (distribuimos) vendiendo a
+                                        los que entran tarde por FOMO.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- El Arte del Desplazamiento -->
+                <section id="desplazamiento" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="zap" class="text-kawn-base mr-3"></i> Confirmación: El arte del desplazamiento
+                    </h2>
+                    <p class="mb-6 text-slate-600">
+                        Identificar el escenario es solo el inicio. La validación depende del
+                        <strong>desplazamiento</strong>: la calidad e intensidad del movimiento.
+                    </p>
+
+                    <!-- COMPONENTE INTERACTIVO 2: COMPARADOR -->
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden mb-8">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="switchComparator('true-break')"
+                                class="comp-btn active flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Desplazamiento
+                                real</button>
+                            <button onclick="switchComparator('fake-break')"
+                                class="comp-btn flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Trampa
+                                (Sin desplazamiento)</button>
+                        </div>
+
+                        <div class="p-8 min-h-[200px] flex items-center">
+                            <!-- Contenido Real -->
+                            <div id="content-true-break" class="comp-content w-full animate-fade-in">
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="text-kawn-base w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Velocidad y urgencia:</strong> Velas que se
+                                            mueven rápido, sin dudas. El mercado tiene prisa.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="text-kawn-base w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Cuerpos amplios:</strong> Velas grandes con
+                                            poca mecha en la dirección del avance.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="text-kawn-base w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Fair Value Gaps (FVG):</strong> Deja huecos
+                                            de liquidez tras de sí, denotando desequilibrio.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Contenido Fake -->
+                            <div id="content-fake-break" class="comp-content hidden w-full animate-fade-in">
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="x-circle" class="text-red-500 w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Movimiento tibio:</strong> Velas pequeñas,
+                                            solapadas, avance lento.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="x-circle" class="text-red-500 w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Mechas largas:</strong> Rechazo constante
+                                            en el nivel de ruptura.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <i data-lucide="x-circle" class="text-red-500 w-5 h-5 mt-1"></i>
+                                        <span class="text-slate-700"><strong>Reversión inmediata:</strong> El precio
+                                            vuelve al rango tras la ruptura (caza de stops).</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="blockquote-custom">
+                        "Sin desplazamiento no hay confirmación de sesgo. Es preferible perderse una operación esperando
+                        la confirmación, que entrar prematuramente en una trampa."
+                    </p>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Kill Zones (Sincronización) -->
+                <section id="killzones" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clock" class="text-kawn-base mr-3"></i> El Factor Tiempo: Kill Zones y Judas
+                        Swing
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        En el trading institucional, <strong>el tiempo es más importante que el precio</strong>. Las
+                        fases de manipulación no ocurren al azar; suelen sincronizarse con ventanas específicas de alta
+                        liquidez llamadas "Kill Zones". El movimiento de manipulación inicial, conocido como
+                        <strong>"Judas Swing"</strong>, está diseñado para atrapar traders justo antes de la tendencia
+                        real.
+                    </p>
+
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl border border-slate-700">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-white font-bold text-lg">Cronograma Operativo (Hora NY)</h3>
+                            <div class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">
+                                <span class="w-2 h-2 rounded-full bg-red-500 inline-block mr-1"></span> Manipulación
+                                Probable
+                            </div>
+                        </div>
+
+                        <!-- Time Visualization -->
+                        <div class="relative pt-8 pb-12 px-4">
+                            <!-- Timeline base -->
+                            <div class="h-2 bg-slate-700 rounded-full w-full relative">
+                                <!-- Zone London -->
+                                <div
+                                    class="absolute top-0 left-[12%] w-[16%] h-full bg-red-500/50 rounded-l-full rounded-r-full group cursor-pointer hover:bg-red-500 transition-colors">
+                                    <div
+                                        class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-600">
+                                        London Open (2AM - 5AM)
+                                    </div>
+                                </div>
+                                <!-- Zone NY -->
+                                <div
+                                    class="absolute top-0 left-[37%] w-[16%] h-full bg-red-500/50 rounded-l-full rounded-r-full group cursor-pointer hover:bg-red-500 transition-colors">
+                                    <div
+                                        class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-600">
+                                        NY Open (7AM - 10AM)
+                                    </div>
+                                </div>
+                                <!-- Zone Close -->
+                                <div
+                                    class="absolute top-0 left-[66%] w-[12%] h-full bg-kawn-base/50 rounded-l-full rounded-r-full group cursor-pointer hover:bg-kawn-base transition-colors">
+                                    <div
+                                        class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-slate-600">
+                                        London Close (10AM - 12PM)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Markers -->
+                            <div class="flex justify-between text-xs text-slate-500 mt-4 font-mono">
+                                <span>00:00</span>
+                                <span>04:00</span>
+                                <span>08:00</span>
+                                <span>12:00</span>
+                                <span>16:00</span>
+                                <span>20:00</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                                <h4 class="text-kawn-base font-bold text-sm mb-2">London Open (2:00 - 5:00 AM NY)</h4>
+                                <p class="text-slate-400 text-xs leading-relaxed">
+                                    Aquí suele formarse el <strong>mínimo del día</strong> en días alcistas (o máximo en
+                                    bajistas). Es la ventana clásica para el "Judas Swing".
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                                <h4 class="text-kawn-base font-bold text-sm mb-2">New York Open (7:00 - 10:00 AM NY)
+                                </h4>
+                                <p class="text-slate-400 text-xs leading-relaxed">
+                                    A menudo ofrece una continuación de Londres o una reversión completa. Ideal para
+                                    operar la fase de distribución.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rutina y Ejecución -->
+                <section id="rutina" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clipboard-list" class="text-kawn-base mr-3"></i> Rutina práctica y ejecución
+                    </h2>
+
+                    <div class="relative border-l-2 border-slate-200 ml-4 space-y-10">
+                        <!-- Paso 1 -->
+                        <div class="relative pl-8">
+                            <span
+                                class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">1. Marcar extremos (Pre-mercado)</h4>
+                            <p class="text-slate-600">Identifica máximo y mínimo del día anterior en todos los
+                                instrumentos. Observa la apertura actual en relación a este rango.</p>
+                        </div>
+                        <!-- Paso 2 -->
+                        <div class="relative pl-8">
+                            <span
+                                class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-kawn-base border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">2. Esperar la prueba</h4>
+                            <p class="text-slate-600">Paciencia hasta que el precio pruebe un extremo. Analiza la
+                                calidad (¿Desplazamiento o timidez?). Confirma o rechaza el sesgo.</p>
+                        </div>
+                        <!-- Paso 3 -->
+                        <div class="relative pl-8">
+                            <span
+                                class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-400 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">3. Ejecución y gestión</h4>
+                            <p class="text-slate-600">
+                                Si hay desplazamiento, espera el retroceso (ej. a un Breaker o FVG) para entrar.
+                                <br><strong>Stop Loss:</strong> Más allá del extremo opuesto del día anterior (o
+                                estructura lógica).
+                                <br><strong>Take Profit:</strong> Próxima zona de liquidez significativa.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Alineación Temporal -->
+                <section id="fractalidad" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Alineación de temporalidades</h2>
+                    <p class="text-slate-600 mb-4">El modelo de la barra del día anterior no funciona en aislamiento.
+                        Debe integrarse en una visión <em>top-down</em>.</p>
+
+                    <div class="bg-slate-900 text-white p-6 rounded-xl">
+                        <h4 class="font-bold text-kawn-base mb-4">Jerarquía de análisis</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="p-4 border border-slate-700 rounded-lg">
+                                <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Mensual</div>
+                                <div class="font-bold">El Clima</div>
+                                <div class="text-xs opacity-70 mt-1">Tendencia macro</div>
+                            </div>
+                            <div class="p-4 border border-slate-700 rounded-lg">
+                                <div class="text-xs uppercase tracking-widest text-slate-400 mb-1">Semanal</div>
+                                <div class="font-bold">La Estación</div>
+                                <div class="text-xs opacity-70 mt-1">Oscilación intermedia</div>
+                            </div>
+                            <div class="p-4 border border-kawn-base bg-kawn-deep/30 rounded-lg">
+                                <div class="text-xs uppercase tracking-widest text-kawn-light mb-1">Diario</div>
+                                <div class="font-bold">El Pronóstico</div>
+                                <div class="text-xs opacity-70 mt-1">Sesgo operativo hoy</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección: Simulador de Sesgo -->
+                <section id="simulacion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="play-circle" class="text-kawn-base mr-3"></i> Simulador: Detectando la
+                        manipulación
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        Observa la acción del precio en relación al máximo del día anterior (Línea gris punteada). ¿Es
+                        una ruptura real o una manipulación? Avanza la simulación para decidir.
+                    </p>
+
+                    <!-- COMPONENTE INTERACTIVO 3: SIMULADOR PLOTLY -->
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-white font-bold text-lg">Simulador PO3 Intradía</h3>
+                            <button id="next-candle-btn"
+                                class="bg-kawn-base hover:bg-kawn-dark text-white text-xs px-4 py-2 rounded-lg transition-colors font-bold flex items-center gap-2">
+                                <i data-lucide="skip-forward" class="w-4 h-4"></i> Siguiente Vela
+                            </button>
+                        </div>
+
+                        <div id="plotlyBiasSim" class="w-full h-80 bg-slate-800 rounded-lg overflow-hidden relative">
+                            <!-- Overlay de feedback -->
+                            <div id="sim-overlay"
+                                class="absolute inset-0 z-10 flex items-center justify-center bg-black/70 hidden">
+                                <div class="text-center">
+                                    <h4 id="sim-result-title" class="text-2xl font-black text-white mb-2">RESULTADO</h4>
+                                    <p id="sim-result-desc" class="text-slate-300 max-w-xs mx-auto text-sm"></p>
+                                    <button onclick="resetSimulation()"
+                                        class="mt-4 bg-white text-slate-900 px-4 py-2 rounded font-bold hover:bg-gray-200">Reiniciar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex gap-4">
+                            <button onclick="makeDecision('bull')"
+                                class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-colors text-sm">
+                                Es ruptura real (COMPRAR)
+                            </button>
+                            <button onclick="makeDecision('bear')"
+                                class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors text-sm">
+                                Es manipulación (VENDER)
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Calculadora PO3 -->
+                <section id="calculadora-po3" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="calculator" class="text-kawn-base mr-3"></i> Calculadora de Proyección y Riesgo
+                    </h2>
+                    <p class="text-slate-600 mb-6">
+                        Una vez identificada la manipulación y la entrada, proyecta tus beneficios. En el modelo PO3, la
+                        fase de distribución a menudo alcanza entre 1 y 2 desviaciones estándar del rango de
+                        acumulación. Usa esta herramienta para calcular tu Ratio Riesgo:Beneficio (R:R).
+                    </p>
+
+                    <div class="bg-white p-6 rounded-xl shadow-card border border-slate-100">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Inputs -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Precio
+                                        Entrada</label>
+                                    <input type="number" id="calc-entry"
+                                        class="w-full border border-slate-300 rounded p-2 text-slate-900 focus:border-kawn-base outline-none"
+                                        placeholder="Ej: 1.1050" step="0.0001">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Stop Loss
+                                        (Protección)</label>
+                                    <input type="number" id="calc-stop"
+                                        class="w-full border border-slate-300 rounded p-2 text-slate-900 focus:border-red-500 outline-none"
+                                        placeholder="Ej: 1.1030" step="0.0001">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Take Profit
+                                        (Objetivo)</label>
+                                    <input type="number" id="calc-tp"
+                                        class="w-full border border-slate-300 rounded p-2 text-slate-900 focus:border-green-500 outline-none"
+                                        placeholder="Ej: 1.1150" step="0.0001">
+                                </div>
+                                <button onclick="calculateRisk()"
+                                    class="w-full bg-slate-900 text-white font-bold py-2 rounded hover:bg-slate-700 transition-colors">Calcular
+                                    R:R</button>
+                            </div>
+
+                            <!-- Resultados Visuales -->
+                            <div
+                                class="md:col-span-2 flex flex-col justify-center items-center bg-slate-50 rounded-lg p-4 border border-slate-200">
+                                <div class="w-full flex justify-between text-xs text-slate-400 font-mono mb-2">
+                                    <span>Pérdida Potencial (1R)</span>
+                                    <span>Beneficio Potencial</span>
+                                </div>
+
+                                <!-- Barra de Progreso R:R -->
+                                <div class="w-full h-8 flex rounded-full overflow-hidden mb-4 bg-gray-200 relative">
+                                    <div id="risk-bar"
+                                        class="bg-red-500 h-full flex items-center justify-center text-white text-xs font-bold transition-all duration-500"
+                                        style="width: 50%">Risk</div>
+                                    <div id="reward-bar"
+                                        class="bg-green-500 h-full flex items-center justify-center text-white text-xs font-bold transition-all duration-500"
+                                        style="width: 50%">Reward</div>
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="text-sm text-slate-500">Ratio Riesgo/Beneficio</p>
+                                    <p id="rr-display" class="text-4xl font-black text-slate-900">0 : 0</p>
+                                    <p id="rr-feedback" class="text-sm font-medium mt-2 text-slate-400">Introduce datos
+                                        para calcular</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Errores Comunes -->
+                <section id="errores" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="alert-triangle" class="text-red-600 mr-3"></i> Errores comunes
+                    </h2>
+                    <ul class="space-y-4">
+                        <li class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <strong class="text-red-900 block mb-1">Ignorar el desplazamiento</strong>
+                            <span class="text-sm text-red-800">Operar solo porque "rompió nivel" es un suicidio
+                                financiero. Sin fuerza, no hay trade.</span>
+                        </li>
+                        <li class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <strong class="text-red-900 block mb-1">Sobre-complicar el análisis</strong>
+                            <span class="text-sm text-red-800">No necesitas 10 indicadores. El modelo es
+                                intencionalmente simple. Confía en la estructura.</span>
+                        </li>
+                        <li class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <strong class="text-red-900 block mb-1">Mala gestión de riesgo</strong>
+                            <span class="text-sm text-red-800">Nunca arriesgues más del 1-2% del capital. Ajustar stops
+                                para "dar espacio" a una operación perdedora es el camino a la ruina.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Ejercicios y Validación -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="check-square" class="text-kawn-base mr-3"></i> Validación del conocimiento
+                    </h2>
+
+                    <!-- NUEVA FUNCIONALIDAD IA: Generador de Escenarios -->
+                    <div
+                        class="bg-gradient-to-br from-indigo-900 to-slate-900 p-6 rounded-xl shadow-lg border border-slate-700 mb-8 text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-4 opacity-10">
+                            <i data-lucide="cpu" class="w-32 h-32 text-white"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <h3 class="font-bold text-xl mb-2 flex items-center gap-2">
+                                <i data-lucide="sparkles" class="text-yellow-400 w-5 h-5"></i>
+                                Generador de Escenarios de Mercado (AI)
+                            </h3>
+                            <p class="text-sm text-indigo-200 mb-4 max-w-2xl">
+                                No dependas de ejemplos estáticos. Genera un caso de estudio único basado en PO3
+                                (Asia/Londres) y practica tu lectura de contexto institucional.
+                            </p>
+
+                            <div id="ai-scenario-output"
+                                class="bg-white/10 p-4 rounded-lg mb-4 text-sm font-mono border border-white/10 hidden min-h-[80px]">
+                                <!-- El texto de la IA aparecerá aquí -->
+                            </div>
+
+                            <button onclick="generateScenario()" id="gen-scenario-btn"
+                                class="bg-white text-indigo-900 px-5 py-2 rounded-lg font-bold text-sm hover:bg-indigo-50 transition-colors flex items-center gap-2">
+                                <i data-lucide="zap" class="w-4 h-4"></i> Generar Caso Aleatorio
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Área de Reflexión con IA -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <h3 class="font-bold text-slate-800 mb-3">Ejercicio de reflexión: Análisis histórico</h3>
+                        <p class="text-sm text-slate-600 mb-4">Toma un gráfico reciente o el escenario generado arriba.
+                            Escribe tu análisis y obtén feedback instantáneo de la IA.</p>
+
+                        <textarea id="reflection-input"
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none transition-all mb-3"
+                            rows="3"
+                            placeholder="Ej: El precio rompió el máximo de ayer en sesión Londres, pero dejó mecha larga y revirtió..."></textarea>
+
+                        <div class="flex justify-between items-start">
+                            <button onclick="analyzeReflection()" id="analyze-btn"
+                                class="bg-slate-100 text-slate-600 border border-slate-300 px-4 py-2 rounded-lg font-bold text-xs hover:bg-white hover:text-kawn-base hover:border-kawn-base transition-all flex items-center gap-2">
+                                <i data-lucide="search" class="w-4 h-4"></i> ✨ Evaluar mi análisis
+                            </button>
+                        </div>
+
+                        <div id="analysis-result"
+                            class="hidden mt-4 p-4 bg-indigo-50 border border-indigo-100 rounded-lg text-sm text-slate-700 animate-fade-in-up">
+                            <!-- Feedback de IA -->
+                        </div>
+                    </div>
+
+                    <!-- QUIZ -->
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Quiz Institucional (10 Preguntas)</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/0</span>
+                        </div>
+
+                        <div id="quiz-container" class="space-y-6">
+                            <!-- Inyectado por JS -->
+                        </div>
+
+                        <div id="quiz-complete" class="hidden text-center mt-6">
+                            <p class="text-2xl font-bold mb-2">¡Módulo Completado!</p>
+                            <p class="text-sm opacity-80 mb-4" id="final-msg"></p>
+                            <button onclick="window.resetQuiz()"
+                                class="bg-white text-kawn-deep px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">Reiniciar</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Toggle -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor PO3 IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light" aria-label="Cerrar chat"><i data-lucide="x"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col chat-container">
+            <div class="ai-msg message-bubble shadow-sm">
+                Saludos. Soy tu especialista en el modelo PO3. ¿Tienes dudas sobre si una ruptura es manipulación o
+                distribución?
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base focus:ring-1 focus:ring-kawn-base transition-all"
+                    placeholder="Pregunta sobre sesgo...">
+                <button id="send-ai"
+                    class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors disabled:opacity-50"
+                    aria-label="Enviar mensaje">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+                Procesando...
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo sobre Trading Institucional.<br>No constituye
+                    asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Funcionalidad -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Iconos
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // Año actual
+            const yearEl = document.getElementById('current-year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            // -------------------------------------------------------------------------
+            // 1. FLIP CARDS (Robustez para Móvil)
+            // -------------------------------------------------------------------------
+            document.querySelectorAll('.flip-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+
+            // -------------------------------------------------------------------------
+            // 2. CHART.JS: VISUALIZADOR PO3
+            // -------------------------------------------------------------------------
+            const po3Canvas = document.getElementById('po3Chart');
+            if (po3Canvas && typeof Chart !== 'undefined') {
+                const ctxPo3 = po3Canvas.getContext('2d');
+                new Chart(ctxPo3, {
+                    type: 'line',
+                    data: {
+                        labels: ['Asia Open', 'Asia Close', 'London Open', 'Judas Swing', 'London Close', 'NY Open', 'Expansion', 'Close'],
+                        datasets: [{
+                            label: 'Acción del Precio',
+                            data: [1.0500, 1.0510, 1.0505, 1.0480, 1.0520, 1.0530, 1.0580, 1.0575],
+                            borderColor: '#1e293b',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            pointBackgroundColor: ['#94a3b8', '#94a3b8', '#ef4444', '#ef4444', '#14b8a6', '#14b8a6', '#14b8a6', '#1e293b'],
+                            pointRadius: 4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            annotation: {
+                                annotations: {
+                                    box1: {
+                                        type: 'box',
+                                        xMin: 0, xMax: 2,
+                                        backgroundColor: 'rgba(203, 213, 225, 0.2)',
+                                        label: { content: 'Acumulación', display: true, position: 'start' }
+                                    },
+                                    box2: {
+                                        type: 'box',
+                                        xMin: 2, xMax: 4,
+                                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                        label: { content: 'Manipulación', display: true }
+                                    },
+                                    box3: {
+                                        type: 'box',
+                                        xMin: 4, xMax: 7,
+                                        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                                        label: { content: 'Distribución', display: true }
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { display: false },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 3. COMPARADOR LÓGICO
+            // -------------------------------------------------------------------------
+            window.switchComparator = function (type) {
+                document.querySelectorAll('.comp-btn').forEach(btn => {
+                    btn.classList.remove('active', 'border-kawn-base', 'text-kawn-base');
+                    if (btn.onclick.toString().includes(type)) btn.classList.add('active', 'border-kawn-base', 'text-kawn-base');
+                });
+                document.querySelectorAll('.comp-content').forEach(el => el.classList.add('hidden'));
+                const content = document.getElementById(`content-${type}`);
+                if (content) content.classList.remove('hidden');
+            }
+
+            // -------------------------------------------------------------------------
+            // 4. PLOTLY SIMULADOR
+            // -------------------------------------------------------------------------
+            const simDiv = document.getElementById('plotlyBiasSim');
+            let simStep = 0;
+            const pdh = 1.1050; // Previous Day High
+
+            // Datos base
+            let simData = {
+                x: [1, 2, 3, 4, 5],
+                open: [1.1020, 1.1030, 1.1025, 1.1035, 1.1040],
+                high: [1.1035, 1.1040, 1.1035, 1.1045, 1.1048],
+                low: [1.1015, 1.1020, 1.1020, 1.1030, 1.1035],
+                close: [1.1030, 1.1025, 1.1035, 1.1040, 1.1045]
+            };
+
+            // Velas futuras (Escenario: Falsa ruptura / Manipulación)
+            const futureCandles = [
+                { open: 1.1045, high: 1.1065, low: 1.1045, close: 1.1060 }, // Ruptura (parece fuerte)
+                { open: 1.1060, high: 1.1062, low: 1.1040, close: 1.1042 }, // Reversión brusca (SFP)
+                { open: 1.1042, high: 1.1045, low: 1.1010, close: 1.1015 }  // Distribución bajista real
+            ];
+
+            function renderSim() {
+                if (!simDiv || typeof Plotly === 'undefined') return;
+
+                const trace = {
+                    x: simData.x,
+                    open: simData.open,
+                    high: simData.high,
+                    low: simData.low,
+                    close: simData.close,
+                    type: 'candlestick',
+                    increasing: { line: { color: '#14b8a6' } },
+                    decreasing: { line: { color: '#ef4444' } }
+                };
+
+                const layout = {
+                    dragmode: false,
+                    showlegend: false,
+                    xaxis: { visible: false, rangeslider: { visible: false } },
+                    yaxis: { gridcolor: '#334155', range: [1.1000, 1.1070] },
+                    paper_bgcolor: '#0f172a',
+                    plot_bgcolor: '#0f172a',
+                    font: { color: '#94a3b8' },
+                    shapes: [{
+                        type: 'line',
+                        x0: 0, x1: 10,
+                        y0: pdh, y1: pdh,
+                        line: { color: 'gray', width: 2, dash: 'dot' }
+                    }],
+                    annotations: [{
+                        x: 5, y: pdh + 0.0005,
+                        text: 'Máximo Día Anterior (PDH)',
+                        showarrow: false,
+                        font: { color: 'white' }
+                    }],
+                    margin: { l: 40, r: 20, t: 20, b: 20 }
+                };
+
+                Plotly.newPlot(simDiv, [trace], layout, { staticPlot: true, responsive: true });
+            }
+
+            // Init Plotly robusto
+            if (typeof Plotly !== 'undefined' && simDiv) {
+                renderSim();
+                // Resize observer para Plotly
+                new ResizeObserver(() => Plotly.Plots.resize(simDiv)).observe(simDiv);
+            }
+
+            const nextBtn = document.getElementById('next-candle-btn');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (simStep < futureCandles.length) {
+                        const next = futureCandles[simStep];
+                        simData.x.push(simData.x.length + 1);
+                        simData.open.push(next.open);
+                        simData.high.push(next.high);
+                        simData.low.push(next.low);
+                        simData.close.push(next.close);
+                        simStep++;
+                        renderSim();
+                    }
+                });
+            }
+
+            window.makeDecision = function (choice) {
+                const overlay = document.getElementById('sim-overlay');
+                const title = document.getElementById('sim-result-title');
+                const desc = document.getElementById('sim-result-desc');
+
+                if (overlay) overlay.classList.remove('hidden');
+
+                if (choice === 'bear') {
+                    title.textContent = "¡CORRECTO!";
+                    title.className = "text-2xl font-black text-green-500 mb-2";
+                    desc.textContent = "Era una manipulación (Turtle Soup). El precio rompió el PDH pero revirtió inmediatamente (Vela 7). El sesgo real era bajista.";
+                } else {
+                    title.textContent = "INCORRECTO";
+                    title.className = "text-2xl font-black text-red-500 mb-2";
+                    desc.textContent = "Caíste en la trampa. La ruptura del PDH carecía de seguimiento y fue seguida por una reversión violenta. Era una manipulación para vender.";
+                }
+            }
+
+            window.resetSimulation = function () {
+                simStep = 0;
+                simData = {
+                    x: [1, 2, 3, 4, 5],
+                    open: [1.1020, 1.1030, 1.1025, 1.1035, 1.1040],
+                    high: [1.1035, 1.1040, 1.1035, 1.1045, 1.1048],
+                    low: [1.1015, 1.1020, 1.1020, 1.1030, 1.1035],
+                    close: [1.1030, 1.1025, 1.1035, 1.1040, 1.1045]
+                };
+                const overlay = document.getElementById('sim-overlay');
+                if (overlay) overlay.classList.add('hidden');
+                renderSim();
+            }
+
+            // -------------------------------------------------------------------------
+            // 5. CALCULADORA RIESGO (Mejorada con Validación Lógica)
+            // -------------------------------------------------------------------------
+            window.calculateRisk = function () {
+                const entry = parseFloat(document.getElementById('calc-entry').value);
+                const stop = parseFloat(document.getElementById('calc-stop').value);
+                const tp = parseFloat(document.getElementById('calc-tp').value);
+
+                const rrDisplay = document.getElementById('rr-display');
+                const rrFeedback = document.getElementById('rr-feedback');
+
+                if (isNaN(entry) || isNaN(stop) || isNaN(tp)) {
+                    rrFeedback.textContent = "Por favor ingresa todos los valores numéricos.";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-red-400";
+                    return;
+                }
+
+                // Detectar dirección
+                const isLong = tp > entry;
+
+                // Validar lógica del trade
+                if (isLong && stop >= entry) {
+                    rrFeedback.textContent = "Error Lógico: En una compra, el Stop Loss debe estar debajo de la entrada.";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-red-500";
+                    return;
+                }
+                if (!isLong && stop <= entry) {
+                    rrFeedback.textContent = "Error Lógico: En una venta, el Stop Loss debe estar encima de la entrada.";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-red-500";
+                    return;
+                }
+
+                const risk = Math.abs(entry - stop);
+                const reward = Math.abs(tp - entry);
+
+                if (risk === 0) {
+                    rrFeedback.textContent = "El riesgo no puede ser cero.";
+                    return;
+                }
+
+                const rr = (reward / risk).toFixed(2);
+                rrDisplay.textContent = `1 : ${rr}`;
+
+                const riskBar = document.getElementById('risk-bar');
+                const rewardBar = document.getElementById('reward-bar');
+
+                // Animar barras
+                const total = 1 + parseFloat(rr);
+                const riskPct = (1 / total) * 100;
+                const rewardPct = (parseFloat(rr) / total) * 100;
+
+                riskBar.style.width = `${riskPct}%`;
+                rewardBar.style.width = `${rewardPct}%`;
+
+                if (rr < 1) {
+                    rrFeedback.textContent = "Ratio negativo. Operación no recomendada.";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-red-500";
+                } else if (rr >= 3) {
+                    rrFeedback.textContent = "¡Excelente ratio institucional! (+1:3)";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-green-500";
+                } else {
+                    rrFeedback.textContent = "Ratio aceptable. Gestión estándar.";
+                    rrFeedback.className = "text-sm font-medium mt-2 text-yellow-600";
+                }
+            }
+
+            // -------------------------------------------------------------------------
+            // 6. QUIZ
+            // -------------------------------------------------------------------------
+            const quizData = [
+                {
+                    q: "¿Cuáles son las tres fases del modelo PO3?",
+                    opts: ["Acumulación, Tendencia, Corrección", "Acumulación, Manipulación, Distribución", "Consolidación, Ruptura, Retroceso"],
+                    a: 1,
+                    exp: "El modelo PO3 se define por Acumular órdenes, Manipular para sacar liquidez y Distribuir hacia el objetivo real."
+                },
+                {
+                    q: "¿Qué define el 'Sesgo Diario'?",
+                    opts: ["La barra del día anterior", "El indicador RSI", "Las noticias de Twitter"],
+                    a: 0,
+                    exp: "La interacción del precio con el máximo y mínimo de la vela diaria anterior es la referencia principal."
+                },
+                {
+                    q: "Si el precio rompe el máximo anterior con fuerza y velas grandes, ¿qué indica?",
+                    opts: ["Trampa alcista", "Desplazamiento y posible sesgo alcista", "Consolidación"],
+                    a: 1,
+                    exp: "El desplazamiento (rapidez, fuerza) valida la ruptura como legítima."
+                },
+                {
+                    q: "¿Qué sugiere una ruptura del mínimo anterior seguida de una reversión inmediata al rango?",
+                    opts: ["Continuación bajista", "Manipulación (trampa bajista)", "Indecisión"],
+                    a: 1,
+                    exp: "Esto es una toma de liquidez (Turtle Soup / Swing Failure). El Smart Money compró los stops de venta."
+                },
+                {
+                    q: "¿Qué son los 'Fair Value Gaps' en el contexto de desplazamiento?",
+                    opts: ["Errores del gráfico", "Zonas de resistencia", "Huecos de liquidez que confirman fuerza"],
+                    a: 2,
+                    exp: "Los FVGs indican que el precio se movió tan rápido que dejó ineficiencias, confirmando el interés institucional."
+                },
+                {
+                    q: "¿Qué es un día de expansión?",
+                    opts: ["Día con poco movimiento", "Día que rompe ambos extremos (máximo y mínimo)", "Día festivo"],
+                    a: 1,
+                    exp: "El mercado busca liquidez a ambos lados. Generalmente el primer movimiento es falso."
+                },
+                {
+                    q: "¿Por qué es importante la alineación de temporalidades (fractalidad)?",
+                    opts: ["Para operar más veces", "Para evitar operar contra la tendencia mayor", "No es importante"],
+                    a: 1,
+                    exp: "El sesgo diario debe contextualizarse con el gráfico semanal/mensual para mayor probabilidad."
+                },
+                {
+                    q: "Si hay noticias de alto impacto (NFP, FOMC), ¿qué suele pasar con el modelo?",
+                    opts: ["Funciona mejor", "Puede fallar por volatilidad errática", "No afecta nada"],
+                    a: 1,
+                    exp: "La volatilidad de noticias puede violar niveles técnicos sin lógica estructural inmediata."
+                },
+                {
+                    q: "En gestión de riesgo, ¿dónde se sugiere poner el Stop Loss inicial?",
+                    opts: ["En el precio de entrada", "Más allá del extremo opuesto del rango anterior", "A 5 pips"],
+                    a: 1,
+                    exp: "Esto da espacio al precio para respirar y protege contra el ruido intradía."
+                },
+                {
+                    q: "¿Qué implica la ausencia de desplazamiento tras una ruptura?",
+                    opts: ["Posible reversión", "Confirmación de tendencia", "Volumen alto"],
+                    a: 0,
+                    exp: "Si no hay fuerza (desplazamiento), la ruptura es sospechosa de ser una trampa."
+                }
+            ];
+
+            let quizScore = 0;
+            const qContainer = document.getElementById('quiz-container');
+            const scoreDisplay = document.getElementById('quiz-score');
+
+            window.renderQuiz = function () {
+                if (!qContainer) return;
+                qContainer.innerHTML = '';
+                quizData.forEach((item, idx) => {
+                    const html = `
+                        <div id="q-${idx}" class="quiz-item ${idx === 0 ? 'block' : 'hidden'} bg-white/10 p-6 rounded-xl border border-white/10 fade-in-up">
+                            <p class="font-bold text-lg mb-4 text-kawn-light">${idx + 1}. ${item.q}</p>
+                            <div class="space-y-3">
+                                ${item.opts.map((opt, oIdx) => `
+                                    <button onclick="checkAnswer(${idx}, ${oIdx}, this)" class="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-transparent hover:border-kawn-base/50 text-sm quiz-opt">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="feedback-${idx}" class="hidden mt-4 p-4 rounded bg-slate-900 border-l-4 border-kawn-base">
+                                <p class="text-sm text-slate-300"><strong class="text-white">Explicación:</strong> ${item.exp}</p>
+                                <button onclick="nextQ(${idx})" class="mt-3 bg-kawn-base text-white px-4 py-2 rounded text-xs font-bold">Siguiente</button>
+                            </div>
+                        </div>
+                    `;
+                    qContainer.innerHTML += html;
+                });
+                if (scoreDisplay) scoreDisplay.textContent = `Score: 0/${quizData.length}`;
+            }
+
+            window.checkAnswer = function (qIdx, optIdx, btn) {
+                const q = quizData[qIdx];
+                const parent = document.getElementById(`q-${qIdx}`);
+                parent.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+
+                if (optIdx === q.a) {
+                    btn.classList.add('bg-green-600', 'border-green-500');
+                    quizScore++;
+                } else {
+                    btn.classList.add('bg-red-600', 'border-red-500');
+                }
+
+                const fb = document.getElementById(`feedback-${qIdx}`);
+                if (fb) fb.classList.remove('hidden');
+                if (scoreDisplay) scoreDisplay.textContent = `Score: ${quizScore}/${quizData.length}`;
+            }
+
+            window.nextQ = function (currIdx) {
+                const curr = document.getElementById(`q-${currIdx}`);
+                if (curr) curr.classList.add('hidden');
+
+                if (currIdx + 1 < quizData.length) {
+                    const next = document.getElementById(`q-${currIdx + 1}`);
+                    if (next) next.classList.remove('hidden');
+                } else {
+                    const comp = document.getElementById('quiz-complete');
+                    if (comp) comp.classList.remove('hidden');
+
+                    const msg = document.getElementById('final-msg');
+                    const pct = (quizScore / quizData.length) * 100;
+                    if (pct === 100) msg.textContent = "¡Perfecto! Dominas el PO3.";
+                    else if (pct >= 70) msg.textContent = "Buen trabajo, listo para demo.";
+                    else msg.textContent = "Repasa los conceptos de desplazamiento.";
+                }
+            }
+
+            window.resetQuiz = function () {
+                quizScore = 0;
+                const comp = document.getElementById('quiz-complete');
+                if (comp) comp.classList.add('hidden');
+                renderQuiz();
+            }
+
+            renderQuiz();
+
+            // -------------------------------------------------------------------------
+            // 7. TOC GENERATOR (Robust)
+            // -------------------------------------------------------------------------
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+
+            if (tocContainer) {
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        link.textContent = h2.innerText;
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all`;
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            section.scrollIntoView({ behavior: 'smooth' });
+                        });
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                            const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (active) active.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(s => observer.observe(s));
+            }
+
+            // Mobile Menu
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', () => {
+                    const sidebar = document.getElementById('sidebar-toc');
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('fixed');
+                    sidebar.classList.toggle('inset-0');
+                    sidebar.classList.toggle('z-50');
+                    sidebar.classList.toggle('bg-white');
+                    sidebar.classList.toggle('p-6');
+
+                    if (!sidebar.classList.contains('hidden') && !sidebar.querySelector('.close-mob')) {
+                        const close = document.createElement('button');
+                        close.innerHTML = 'Cerrar Menú';
+                        close.className = 'close-mob absolute top-4 right-4 text-slate-500 font-bold';
+                        close.onclick = () => mobileBtn.click();
+                        sidebar.appendChild(close);
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 8. INTEGRACIÓN IA SEGURA (NETLIFY PROXY)
+            // -------------------------------------------------------------------------
+            const aiModal = document.getElementById('ai-modal');
+            const aiToggle = document.getElementById('ai-toggle');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            if (aiToggle) aiToggle.addEventListener('click', () => aiModal.classList.remove('hidden'));
+            if (closeAi) closeAi.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+            // FUNCIÓN MAESTRA DE LLAMADA IA (PROXY)
+            async function callAIProxy(promptText, systemInstruction = "Eres un mentor experto en ICT y modelo PO3.") {
+                try {
+                    const response = await fetch('/.netlify/functions/gemini-proxy', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: promptText }]
+                            }],
+                            systemInstruction: {
+                                parts: [{ text: systemInstruction }]
+                            }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error("Error en la conexión con el Proxy");
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "Lo siento, no pude procesar tu solicitud.";
+                } catch (error) {
+                    console.error("AI Error:", error);
+                    return "⚠️ Error de conexión. Verifica que la función Serverless esté activa.";
+                }
+            }
+
+            // A. CHATBOT MENTOR
+            async function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                appendMessage(text, 'user');
+                userInput.value = '';
+                aiLoading.classList.remove('hidden');
+                sendAi.disabled = true;
+                sendAi.classList.add('btn-disabled');
+
+                const prompt = `Actúa como un mentor experto en Trading Institucional (ICT) y modelo PO3. Responde breve y en español. Pregunta: ${text}`;
+                const reply = await callAIProxy(prompt);
+
+                aiLoading.classList.add('hidden');
+                sendAi.disabled = false;
+                sendAi.classList.remove('btn-disabled');
+                appendMessage(reply, 'ai');
+            }
+
+            function appendMessage(text, sender) {
+                if (!chatHistory) return;
+                const div = document.createElement('div');
+                div.className = `message-bubble ${sender === 'user' ? 'user-msg' : 'ai-msg'} fade-in-up`;
+                div.innerText = text;
+                chatHistory.appendChild(div);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            if (sendAi) sendAi.addEventListener('click', sendMessage);
+            if (userInput) userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage() });
+
+            // B. GENERADOR DE ESCENARIOS
+            window.generateScenario = async function () {
+                const btn = document.getElementById('gen-scenario-btn');
+                const output = document.getElementById('ai-scenario-output');
+
+                btn.disabled = true;
+                btn.classList.add('btn-disabled');
+                btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4"></i> Generando...`;
+                output.classList.remove('hidden');
+                output.innerText = "Consultando al mercado... (Esto puede tardar unos segundos)";
+
+                const prompt = "Genera un escenario hipotético de trading en texto (máximo 50 palabras) describiendo la acción del precio durante las sesiones de Asia y Londres para el par EURUSD. Describe acumulaciones o manipulaciones pero NO digas qué va a pasar en Nueva York. El estudiante debe adivinar. Ejemplo: 'Rango estrecho en Asia. Londres abre y rompe el máximo con fuerza...'";
+
+                const scenario = await callAIProxy(prompt);
+                output.innerText = scenario;
+
+                btn.disabled = false;
+                btn.classList.remove('btn-disabled');
+                btn.innerHTML = `<i data-lucide="zap" class="w-4 h-4"></i> Generar Caso Aleatorio`;
+            }
+
+            // C. ANALIZADOR DE REFLEXIÓN
+            window.analyzeReflection = async function () {
+                const input = document.getElementById('reflection-input');
+                const btn = document.getElementById('analyze-btn');
+                const resultDiv = document.getElementById('analysis-result');
+                const text = input.value.trim();
+
+                if (!text) return alert("Por favor escribe tu análisis primero.");
+
+                btn.disabled = true;
+                btn.classList.add('btn-disabled');
+                btn.innerHTML = `<i data-lucide="loader" class="animate-spin w-4 h-4"></i> Evaluando...`;
+                resultDiv.classList.remove('hidden');
+                resultDiv.innerText = "Analizando tu lógica con el Mentor IA...";
+
+                const prompt = `Eres un mentor de trading institucional. El estudiante ha escrito este análisis sobre un gráfico PO3: '${text}'. Evalúa si entiende correctamente los conceptos de manipulación, liquidez y desplazamiento. Sé breve (max 2 frases) y constructivo.`;
+
+                const feedback = await callAIProxy(prompt);
+                resultDiv.innerHTML = `<strong class="text-indigo-600 block mb-2">Feedback del Mentor:</strong> ${feedback}`;
+
+                btn.disabled = false;
+                btn.classList.remove('btn-disabled');
+                btn.innerHTML = `<i data-lucide="search" class="w-4 h-4"></i> ✨ Evaluar mi análisis`;
+            }
+
+        });
+    </script>
+</body>
+
+</html>

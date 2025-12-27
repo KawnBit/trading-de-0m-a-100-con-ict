@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KawnBit Magazine: Cap 2 - La Liquidez (v2.0 Robust)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Color palette */
+            --primary-teal: #4db6ac;
+            --secondary-teal: #00897b;
+            --dark-teal: #005b4f;
+            --accent-dark: #263238;
+            --text-grey: #455a64;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --danger: #e57373;
+            --danger-dark: #c62828;
+            --gold: #fbc02d;
+            --ai-purple: #7c4dff;
+            --ai-deep: #4a148c;
+
+            /* Gradients */
+            --gradient-teal: linear-gradient(135deg, var(--primary-teal), var(--secondary-teal));
+            --gradient-gold: linear-gradient(135deg, #fbc02d, #f57f17);
+            --gradient-ai: linear-gradient(135deg, #7c4dff, #651fff);
+
+            /* UI Effects */
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        /* --- BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Robust sizing */
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-grey);
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            /* Crisp text */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            /* Responsive typography */
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--secondary-teal);
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            border-bottom: 3px solid var(--primary-teal);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            color: var(--dark-teal);
+        }
+
+        strong {
+            color: var(--secondary-teal);
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: clamp(20px, 5vw, 40px);
+            box-shadow: var(--shadow-soft);
+            min-height: 100vh;
+        }
+
+        /* --- HEADER --- */
+        .magazine-header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--light-bg);
+            margin-bottom: 40px;
+        }
+
+        .logo-placeholder {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            background: var(--gradient-teal);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .logo-tagline {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary-teal);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .intro-lead {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            border-left: 5px solid var(--primary-teal);
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* --- INFOGRAPHIC COMPONENTS --- */
+        .infographic-box {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin: 40px 0;
+            border: 1px solid #e0e0e0;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .infographic-box:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .infographic-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-teal);
+        }
+
+        .infographic-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-teal);
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #e0f2f1;
+            padding: 10px 20px;
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .infographic-title i {
+            margin-right: 10px;
+            color: var(--secondary-teal);
+        }
+
+        /* --- 1. SIMULATOR (Canvas) --- */
+        .sim-container {
+            background: #1a1a1a;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            color: #eee;
+        }
+
+        .sim-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sim-btn {
+            background: var(--gradient-teal);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .sim-btn:active {
+            transform: scale(0.98);
+        }
+
+        .sim-btn.sell {
+            background: linear-gradient(135deg, #e57373, #c62828);
+        }
+
+        .sim-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            /* Fixed height container */
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+
+        /* High-DPI Canvas Handling */
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .zone-label {
+            position: absolute;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            opacity: 0.8;
+            pointer-events: none;
+            width: 90%;
+            text-align: center;
+            left: 5%;
+        }
+
+        .zone-buy {
+            top: 10px;
+            background: rgba(229, 115, 115, 0.15);
+            color: #e57373;
+            border: 1px dashed #e57373;
+        }
+
+        .zone-sell {
+            bottom: 10px;
+            background: rgba(77, 182, 172, 0.15);
+            color: #4db6ac;
+            border: 1px dashed #4db6ac;
+        }
+
+        .tooltip-custom {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            color: #333;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+            width: 220px;
+            border-left: 4px solid var(--secondary-teal);
+            transition: opacity 0.2s;
+        }
+
+        /* --- 2. SWITCHER --- */
+        .switch-controls {
+            display: flex;
+            justify-content: center;
+            background: #f0f0f0;
+            padding: 5px;
+            border-radius: 30px;
+            margin: 0 auto 20px;
+            width: fit-content;
+            flex-wrap: wrap;
+        }
+
+        .switch-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            color: #777;
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        .switch-btn.active {
+            background: white;
+            color: var(--secondary-teal);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .view-panel {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        .view-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border-left: 5px solid #ccc;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .view-card.sm {
+            border-left-color: var(--secondary-teal);
+            background: #f1f8e9;
+        }
+
+        /* --- 3. WYCKOFF --- */
+        .wyckoff-section {
+            background: #263238;
+            color: #eceff1;
+            padding: 30px;
+            border-radius: var(--radius-lg);
+            margin-top: 20px;
+        }
+
+        .diary-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .diary-card {
+            background: #37474f;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #455a64;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+            height: 100%;
+        }
+
+        .diary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .diary-back {
+            display: none;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: #ffe082;
+            border-top: 1px solid #78909c;
+            padding-top: 10px;
+            margin-top: 10px;
+            animation: fadeIn 0.5s;
+            line-height: 1.4;
+        }
+
+        .diary-card.revealed .diary-back {
+            display: block;
+        }
+
+        .diary-card.revealed .diary-front {
+            opacity: 0.4;
+        }
+
+        /* --- 4. PYRAMID --- */
+        .pyr-level {
+            width: 100%;
+            max-width: 600px;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+        }
+
+        .pyr-level:hover {
+            transform: scale(1.02);
+            z-index: 5;
+        }
+
+        .pyr-level.active {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 18px;
+        }
+
+        .pyr-desc {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .pyr-level.active .pyr-desc {
+            max-height: 120px;
+            opacity: 1;
+            padding: 10px;
+        }
+
+        .pl-1 {
+            border-radius: 12px 12px 2px 2px;
+            background: #004d40;
+            width: 35%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pl-2 {
+            background: #00695c;
+            width: 50%;
+            border-radius: 2px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pl-3 {
+            background: #00796b;
+            width: 65%;
+            border-radius: 2px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pl-4 {
+            background: #00897b;
+            width: 80%;
+            border-radius: 2px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pl-5 {
+            border-radius: 2px 2px 12px 12px;
+            background: #4db6ac;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- 5. CYCLE --- */
+        .cycle-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: var(--radius-md);
+        }
+
+        .cycle-node {
+            width: 130px;
+            height: 130px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .cycle-node.active-step {
+            border-color: var(--secondary-teal);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 137, 123, 0.3);
+        }
+
+        /* --- 6. AI SECTION (ROBUST) --- */
+        .ai-section {
+            background: #f3f0ff;
+            border: 1px solid #d1c4e9;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-ai);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ai-icon-pulse {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-ai);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 0 0 rgba(124, 77, 255, 0.4);
+            animation: pulse-purple 2s infinite;
+        }
+
+        @keyframes pulse-purple {
+            0% {
+                box-shadow: 0 0 0 0 rgba(124, 77, 255, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(124, 77, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(124, 77, 255, 0);
+            }
+        }
+
+        .ai-chat-box {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            height: 400px;
+            /* Fixed height for consistency */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ai-chat-history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            background: #e3f2fd;
+            color: #1565c0;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-msg.ai {
+            align-self: flex-start;
+            background: #f3e5f5;
+            color: var(--ai-deep);
+            border-bottom-left-radius: 2px;
+            border-left: 4px solid var(--ai-purple);
+        }
+
+        .ai-input-area {
+            padding: 15px;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .ai-input:focus {
+            border-color: var(--ai-purple);
+        }
+
+        .btn-ai-send {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-ai);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Utils */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .view-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .diary-container {
+                grid-template-columns: 1fr;
+            }
+
+            .switch-controls {
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                border-radius: 12px;
+            }
+
+            .switch-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="magazine-header">
+            <div class="logo-placeholder">KawnBit</div>
+            <div class="logo-tagline">Quantitative Trading Community</div>
+        </header>
+
+        <div class="chapter-title">
+            <h1>Capítulo 2: La Liquidez – El Concepto Clave de ICT</h1>
+        </div>
+
+        <!-- INTRODUCTION -->
+        <section>
+            <h2>Introducción: comprendiendo el motor invisible del mercado</h2>
+            <p class="intro-lead">Imagina que el mercado financiero es como un océano vasto y aparentemente caótico. En
+                la superficie vemos las olas: esos movimientos de precio que suben y bajan constantemente.</p>
+            <p>Pero lo que realmente mueve esas olas, la <strong>corriente profunda</strong> que determina hacia dónde
+                fluye todo el sistema, es la <strong>liquidez</strong>. Este concepto, aparentemente simple pero
+                profundamente transformador, es la piedra angular de toda la metodología <strong>ICT (Inner Circle
+                    Trader)</strong>.</p>
+            <p>Muchos traders novatos creen que el precio “sube o baja porque sí” – por una noticia, un tweet, o porque
+                el RSI cruzó cierta línea. <strong>No. El precio se mueve por una sola razón fundamental: buscar
+                    liquidez [1]</strong>. Entender esto cambia por completo nuestra visión del mercado.</p>
+        </section>
+
+        <!-- SECTION 1: WHAT IS LIQUIDITY -->
+        <section>
+            <h2>¿Qué es exactamente la liquidez en trading institucional?</h2>
+            <p>En el contexto de <strong>ICT</strong>, <strong>liquidez</strong> se refiere a las <strong>órdenes
+                    pendientes</strong> esperando ser ejecutadas en niveles clave. Es el “combustible” que grandes
+                operadores utilizan para mover el mercado.</p>
+
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-gas-pump"></i> El Combustible del Mercado</div>
+                <p>Cuando un banco necesita comprar una enorme cantidad de un activo, <strong>busca liquidez</strong>:
+                    localiza dónde están las órdenes de otros participantes (Stop Loss) para absorber ese volumen sin
+                    provocar deslizamientos catastróficos.</p>
+            </div>
+
+            <!-- GRAPHIC 1: ROBUST LIQUIDITY SIMULATOR -->
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-arrows-alt-v"></i> Simulador: Anatomía de la Liquidez
+                </div>
+                <p>Interactúa con el gráfico para ver cómo el precio "caza" los stops.</p>
+
+                <div class="sim-container">
+                    <div class="sim-controls">
+                        <span
+                            style="font-size: 0.9rem; font-weight: bold; color: #888; align-self: center;">CONTROLES:</span>
+                        <div>
+                            <button class="sim-btn" onclick="simulator.trigger('buy')"><i class="fas fa-arrow-up"></i>
+                                Cazar Buy-Side</button>
+                            <button class="sim-btn sell" onclick="simulator.trigger('sell')"><i
+                                    class="fas fa-arrow-down"></i> Cazar Sell-Side</button>
+                        </div>
+                    </div>
+                    <div class="sim-canvas-wrapper" id="simWrapper">
+                        <canvas id="liqChart"></canvas>
+                        <div class="zone-label zone-buy">
+                            BUY-SIDE LIQUIDITY<br><span style="font-size:10px;">(Stops de Cortos / Breakouts)</span>
+                        </div>
+                        <div class="zone-label zone-sell">
+                            SELL-SIDE LIQUIDITY<br><span style="font-size:10px;">(Stops de Largos / Panic
+                                Sellers)</span>
+                        </div>
+                        <div id="sim-tooltip" class="tooltip-custom"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: RETAIL PARADOX -->
+        <section>
+            <h2>La paradoja del trader minorista</h2>
+            <p>Una revelación crucial: <strong>los traders minoristas, colectivamente, somos esa liquidez</strong>. Cada
+                <strong>stop loss</strong> que colocamos en un nivel “obvio” conforma los depósitos que el dinero
+                inteligente busca.
+            </p>
+            <p>En palabras de ICT: <strong>“Si no sabes dónde está la liquidez, tú eres la liquidez”</strong>.</p>
+            <p>No es teoría conspirativa. Mover el precio para hacer saltar los stops ajenos es simplemente <strong>cómo
+                    funciona el negocio</strong> para conseguir contrapartida masiva.</p>
+        </section>
+
+        <!-- SECTION 3: TECHNICAL ANALYSIS AS MANIPULATION -->
+        <section>
+            <h2>El análisis técnico tradicional como herramienta de manipulación</h2>
+            <p>Muchos patrones convencionales (Doble Techo, Soportes) funcionan como una <strong>hoja de ruta para que
+                    el dinero inteligente manipule al público</strong>.</p>
+
+            <!-- GRAPHIC 2: PERCEPTION SWITCHER -->
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-mask"></i> Dos Caras de la Misma Moneda</div>
+                <div class="switch-controls">
+                    <button class="switch-btn active" onclick="ui.switchView('retail', this)">Visión Retail 🤓</button>
+                    <button class="switch-btn" onclick="ui.switchView('sm', this)">Visión Smart Money 🧠</button>
+                </div>
+
+                <div class="view-panel active" id="view-retail">
+                    <div class="view-card">
+                        <i class="fas fa-chart-line" style="color: #888;"></i>
+                        <div>
+                            <h4>"¡Doble Techo Clarísimo!"</h4>
+                            <p style="color: var(--text-grey); font-size: 0.9rem;">"Resistencia fuerte. Vendo aquí y
+                                pongo mi Stop Loss justo encima."</p>
+                        </div>
+                    </div>
+                    <div class="view-card">
+                        <i class="fas fa-ruler-horizontal" style="color: #888;"></i>
+                        <div>
+                            <h4>"¡Soporte de Línea de Tendencia!"</h4>
+                            <p style="color: var(--text-grey); font-size: 0.9rem;">"Tercer toque. Compro el rebote y
+                                pongo mi Stop debajo de la línea."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="view-panel" id="view-sm">
+                    <div class="view-card sm">
+                        <i class="fas fa-user-tie" style="color: var(--secondary-teal);"></i>
+                        <div>
+                            <h4>"Piscina de Liquidez (Buy Stops)"</h4>
+                            <p style="color: var(--dark-teal); font-size: 0.9rem;">"Veo miles de stops sobre esos
+                                máximos. Vamos a empujar el precio ahí para vender nuestras posiciones a su demanda."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="view-card sm">
+                        <i class="fas fa-user-tie" style="color: var(--secondary-teal);"></i>
+                        <div>
+                            <h4>"Línea de Stops (Sell-Side)"</h4>
+                            <p style="color: var(--dark-teal); font-size: 0.9rem;">"Hay un reguero de stops bajo esa
+                                diagonal. Rompamos la línea para barrer liquidez antes de subir."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WYCKOFF SECTION -->
+            <div class="wyckoff-section">
+                <h3 class="wyckoff-title"><i class="fas fa-history"></i> El Legado: El Operador Compuesto</h3>
+                <p>Richard Wyckoff describió al mercado como si fuera operado por un solo hombre ("Composite Man") que
+                    manipula para inducir al público. Hoy son algoritmos, pero la psicología es la misma.</p>
+                <p style="text-align: center; margin-top: 20px;"><strong>Haz clic en las tarjetas para revelar la
+                        intención oculta:</strong></p>
+
+                <div class="diary-container">
+                    <div class="diary-card" onclick="this.classList.toggle('revealed')">
+                        <div class="diary-front">
+                            <i class="fas fa-newspaper fa-2x" style="color: #90a4ae; margin-bottom: 10px;"></i>
+                            <h4>La Noticia Bomba</h4>
+                        </div>
+                        <div class="diary-back">
+                            "La euforia hará que compren caro. Usaré su demanda frenética para venderles mis posiciones
+                            acumuladas."
+                        </div>
+                    </div>
+                    <div class="diary-card" onclick="this.classList.toggle('revealed')">
+                        <div class="diary-front">
+                            <i class="fas fa-chart-bar fa-2x" style="color: #90a4ae; margin-bottom: 10px;"></i>
+                            <h4>El Soporte "Obvio"</h4>
+                        </div>
+                        <div class="diary-back">
+                            "Están confiados. Empujaré el precio 10 pips abajo para activar sus ventas de pánico y
+                            comprar barato."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: LIQUIDITY HIERARCHY -->
+        <section>
+            <h2>La jerarquía de la liquidez</h2>
+            <p>No toda la liquidez es igual. Los "depósitos más grandes" (Timeframes mayores) atraen con más fuerza al
+                precio.</p>
+
+            <!-- GRAPHIC 3: PYRAMID -->
+            <div class="infographic-box">
+                <div class="infographic-title"><i class="fas fa-layer-group"></i> Pirámide Interactiva</div>
+                <div class="pyramid-interactive">
+                    <div class="pyr-level pl-1" onclick="ui.togglePyramid(this)">
+                        <span class="pyr-title">1. Máximos/Mínimos Macro (D/W/M)</span>
+                        <div class="pyr-desc">Depósitos masivos. Su barrido genera cambios de tendencia estructurales.
+                        </div>
+                    </div>
+                    <div class="pyr-level pl-2" onclick="ui.togglePyramid(this)">
+                        <span class="pyr-title">2. Estructura Intermedia (4H, 1H)</span>
+                        <div class="pyr-desc">Puntos clave para swings semanales. Determinan el rango operativo.</div>
+                    </div>
+                    <div class="pyr-level pl-3" onclick="ui.togglePyramid(this)">
+                        <span class="pyr-title">3. EQH / EQL (Dobles Techos)</span>
+                        <div class="pyr-desc"><strong>IMÁN MAYOR.</strong> Concentración obvia de stops. El mercado casi
+                            siempre los romperá.</div>
+                    </div>
+                    <div class="pyr-level pl-4" onclick="ui.togglePyramid(this)">
+                        <span class="pyr-title">4. Líneas de Tendencia</span>
+                        <div class="pyr-desc">Stops escalonados diagonalmente. Suelen ser barridos agresivamente
+                            (Inducción).</div>
+                    </div>
+                    <div class="pyr-level pl-5" onclick="ui.togglePyramid(this)">
+                        <span class="pyr-title">5. Micro Estructura (5m, 1m)</span>
+                        <div class="pyr-desc">Ruido para el trader macro, pero vital para el day trader.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: TRENDLINE TRAP -->
+            <div class="infographic-box" style="border-left: 5px solid var(--gold);">
+                <div class="infographic-title" style="background: #fff8e1; color: #f57f17;"><i
+                        class="fas fa-project-diagram"></i> La Trampa de la Línea de Tendencia</div>
+                <div class="tl-container">
+                    <p style="text-align: center; font-size: 0.9rem;"><strong>Simulación: Inducción Alcista</strong></p>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <button class="sim-btn" onclick="trendlineAnim.play()">▶ Reproducir Trampa</button>
+                    </div>
+                    <svg id="tl-svg" width="100%" height="200" viewBox="0 0 500 200"
+                        style="background: #fdfdfd; border: 1px solid #eee; border-radius: 4px;">
+                        <!-- SVG content managed by JS -->
+                        <line id="tl-line" x1="50" y1="180" x2="450" y2="80" stroke="#aaa" stroke-width="2"
+                            stroke-dasharray="5" />
+                        <g id="tl-stops-group"></g>
+                        <path id="tl-path" fill="none" stroke="#455a64" stroke-width="2"
+                            d="M50,150 L100,170 L150,120 L200,150 L250,100 L300,130 L350,70" />
+                        <path id="tl-trap" fill="none" stroke="#d32f2f" stroke-width="3" d="M350,70 L380,140 L450,40"
+                            style="opacity: 0;" />
+                        <circle id="tl-circle" cx="380" cy="140" r="10" fill="none" stroke="red" stroke-width="2"
+                            style="opacity: 0;" />
+                    </svg>
+                    <p id="tl-feedback" style="text-align: center; font-size: 0.85rem; color: #666; margin-top: 10px;">
+                        El mercado respeta la línea para generar confianza...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: MARKET CYCLE -->
+        <section>
+            <h2>El ciclo de entrega de precio (IPDA)</h2>
+            <p>El precio solo hace dos cosas: <strong>Rebalancear</strong> ineficiencias o <strong>Buscar
+                    Liquidez</strong>.</p>
+
+            <div class="cycle-container">
+                <div class="cycle-node" id="cycle-1">
+                    <i class="fas fa-rocket fa-2x" style="color: var(--primary-teal); margin-bottom: 5px;"></i>
+                    <h5 style="margin:0;">1. Expansión</h5>
+                    <small style="font-size: 0.7rem;">Rompe estructuras</small>
+                </div>
+                <div class="cycle-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="cycle-node" id="cycle-2">
+                    <i class="fas fa-balance-scale fa-2x" style="color: var(--gold); margin-bottom: 5px;"></i>
+                    <h5 style="margin:0;">2. Rebalanceo</h5>
+                    <small style="font-size: 0.7rem;">Llena FVGs</small>
+                </div>
+                <div class="cycle-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="cycle-node" id="cycle-3">
+                    <i class="fas fa-crosshairs fa-2x" style="color: var(--danger); margin-bottom: 5px;"></i>
+                    <h5 style="margin:0;">3. Liquidez</h5>
+                    <small style="font-size: 0.7rem;">Caza Stops</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: AI LAB -->
+        <section class="ai-section" id="ai-lab">
+            <div class="ai-header">
+                <div class="ai-icon-pulse"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h2 style="margin: 0; border: none; font-size: 1.5rem; color: var(--ai-deep);">Mentor Smart Money
+                    </h2>
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Asistente Educativo Inteligente</p>
+                </div>
+            </div>
+
+            <div class="tab-controls">
+                <button class="switch-btn active" style="font-size: 0.8rem; padding: 6px 15px;"
+                    onclick="aiLab.setMode('chat', this)">💬 Chat Conceptos</button>
+                <button class="switch-btn" style="font-size: 0.8rem; padding: 6px 15px;"
+                    onclick="aiLab.setMode('scenario', this)">🔍 Analizar Escenario</button>
+            </div>
+
+            <div class="ai-chat-box">
+                <div id="ai-chat-history" class="ai-chat-history">
+                    <div class="chat-msg ai">
+                        Hola. Soy tu mentor de Trading Institucional.
+                        <br><br>
+                        Puedes preguntarme sobre <strong>Stop Hunting</strong>, <strong>Buy-Side Liquidity</strong>, o
+                        describir un escenario de gráfico para que lo analice.
+                    </div>
+                </div>
+                <div class="ai-input-area">
+                    <input type="text" id="ai-user-input" class="ai-input"
+                        placeholder="Pregunta algo (ej: ¿Qué es Sell-Side Liquidity?)...">
+                    <button class="btn-ai-send" onclick="aiLab.send()"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+            <div class="footer-logo">
+                <span
+                    style="font-family:'Montserrat'; font-weight:800; font-size:1.5rem; color:var(--dark-teal);">KawnBit</span>
+            </div>
+            <p class="copyright">&copy; <span id="current-year"></span> KawnBit Magazine.</p>
+        </footer>
+
+    </div>
+
+    <!-- ROBUST JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. CORE UTILITIES ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const ui = {
+            switchView: (view, btn) => {
+                document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('view-' + view).classList.add('active');
+            },
+            togglePyramid: (el) => {
+                const isActive = el.classList.contains('active');
+                document.querySelectorAll('.pyr-level').forEach(e => e.classList.remove('active'));
+                if (!isActive) el.classList.add('active');
+            }
+        };
+
+        // --- 2. ROBUST CANVAS SIMULATOR ---
+        const simulator = {
+            canvas: document.getElementById('liqChart'),
+            ctx: null,
+            candles: [],
+            animId: null,
+
+            init: function () {
+                this.ctx = this.canvas.getContext('2d');
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+                this.resetData();
+                this.loop();
+                this.bindEvents();
+            },
+
+            resize: function () {
+                // High-DPI handling
+                const dpr = window.devicePixelRatio || 1;
+                const rect = this.canvas.parentElement.getBoundingClientRect();
+                this.canvas.width = rect.width * dpr;
+                this.canvas.height = 250 * dpr;
+                this.ctx.scale(dpr, dpr);
+                this.width = rect.width;
+                this.height = 250;
+                this.draw(); // Redraw immediately
+            },
+
+            resetData: function () {
+                let price = 125;
+                this.candles = [];
+                const count = 40;
+                const candleWidth = this.width / (count + 5);
+
+                for (let i = 0; i < count; i++) {
+                    let change = (Math.random() - 0.5) * 8;
+                    let open = price;
+                    let close = price + change;
+                    // constrain to center
+                    if (close > 200) close -= 5;
+                    if (close < 50) close += 5;
+
+                    let high = Math.max(open, close) + Math.random() * 5;
+                    let low = Math.min(open, close) - Math.random() * 5;
+
+                    this.candles.push({
+                        x: 20 + i * candleWidth,
+                        w: candleWidth * 0.6,
+                        o: open, c: close, h: high, l: low
+                    });
+                    price = close;
+                }
+            },
+
+            draw: function () {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+
+                // Draw Zones
+                this.ctx.fillStyle = "rgba(229, 115, 115, 0.05)";
+                this.ctx.fillRect(0, 0, this.width, 40);
+                this.ctx.fillStyle = "rgba(77, 182, 172, 0.05)";
+                this.ctx.fillRect(0, 210, this.width, 40);
+
+                // Draw Candles
+                this.candles.forEach(c => {
+                    const color = c.c > c.o ? "#4db6ac" : "#e57373";
+                    this.ctx.strokeStyle = color;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(c.x + c.w / 2, c.h);
+                    this.ctx.lineTo(c.x + c.w / 2, c.l);
+                    this.ctx.stroke();
+
+                    this.ctx.fillStyle = color;
+                    let h = Math.abs(c.c - c.o);
+                    this.ctx.fillRect(c.x, Math.min(c.o, c.c), c.w, h < 1 ? 1 : h);
+                });
+            },
+
+            trigger: function (type) {
+                if (this.animId) cancelAnimationFrame(this.animId);
+
+                const targetY = type === 'buy' ? 20 : 230;
+                const lastCandle = this.candles[this.candles.length - 1];
+                let startPrice = lastCandle.c;
+                let frames = 0;
+                const totalFrames = 60;
+
+                const anim = () => {
+                    frames++;
+                    const progress = frames / totalFrames;
+                    // Easing
+                    const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
+
+                    const currentY = startPrice + (targetY - startPrice) * ease;
+
+                    // Temporary candle visual
+                    const tempX = lastCandle.x + lastCandle.w + 5;
+
+                    this.draw();
+                    this.ctx.fillStyle = type === 'buy' ? "#4db6ac" : "#e57373";
+                    this.ctx.fillRect(tempX, Math.min(startPrice, currentY), lastCandle.w, Math.abs(currentY - startPrice) || 1);
+
+                    if (frames < totalFrames) {
+                        this.animId = requestAnimationFrame(anim);
+                    } else {
+                        setTimeout(() => {
+                            this.resetData();
+                            this.draw();
+                        }, 1000);
+                    }
+                };
+                anim();
+            },
+
+            loop: function () {
+                // Passive animation (optional, kept static for performance)
+            },
+
+            bindEvents: function () {
+                const tooltip = document.getElementById('sim-tooltip');
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const y = e.clientY - rect.top;
+                    const x = e.clientX - rect.left;
+
+                    if (y < 40) {
+                        tooltip.style.display = 'block';
+                        tooltip.style.top = (y + 10) + 'px';
+                        tooltip.style.left = (x + 10) + 'px';
+                        tooltip.innerHTML = "<strong>Buy-Side Liquidity</strong><br>Stops de vendedores y Breakout Traders.";
+                    } else if (y > 210) {
+                        tooltip.style.display = 'block';
+                        tooltip.style.top = (y - 80) + 'px';
+                        tooltip.style.left = (x + 10) + 'px';
+                        tooltip.innerHTML = "<strong>Sell-Side Liquidity</strong><br>Stops de compradores y ventas en pánico.";
+                    } else {
+                        tooltip.style.display = 'none';
+                    }
+                });
+                this.canvas.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+            }
+        };
+
+        // --- 3. TRENDLINE ANIMATION ---
+        const trendlineAnim = {
+            play: function () {
+                const feedback = document.getElementById('tl-feedback');
+                const trapPath = document.getElementById('tl-trap');
+                const circle = document.getElementById('tl-circle');
+
+                // Reset
+                trapPath.style.opacity = 0;
+                circle.style.opacity = 0;
+                feedback.textContent = "1. Inducción: El precio atrae compradores...";
+                feedback.style.color = "#666";
+
+                // Sequence
+                setTimeout(() => {
+                    feedback.textContent = "2. Acumulación: Muchos stops se colocan bajo la línea.";
+                }, 1000);
+
+                setTimeout(() => {
+                    trapPath.style.opacity = 1;
+                    circle.style.opacity = 1;
+                    feedback.innerHTML = "3. <strong>¡BARRIDA!</strong> El precio cruza la línea, toma los stops y sube.";
+                    feedback.style.color = "#d32f2f";
+                }, 2000);
+            }
+        };
+
+        // --- 4. MARKET CYCLE LOOPER ---
+        const marketCycle = {
+            idx: 0,
+            nodes: ['cycle-1', 'cycle-2', 'cycle-3'],
+            init: function () {
+                setInterval(() => {
+                    this.nodes.forEach(id => document.getElementById(id).classList.remove('active-step'));
+                    document.getElementById(this.nodes[this.idx]).classList.add('active-step');
+                    this.idx = (this.idx + 1) % 3;
+                }, 2000);
+            }
+        };
+
+        // --- 5. ROBUST AI LAB (With Mock Fallback) ---
+        const aiLab = {
+            mode: 'chat',
+            // En producción, usamos un proxy seguro en Netlify. No se guardan claves aquí.
+
+            setMode: function (m, btn) {
+                this.mode = m;
+                const input = document.getElementById('ai-user-input');
+                input.placeholder = m === 'chat' ?
+                    "Pregunta concepto (ej: Stop Hunting)..." :
+                    "Describe escenario (ej: Doble techo roto y rechazo)...";
+
+                // Toggle buttons visual state (simple logic)
+                const btns = btn.parentElement.children;
+                for (let b of btns) b.classList.remove('active');
+                btn.classList.add('active');
+            },
+
+            appendMsg: function (text, type) {
+                const history = document.getElementById('ai-chat-history');
+                const div = document.createElement('div');
+                div.className = `chat-msg ${type}`;
+                div.innerHTML = text;
+                history.appendChild(div);
+                history.scrollTop = history.scrollHeight;
+            },
+
+            getMockResponse: function (text) {
+                const lower = text.toLowerCase();
+
+                if (this.mode === 'scenario') {
+                    if (lower.includes('doble techo') || lower.includes('resistencia'))
+                        return "<strong>Análisis de Mentor:</strong> Ese doble techo es un 'Equal Highs (EQH)'. Es un imán de liquidez. Es muy probable que el precio lo rompa (Fakeout) para tomar los stops antes de bajar de verdad.";
+                    if (lower.includes('rompe') && lower.includes('baja'))
+                        return "<strong>Análisis de Mentor:</strong> Si rompió con fuerza y no hay rechazo, puede ser una expansión real. Pero si vuelve a entrar al rango, ¡cuidado! Es una 'Turtle Soup' (trampa de sopa de tortuga).";
+                    return "<strong>Análisis de Mentor:</strong> Interesante escenario. Recuerda buscar si hay mínimos o máximos iguales cerca. El precio suele ir allí a 'repostar' liquidez antes de hacer el movimiento real.";
+                } else {
+                    if (lower.includes('buy-side') || lower.includes('buy side'))
+                        return "La <strong>Buy-Side Liquidity</strong> son órdenes de compra (Buy Stops) situadas encima de resistencias. El Smart Money las usa para vender sus posiciones largas o para entrar en corto.";
+                    if (lower.includes('sell-side') || lower.includes('sell side'))
+                        return "La <strong>Sell-Side Liquidity</strong> son órdenes de venta (Sell Stops) debajo de soportes. Las instituciones las activan para poder comprar grandes cantidades a precios de descuento.";
+                    if (lower.includes('stop hunt') || lower.includes('caza'))
+                        return "El <strong>Stop Hunting</strong> es el acto de mover el precio hacia zonas de liquidez obvias para activar stops y obtener contrapartida. No es malicioso, es necesario para la eficiencia del mercado.";
+                    return "Esa es una buena pregunta. En términos de Smart Money, siempre pregúntate: ¿Dónde están los stops de la mayoría? Ahí es donde el precio querrá ir.";
+                }
+            },
+
+            send: async function () {
+                const input = document.getElementById('ai-user-input');
+                const text = input.value.trim();
+                if (!text) return;
+
+                this.appendMsg(text, 'user');
+                input.value = '';
+                this.appendMsg('<i class="fas fa-circle-notch fa-spin"></i> Analizando...', 'ai loading-msg');
+
+                // URL del proxy en Netlify
+                const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+                try {
+                    const prompt = `Eres un experto trader institucional. Contexto: ${this.mode}. Usuario: ${text}`;
+                    const response = await fetch(proxyUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }]
+                        })
+                    });
+
+                    // Remover mensaje de carga
+                    const loadingMsg = document.querySelector('.loading-msg');
+                    if (loadingMsg) loadingMsg.remove();
+
+                    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+                    const data = await response.json();
+                    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error: No se recibió respuesta.";
+
+                    this.appendMsg(aiResponse.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'), 'ai');
+
+                } catch (err) {
+                    console.warn("API Error, falling back to mock:", err);
+                    const loadingMsg = document.querySelector('.loading-msg');
+                    if (loadingMsg) loadingMsg.remove();
+
+                    const mock = this.getMockResponse(text);
+                    this.appendMsg(mock + "<br><br><small style='color:red'>*Error de conexión IA o configuración pendiente en Netlify.*</small>", 'ai');
+                }
+            }
+        };
+
+        // --- 6. INITIALIZATION ---
+        window.onload = () => {
+            simulator.init();
+            marketCycle.init();
+
+            // Bind Enter key for chat
+            document.getElementById('ai-user-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') aiLab.send();
+            });
+        };
+
+    </script>
+
+</body>
+
+</html>

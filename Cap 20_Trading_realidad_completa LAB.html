@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 20: La Realidad Completa del Trading - KawnBit Mastery Series. Desmitificando el mercado, psicología, probabilidad y gestión de riesgos.">
+    <title>KawnBit | Cap 20: La realidad del trading (AI Powered & Robust)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- [NUEVO] DOMPurify para seguridad contra XSS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    },
+                    animation: {
+                        'flip': 'flip 0.6s ease-in-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        flip: {
+                            '0%': { transform: 'rotateY(0)' },
+                            '100%': { transform: 'rotateY(180deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo CSS Recreation */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-15deg);
+            top: 10px;
+            left: 10px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Utilidades UI */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat & Interactivity */
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #14b8a6;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Flashcards CSS */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 200px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .flip-card-front {
+            background-color: white;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .flip-card-back {
+            background-color: #0f766e;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* AI Gradient Text */
+        .text-gradient-ai {
+            background: linear-gradient(135deg, #14b8a6 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .border-gradient-ai {
+            position: relative;
+            background: #fff;
+            background-clip: padding-box;
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+        }
+
+        .border-gradient-ai::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -2px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #14b8a6 0%, #a855f7 100%);
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="kawn-logo-wrapper select-none">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-kawn-base"
+                    aria-label="Abrir menú"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 20</a>
+                    <a href="#ai-lab"
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-kawn-base to-purple-500 font-bold hover:opacity-80 transition-opacity flex items-center gap-1"><i
+                            data-lucide="sparkles" class="w-3 h-3 text-purple-500"></i> AI Lab</a>
+                    <a href="#probabilidad"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Probabilidad</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Ejercicios</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC -->
+            <aside id="sidebar-toc" class="hidden md:block w-64 flex-shrink-0 transition-transform duration-300">
+                <div class="sticky top-28 h-full flex flex-col relative">
+                    <!-- Botón de cierre para móvil -->
+                    <button id="close-mobile-btn"
+                        class="hidden absolute top-0 right-0 p-2 text-slate-500 hover:text-kawn-base"
+                        aria-label="Cerrar menú">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2 mt-8 md:mt-0">
+                        Contenido</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        20</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        La realidad completa <br><span class="text-kawn-base">del trading</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        En el imaginario popular, el trading se asocia con dinero fácil. La realidad es que más del 90%
+                        pierde dinero de forma consistente. Detrás de estas cifras hay mitos peligrosos, riesgos
+                        elevados y retos psicológicos. Esta es una guía honesta sobre lo que realmente implica ser
+                        trader.
+                    </p>
+                </section>
+
+                <!-- Mitos y Realidades -->
+                <section id="mitos" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="zap-off"
+                            class="text-kawn-base mr-3"></i> Mitos y realidades</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="card-concept bg-slate-50 border-none shadow-card">
+                            <h4 class="font-bold text-red-600 mb-2 flex items-center gap-2"><i data-lucide="x-circle"
+                                    class="w-4 h-4"></i> Mito: Riqueza fácil</h4>
+                            <p class="text-sm text-slate-600">Creer en duplicar el dinero en días. La realidad es que
+                                las ganancias consistentes requieren estudio y disciplina. No es una lotería.</p>
+                        </div>
+                        <div class="card-concept bg-slate-50 border-none shadow-card">
+                            <h4 class="font-bold text-red-600 mb-2 flex items-center gap-2"><i data-lucide="x-circle"
+                                    class="w-4 h-4"></i> Mito: El "Santo Grial"</h4>
+                            <p class="text-sm text-slate-600">No existe indicador infalible. El mercado es dinámico. La
+                                ventaja proviene de entender la estructura y dominarse a uno mismo.</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mt-4 leading-7">
+                        Aunque las plataformas han democratizado el acceso, <strong>la barrera de entrada es baja, pero
+                            la de éxito sigue siendo muy alta</strong>. Muchos confunden la facilidad de hacer clic con
+                        la facilidad de ganar.
+                    </p>
+                </section>
+
+                <!-- Riesgos Reales -->
+                <section id="riesgos" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="alert-triangle"
+                            class="text-kawn-base mr-3"></i> Los riesgos reales</h2>
+                    <div class="prose max-w-none text-slate-600 leading-7 mb-8">
+                        <p>Operar conlleva riesgos concretos: pérdida de capital, volatilidad extrema y
+                            sobreapalancamiento. Entre un 70% y 80% de los minoristas pierden dinero cada trimestre.</p>
+                    </div>
+
+                    <!-- INTERACTIVO 1: SIMULADOR DE APALANCAMIENTO -->
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-white font-bold text-lg">Simulador de riesgo: La trampa del apalancamiento
+                            </h3>
+                            <span class="text-xs bg-red-600 text-white px-2 py-1 rounded">Interactive Plotly</span>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">Observa cómo un pequeño movimiento en contra con alto
+                            apalancamiento destruye una cuenta de $1,000.</p>
+                        <div id="leverageSim" class="w-full h-80 bg-slate-800 rounded-lg"></div>
+                        <div class="flex gap-4 mt-4">
+                            <button onclick="runLeverageSim(10)"
+                                class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded text-sm transition">Apalancamiento
+                                10:1</button>
+                            <button onclick="runLeverageSim(50)"
+                                class="bg-kawn-base hover:bg-kawn-dark text-white px-3 py-1 rounded text-sm transition">Apalancamiento
+                                50:1</button>
+                            <button onclick="runLeverageSim(100)"
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition">Apalancamiento
+                                100:1</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Esperanza Matemática -->
+                <section id="probabilidad" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="percent"
+                            class="text-kawn-base mr-3"></i> La ventaja estadística</h2>
+                    <p class="mb-6 text-slate-600 leading-7">
+                        Un concepto que transforma al aficionado en profesional es entender el trading como un juego de
+                        probabilidades, no de certezas. A esto se le llama <strong>Esperanza Matemática</strong>
+                        (Positive Expectancy). No necesitas ganar todas las veces; necesitas que, al final de 100
+                        operaciones, tus ganancias superen a tus pérdidas.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-kawn-light/30 border border-kawn-base/30 p-4 rounded-lg">
+                            <h4 class="font-bold text-kawn-deep text-sm uppercase mb-2">Mentalidad de Casino</h4>
+                            <p class="text-sm text-slate-700">El casino pierde manos individuales constantemente, pero
+                                tiene una ventaja estadística (el cero en la ruleta) que asegura ganancias masivas a
+                                largo plazo.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-lg">
+                            <h4 class="font-bold text-slate-700 text-sm uppercase mb-2">La Falacia del Resultado</h4>
+                            <p class="text-sm text-slate-600">Juzgar una operación como "mala" solo porque se perdió es
+                                un error. Si seguiste tu plan con ventaja estadística, fue una buena operación con un
+                                resultado negativo.</p>
+                        </div>
+                    </div>
+
+                    <!-- INTERACTIVO NUEVO: Simulador Monte Carlo -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 p-6">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <h3 class="font-bold text-slate-800">Simulador de "La ventaja" (Monte Carlo)</h3>
+                            <div class="flex gap-2">
+                                <button onclick="runMonteCarlo(40, 2)"
+                                    class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded transition border border-slate-300">Estrategia
+                                    Tendencial (Win 40%, R:R 1:2)</button>
+                                <button onclick="runMonteCarlo(60, 1)"
+                                    class="text-xs bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded transition border border-slate-300">Scalping
+                                    (Win 60%, R:R 1:1)</button>
+                            </div>
+                        </div>
+                        <div class="relative h-64 w-full">
+                            <canvas id="monteCarloChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3 text-center">Simulación de 50 operaciones. Observa cómo, a
+                            pesar de las rachas perdedoras (drawdowns), la ventaja estadística empuja la curva hacia
+                            arriba.</p>
+                    </div>
+                </section>
+
+                <!-- Ratio Riesgo Beneficio -->
+                <section id="ratio-rr" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="scale"
+                            class="text-kawn-base mr-3"></i> La arquitectura del trade (Ratio R:R)</h2>
+                    <p class="text-slate-600 mb-6">
+                        El Ratio Riesgo:Beneficio (Risk:Reward) define cuánto estás dispuesto a arriesgar para obtener
+                        una ganancia potencial. Es la pieza que equilibra la tasa de aciertos.
+                    </p>
+
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-xl">
+                        <h4 class="font-bold text-slate-800 mb-4 text-center">Calculadora visual de equilibrio</h4>
+                        <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+
+                            <!-- Control -->
+                            <div class="w-full md:w-1/3 space-y-4">
+                                <div>
+                                    <label class="text-xs font-bold text-slate-500 uppercase">Ratio R:R
+                                        Seleccionado</label>
+                                    <div class="flex justify-between font-mono font-bold text-lg text-slate-800 mb-2">
+                                        <span>1 (Riesgo)</span>
+                                        <span id="rr-value-display">: 2 (Beneficio)</span>
+                                    </div>
+                                    <input type="range" min="0.5" max="5" step="0.5" value="2" id="rr-slider"
+                                        class="w-full">
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    Mueve el slider para ver cuánto necesitas acertar para no perder dinero
+                                    (Break-Even).
+                                </div>
+                            </div>
+
+                            <!-- Visualización -->
+                            <div
+                                class="w-full md:w-1/2 bg-white p-4 rounded-lg shadow-sm border border-slate-100 flex flex-col items-center">
+                                <div class="relative w-full h-12 bg-gray-200 rounded-full overflow-hidden flex mb-2">
+                                    <div id="win-rate-bar"
+                                        class="h-full bg-kawn-base flex items-center justify-center text-white font-bold text-sm transition-all duration-500"
+                                        style="width: 33%">
+                                        33% Aciertos
+                                    </div>
+                                    <div
+                                        class="flex-1 flex items-center justify-center text-slate-400 text-xs font-medium">
+                                        Zona de Pérdidas
+                                    </div>
+                                </div>
+                                <p class="text-center text-sm font-medium text-slate-700">
+                                    Con un Ratio 1:<span id="rr-text-span">2</span>, solo necesitas acertar el <strong
+                                        id="win-rate-text" class="text-kawn-dark">33%</strong> de las veces para
+                                    empatar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Estilos de Operativa -->
+                <section id="estilos" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="layers"
+                            class="text-kawn-base mr-3"></i> Perfiles y Estilos de Trading</h2>
+                    <p class="text-slate-600 mb-6">
+                        No todos los traders operan igual. Tu personalidad, tiempo disponible y capital determinan tu
+                        estilo. Intentar operar en contra de tu naturaleza es una receta para el desastre.
+                    </p>
+
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden">
+                        <!-- Selectores -->
+                        <div class="flex flex-wrap border-b border-slate-200">
+                            <button onclick="updateStyle('scalping')"
+                                class="style-btn flex-1 min-w-[100px] py-4 text-sm font-bold text-slate-600 hover:text-kawn-base hover:bg-slate-50 transition border-b-2 border-transparent"
+                                data-style="scalping">Scalping</button>
+                            <button onclick="updateStyle('day')"
+                                class="style-btn flex-1 min-w-[100px] py-4 text-sm font-bold text-slate-600 hover:text-kawn-base hover:bg-slate-50 transition border-b-2 border-transparent"
+                                data-style="day">Day Trading</button>
+                            <button onclick="updateStyle('swing')"
+                                class="style-btn flex-1 min-w-[100px] py-4 text-sm font-bold text-slate-600 hover:text-kawn-base hover:bg-slate-50 transition border-b-2 border-transparent"
+                                data-style="swing">Swing</button>
+                            <button onclick="updateStyle('position')"
+                                class="style-btn flex-1 min-w-[100px] py-4 text-sm font-bold text-slate-600 hover:text-kawn-base hover:bg-slate-50 transition border-b-2 border-transparent"
+                                data-style="position">Position</button>
+                        </div>
+
+                        <!-- Panel de Contenido -->
+                        <div class="p-6 md:p-8">
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <div class="flex-1">
+                                    <h3 id="style-title" class="text-xl font-bold text-kawn-deep mb-2">Selecciona un
+                                        estilo</h3>
+                                    <p id="style-desc" class="text-slate-600 mb-4 leading-relaxed">Haz clic en las
+                                        pestañas superiores para ver los detalles de cada estilo operativo.</p>
+
+                                    <div class="space-y-4">
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+                                                <span>Nivel de Estrés</span>
+                                                <span id="stress-val">Bajo</span>
+                                            </div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                                <div id="stress-bar"
+                                                    class="bg-red-500 h-2.5 rounded-full transition-all duration-500"
+                                                    style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+                                                <span>Tiempo Requerido</span>
+                                                <span id="time-val">Poco</span>
+                                            </div>
+                                            <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                                <div id="time-bar"
+                                                    class="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
+                                                    style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="md:w-1/3 bg-slate-50 p-4 rounded-lg border border-slate-100 flex flex-col justify-center items-center text-center">
+                                    <i id="style-icon" data-lucide="activity" class="w-10 h-10 text-kawn-base mb-3"></i>
+                                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Horizonte
+                                        Temporal</div>
+                                    <div id="style-horizon" class="text-lg font-bold text-slate-800">--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Psicología -->
+                <section id="psicologia" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="brain-circuit"
+                            class="text-kawn-base mr-3"></i> Desafíos psicológicos</h2>
+                    <p class="mb-6 text-slate-600">El enemigo más difícil no está en el mercado, sino en uno mismo. El
+                        trading es 90% mental.</p>
+
+                    <!-- Miedo vs Codicia Tabs -->
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden mb-12">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="switchPsychTab('miedo')"
+                                class="psych-tab active flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">El
+                                Miedo</button>
+                            <button onclick="switchPsychTab('codicia')"
+                                class="psych-tab flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">La
+                                Codicia</button>
+                            <button onclick="switchPsychTab('ego')"
+                                class="psych-tab flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">El
+                                Ego</button>
+                        </div>
+                        <div class="p-6 min-h-[200px]">
+                            <div id="psych-miedo" class="psych-content animate-fade-in">
+                                <h3 class="font-bold text-kawn-deep mb-2">El enemigo silencioso</h3>
+                                <p class="text-slate-600 mb-2">Se manifiesta moviendo el stop loss (esperanza
+                                    irracional) o cerrando ganancias prematuramente ("pájaro en mano").</p>
+                                <p class="text-sm bg-red-50 p-2 rounded text-red-700"><strong>Antídoto:</strong> Acepta
+                                    que perder es parte del juego. Define límites de pérdida diaria y respétalos.</p>
+                            </div>
+                            <div id="psych-codicia" class="psych-content hidden animate-fade-in">
+                                <h3 class="font-bold text-kawn-deep mb-2">Euforia y "solo un poco más"</h3>
+                                <p class="text-slate-600 mb-2">Lleva a ignorar señales de giro por sentirse invencible o
+                                    a operar en exceso (overtrading) para no dejar dinero sobre la mesa.</p>
+                                <p class="text-sm bg-blue-50 p-2 rounded text-blue-700"><strong>Antídoto:</strong>
+                                    Objetivos claros de salida. Tomar descansos tras grandes ganancias.</p>
+                            </div>
+                            <div id="psych-ego" class="psych-content hidden animate-fade-in">
+                                <h3 class="font-bold text-kawn-deep mb-2">Necesidad de tener razón</h3>
+                                <p class="text-slate-600 mb-2">Impide cortar pérdidas para no admitir error. El
+                                    conocimiento superficial crea falsa confianza.</p>
+                                <p class="text-sm bg-yellow-50 p-2 rounded text-yellow-800"><strong>Antídoto:</strong>
+                                    Humildad. El mercado siempre tiene la razón. Céntrate en ejecutar el plan, no en el
+                                    resultado.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sesgos Cognitivos (Flashcards) -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-xl text-slate-800 mb-4 flex items-center gap-2">
+                            <i data-lucide="eye-off" class="w-5 h-5 text-kawn-base"></i> Sesgos Cognitivos (Flashcards)
+                        </h3>
+                        <p class="text-sm text-slate-500 mb-6">Haz clic en las tarjetas para descubrir cómo tu cerebro
+                            te engaña.</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- Card 1 -->
+                            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front shadow-sm">
+                                        <i data-lucide="search" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                        <h4 class="font-bold text-slate-800">Sesgo de Confirmación</h4>
+                                        <p class="text-xs text-slate-400 mt-2">Haz clic para voltear</p>
+                                    </div>
+                                    <div class="flip-card-back shadow-lg">
+                                        <p class="text-sm font-medium">Buscar solo información que apoye tu idea inicial
+                                            e ignorar las señales de peligro.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front shadow-sm">
+                                        <i data-lucide="dices" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                        <h4 class="font-bold text-slate-800">Falacia del Jugador</h4>
+                                        <p class="text-xs text-slate-400 mt-2">Haz clic para voltear</p>
+                                    </div>
+                                    <div class="flip-card-back shadow-lg">
+                                        <p class="text-sm font-medium">Creer que porque el precio ha subido mucho,
+                                            "tiene" que bajar pronto. El mercado no tiene memoria.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front shadow-sm">
+                                        <i data-lucide="frown" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                        <h4 class="font-bold text-slate-800">Aversión a la Pérdida</h4>
+                                        <p class="text-xs text-slate-400 mt-2">Haz clic para voltear</p>
+                                    </div>
+                                    <div class="flip-card-back shadow-lg">
+                                        <p class="text-sm font-medium">El dolor de perder $100 es psicológicamente el
+                                            doble de intenso que el placer de ganar $100.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 4 -->
+                            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front shadow-sm">
+                                        <i data-lucide="history" class="w-8 h-8 text-kawn-base mb-2"></i>
+                                        <h4 class="font-bold text-slate-800">Sesgo Retrospectivo</h4>
+                                        <p class="text-xs text-slate-400 mt-2">Haz clic para voltear</p>
+                                    </div>
+                                    <div class="flip-card-back shadow-lg">
+                                        <p class="text-sm font-medium">Creer falsamente después de un evento que
+                                            "sabías" que iba a ocurrir. Genera exceso de confianza.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- La Evolución del Trader (Contenido Original) -->
+                <section id="evolucion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="trending-up"
+                            class="text-kawn-base mr-3"></i> La curva de evolución</h2>
+
+                    <!-- INTERACTIVO 2: CHART.JS EVOLUCIÓN -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Las 5 etapas del trader</h3>
+                            <span class="bg-kawn-light text-kawn-deep text-xs px-2 py-1 rounded font-bold">Visualización
+                                Conceptual</span>
+                        </div>
+                        <div class="relative h-72 w-full">
+                            <canvas id="evolutionChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-slate-500 italic text-center">
+                            Muchos abandonan en la "Caída a tierra" (Etapa 2). La consistencia llega tras la
+                            reconstrucción.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-slate-600">
+                        <p><strong class="text-kawn-dark">1. Ilusión:</strong> Entusiasmo desbordante y "suerte del
+                            principiante".</p>
+                        <p><strong class="text-kawn-dark">2. Choque con la realidad:</strong> Pérdidas, ansiedad y
+                            riesgo de abandono.</p>
+                        <p><strong class="text-kawn-dark">3. Reconstrucción:</strong> Búsqueda de formación real,
+                            humildad y gestión de riesgo.</p>
+                        <p><strong class="text-kawn-dark">4. Consistencia:</strong> El trading se vuelve "aburrido"
+                            (rutinario) y profesional.</p>
+                        <p><strong class="text-kawn-dark">5. Maestría:</strong> Confianza tranquila, gestión impecable y
+                            visión a largo plazo.</p>
+                    </div>
+                </section>
+
+                <!-- Visión Estratégica -->
+                <section id="estrategia" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="compass"
+                            class="text-kawn-base mr-3"></i> Visión a largo plazo</h2>
+                    <p class="blockquote-custom">"El trading es un maratón, no una carrera de velocidad. Piensa como un
+                        negocio, no como un jugador."</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="p-5 border border-slate-200 rounded-xl hover:border-kawn-base transition-colors">
+                            <h4 class="font-bold text-slate-800 mb-2">Interés compuesto</h4>
+                            <p class="text-sm text-slate-600">Reinvertir ganancias acelera el crecimiento
+                                exponencialmente. El capital es tu herramienta de trabajo.</p>
+                        </div>
+                        <div class="p-5 border border-slate-200 rounded-xl hover:border-kawn-base transition-colors">
+                            <h4 class="font-bold text-slate-800 mb-2">Diversificación</h4>
+                            <p class="text-sm text-slate-600">No dependas al 100% del trading al inicio. Construye un
+                                ecosistema financiero robusto.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- INTERACTIVO 3: CALCULADORA DE RECUPERACIÓN (Drawdown) -->
+                <section id="herramientas" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="calculator"
+                            class="text-kawn-base mr-3"></i> Gestión matemática</h2>
+                    <div class="bg-slate-900 p-8 rounded-xl shadow-2xl border border-slate-700">
+                        <h3 class="text-white font-bold mb-4">La realidad de las pérdidas (Drawdown)</h3>
+                        <p class="text-slate-400 text-sm mb-6">Si pierdes un porcentaje de tu cuenta, ¿cuánto necesitas
+                            ganar para volver al punto inicial? (Spoiler: No es lo mismo).</p>
+
+                        <div class="mb-6">
+                            <label class="text-slate-300 text-sm font-bold block mb-2">Pérdida inicial (%)</label>
+                            <input type="range" min="5" max="90" value="20" id="drawdown-slider" class="w-full">
+                            <div class="flex justify-between text-slate-500 text-xs mt-1">
+                                <span>5%</span><span>50%</span><span>90%</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center justify-between bg-slate-800 p-4 rounded-lg border border-slate-600">
+                            <div>
+                                <p class="text-xs text-red-400 uppercase tracking-wide">Si pierdes</p>
+                                <p id="loss-display" class="text-3xl font-black text-white">-20%</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-kawn-base uppercase tracking-wide">Necesitas ganar</p>
+                                <p id="gain-display" class="text-3xl font-black text-kawn-base">+25%</p>
+                            </div>
+                        </div>
+                        <p id="math-msg" class="mt-4 text-sm text-slate-400 italic text-center">Para recuperar el
+                            capital inicial.</p>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: AI LAB (GEMINI POWERED) -->
+                <section id="ai-lab" class="mb-20 scroll-mt-28 relative overflow-hidden p-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-kawn-base/5 rounded-3xl -z-10">
+                    </div>
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="p-3 bg-white rounded-xl shadow-md border border-purple-100">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900">KawnBit AI Lab <span
+                                    class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full uppercase tracking-widest ml-2 border border-purple-200">Powered
+                                    by Gemini</span></h2>
+                            <p class="text-sm text-slate-500">Herramientas de inteligencia artificial para potenciar tu
+                                análisis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tool 1: Sentiment Analyzer -->
+                    <div class="border-gradient-ai p-6 md:p-8 mb-8 shadow-xl bg-white/50 backdrop-blur-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                                <i data-lucide="newspaper" class="w-5 h-5 text-kawn-base"></i> El Oráculo de Mercado
+                            </h3>
+                            <span id="demo-badge-news"
+                                class="hidden text-[10px] bg-amber-100 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-bold uppercase">Modo
+                                Demo</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-4">Pega un titular de noticias o rumor de mercado. La IA
+                            analizará el sentimiento y el impacto probable.</p>
+
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="flex-1">
+                                <textarea id="news-input"
+                                    class="w-full h-32 p-4 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-purple-500 outline-none text-sm resize-none shadow-inner"
+                                    placeholder="Ej: La Fed anuncia una subida de tipos de interés de 50 puntos básicos por sorpresa..."></textarea>
+                                <button onclick="analyzeNews()" id="btn-analyze"
+                                    class="mt-4 bg-slate-900 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-800 transition flex items-center justify-center gap-2 w-full md:w-auto">
+                                    <span>✨ Analizar con Gemini</span>
+                                    <i id="spin-analyze" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden"></i>
+                                </button>
+                            </div>
+                            <div id="news-result"
+                                class="flex-1 bg-white rounded-xl border border-slate-200 p-6 hidden animate-fade-in-up">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Sentimiento
+                                        Detectado</span>
+                                    <span id="sentiment-score" class="text-sm font-black text-slate-800">NEUTRAL</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-2 rounded-full mb-4 overflow-hidden">
+                                    <div id="sentiment-bar"
+                                        class="h-full bg-slate-400 w-1/2 transition-all duration-1000"></div>
+                                </div>
+                                <p id="sentiment-text" class="text-sm text-slate-600 leading-relaxed italic"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 2: Strategy Forge -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-6 md:p-8">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                                <i data-lucide="shield-check" class="w-5 h-5 text-kawn-base"></i> Forja de Estrategia
+                            </h3>
+                            <span id="demo-badge-strat"
+                                class="hidden text-[10px] bg-amber-100 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-bold uppercase">Modo
+                                Demo</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mb-6">Define tus parámetros y Gemini redactará un "Manifiesto
+                            de Trading" personalizado para ti.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Capital
+                                    Inicial</label>
+                                <select id="strat-cap"
+                                    class="w-full p-2 border border-slate-200 rounded-lg text-sm bg-slate-50">
+                                    <option value="$500 - $1,000">Pequeño ($500 - $1k)</option>
+                                    <option value="$5,000 - $10,000">Mediano ($5k - $10k)</option>
+                                    <option value="$25,000+">Grande ($25k+)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Tolerancia al
+                                    Riesgo</label>
+                                <select id="strat-risk"
+                                    class="w-full p-2 border border-slate-200 rounded-lg text-sm bg-slate-50">
+                                    <option value="Conservador">Conservador (Preservar capital)</option>
+                                    <option value="Moderado">Moderado (Crecimiento equilibrado)</option>
+                                    <option value="Agresivo">Agresivo (Alto crecimiento)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Tiempo
+                                    Disponible</label>
+                                <select id="strat-time"
+                                    class="w-full p-2 border border-slate-200 rounded-lg text-sm bg-slate-50">
+                                    <option value="1 hora al día">Limitado (1h / día)</option>
+                                    <option value="Medio tiempo">Medio Tiempo (4h / día)</option>
+                                    <option value="Tiempo completo">Tiempo Completo</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="generateStrategy()" id="btn-forge"
+                            class="w-full bg-gradient-to-r from-kawn-base to-kawn-dark text-white font-bold py-3 rounded-xl shadow-glow hover:opacity-90 transition flex items-center justify-center gap-2">
+                            <span>✨ Generar Plan de Trading</span>
+                            <i id="spin-forge" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden"></i>
+                        </button>
+
+                        <div id="strategy-output"
+                            class="mt-6 bg-slate-50 border border-slate-200 rounded-xl p-6 hidden text-sm text-slate-700 leading-relaxed prose prose-sm max-w-none">
+                            <!-- Gemini Output Here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Glosario -->
+                <section id="glosario" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Glosario esencial</h2>
+                    <div class="space-y-3" id="glossary-container">
+                        <!-- JS inyectará -->
+                    </div>
+                </section>
+
+                <!-- Ejercicios y Validación -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center"><i data-lucide="edit-3"
+                            class="text-kawn-base mr-3"></i> Reflexión y validación</h2>
+
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <h3 class="font-bold text-slate-800 mb-2">Autoevaluación de etapa</h3>
+                        <p class="text-sm text-slate-600 mb-4">Basado en la "Curva de evolución", ¿en qué etapa sientes
+                            que te encuentras y por qué? Sé honesto contigo mismo.</p>
+                        <textarea
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base outline-none"
+                            rows="3" placeholder="Me encuentro en la etapa de..."></textarea>
+                    </div>
+
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Quiz de validación</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/0</span>
+                        </div>
+                        <div id="quiz-container" class="space-y-6"></div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Float -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col gap-2">
+            <div class="ai-msg message-bubble">Hola. Soy tu mentor de psicología y gestión de riesgo. ¿En qué puedo
+                ayudarte hoy?</div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-kawn-base outline-none"
+                    placeholder="Pregunta algo...">
+                <button id="send-ai" class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark"><i
+                        data-lucide="send" class="w-4 h-4"></i></button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full">
+                Procesando...</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo. No constituye asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // --- 1. TOC Dinámico (Optimizado) ---
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+
+            if (tocContainer) {
+                tocContainer.innerHTML = '';
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        link.textContent = h2.innerText;
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all truncate cursor-pointer`;
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                            // Cerrar menú móvil al hacer click
+                            if (!document.getElementById('sidebar-toc').classList.contains('hidden') && window.innerWidth < 768) {
+                                toggleMobileMenu();
+                            }
+                        });
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                            const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (active) active.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(s => observer.observe(s));
+            }
+
+            // Mobile Menu (Refactorizado)
+            const sidebar = document.getElementById('sidebar-toc');
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const closeMobileBtn = document.getElementById('close-mobile-btn');
+
+            function toggleMobileMenu() {
+                const isHidden = sidebar.classList.contains('hidden');
+                if (isHidden) {
+                    sidebar.classList.remove('hidden');
+                    sidebar.classList.add('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                    closeMobileBtn.classList.remove('hidden');
+                } else {
+                    sidebar.classList.add('hidden');
+                    sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                    closeMobileBtn.classList.add('hidden');
+                }
+            }
+
+            mobileBtn.addEventListener('click', toggleMobileMenu);
+            closeMobileBtn.addEventListener('click', toggleMobileMenu);
+
+            // --- 2. Interactividad: Simulador Apalancamiento (Plotly) ---
+            window.runLeverageSim = function (leverage) {
+                const initialCapital = 1000;
+                const marketMove = [0, -0.5, -1.0, -1.5, -2.0]; // Porcentaje en contra
+
+                const pnl = marketMove.map(move => {
+                    const loss = initialCapital * (move / 100) * leverage;
+                    return Math.max(0, initialCapital + loss);
+                });
+
+                const trace = {
+                    x: marketMove.map(m => m + '%'),
+                    y: pnl,
+                    type: 'scatter',
+                    mode: 'lines+markers',
+                    name: `Lev ${leverage}:1`,
+                    line: {
+                        color: leverage === 100 ? '#ef4444' : (leverage === 50 ? '#eab308' : '#14b8a6'),
+                        width: 3
+                    }
+                };
+
+                const layout = {
+                    title: `Impacto Apalancamiento ${leverage}:1`,
+                    paper_bgcolor: '#0f172a', plot_bgcolor: '#0f172a',
+                    font: { color: '#94a3b8' },
+                    xaxis: { title: 'Movimiento del Mercado (En contra)' },
+                    yaxis: { title: 'Capital Restante ($)', range: [0, 1100] },
+                    margin: { t: 40, b: 40, l: 50, r: 20 },
+                    responsive: true
+                };
+
+                Plotly.newPlot('leverageSim', [trace], layout, { staticPlot: false, responsive: true });
+            };
+            runLeverageSim(10); // Init
+
+            // --- 2.1 Simulador Monte Carlo (Chart.js - Robustez Memoria) ---
+            let monteCarloChart = null;
+            window.runMonteCarlo = function (winRate, riskReward) {
+                const ctxMC = document.getElementById('monteCarloChart').getContext('2d');
+                const trades = 50;
+                let balance = 1000;
+                const dataPoints = [balance];
+
+                for (let i = 0; i < trades; i++) {
+                    const isWin = Math.random() * 100 < winRate;
+                    const riskAmount = balance * 0.01;
+                    if (isWin) {
+                        balance += riskAmount * riskReward;
+                    } else {
+                        balance -= riskAmount;
+                    }
+                    dataPoints.push(balance);
+                }
+
+                // Destruir instancia previa para evitar memory leaks
+                if (monteCarloChart) {
+                    monteCarloChart.destroy();
+                }
+
+                monteCarloChart = new Chart(ctxMC, {
+                    type: 'line',
+                    data: {
+                        labels: Array.from({ length: trades + 1 }, (_, i) => i),
+                        datasets: [{
+                            label: `Capital (Win ${winRate}%, R:R 1:${riskReward})`,
+                            data: dataPoints,
+                            borderColor: balance > 1000 ? '#14b8a6' : '#ef4444',
+                            backgroundColor: 'rgba(20, 184, 166, 0.05)',
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true } },
+                        scales: {
+                            y: { title: { display: true, text: 'Capital ($)' } },
+                            x: { title: { display: true, text: '# Operaciones' } }
+                        }
+                    }
+                });
+            };
+            runMonteCarlo(40, 2); // Initial Run
+
+            // --- 2.2 Calculadora R:R ---
+            const rrSlider = document.getElementById('rr-slider');
+            const rrValueDisplay = document.getElementById('rr-value-display');
+            const rrTextSpan = document.getElementById('rr-text-span');
+            const winRateBar = document.getElementById('win-rate-bar');
+            const winRateText = document.getElementById('win-rate-text');
+
+            rrSlider.addEventListener('input', (e) => {
+                const rr = parseFloat(e.target.value);
+                const breakEven = (1 / (1 + rr)) * 100;
+
+                rrValueDisplay.textContent = `: ${rr} (Beneficio)`;
+                rrTextSpan.textContent = rr;
+                winRateText.textContent = `${breakEven.toFixed(1)}%`;
+
+                winRateBar.style.width = `${breakEven}%`;
+                winRateBar.textContent = `${breakEven.toFixed(0)}% BE`;
+
+                if (breakEven > 50) winRateBar.className = "h-full bg-red-500 flex items-center justify-center text-white font-bold text-sm transition-all duration-500";
+                else if (breakEven > 30) winRateBar.className = "h-full bg-kawn-base flex items-center justify-center text-white font-bold text-sm transition-all duration-500";
+                else winRateBar.className = "h-full bg-green-500 flex items-center justify-center text-white font-bold text-sm transition-all duration-500";
+            });
+
+            // --- 2.3 Estilos de Trading ---
+            window.updateStyle = function (style) {
+                document.querySelectorAll('.style-btn').forEach(btn => {
+                    if (btn.dataset.style === style) {
+                        btn.classList.add('text-kawn-base', 'border-kawn-base', 'bg-slate-50');
+                        btn.classList.remove('text-slate-600', 'border-transparent');
+                    } else {
+                        btn.classList.remove('text-kawn-base', 'border-kawn-base', 'bg-slate-50');
+                        btn.classList.add('text-slate-600', 'border-transparent');
+                    }
+                });
+
+                const data = {
+                    scalping: {
+                        t: "Scalping",
+                        d: "Operativa de alta velocidad. Buscas pequeños movimientos en segundos o minutos. Requiere atención total y ejecución perfecta.",
+                        stress: 95, time: 90, horizon: "Seg/Min", color: "bg-red-500"
+                    },
+                    day: {
+                        t: "Day Trading",
+                        d: "Abres y cierras operaciones en el mismo día. Evitas el riesgo 'overnight'. Requiere disciplina horaria estricta.",
+                        stress: 75, time: 70, horizon: "Horas", color: "bg-orange-500"
+                    },
+                    swing: {
+                        t: "Swing Trading",
+                        d: "Capturas movimientos que duran días o semanas. Ideal para compaginar con trabajo. Análisis más pausado.",
+                        stress: 40, time: 30, horizon: "Días/Semanas", color: "bg-kawn-base"
+                    },
+                    position: {
+                        t: "Position Trading",
+                        d: "Inversión a largo plazo basada en fundamentales macro. Ignoras el ruido diario. Requiere paciencia extrema.",
+                        stress: 15, time: 10, horizon: "Meses/Años", color: "bg-blue-500"
+                    }
+                };
+
+                const s = data[style];
+                document.getElementById('style-title').textContent = s.t;
+                document.getElementById('style-desc').textContent = s.d;
+                document.getElementById('style-horizon').textContent = s.horizon;
+
+                document.getElementById('stress-bar').style.width = `${s.stress}%`;
+                document.getElementById('stress-bar').className = `h-2.5 rounded-full transition-all duration-500 ${s.color}`;
+                document.getElementById('stress-val').textContent = s.stress > 80 ? "Extremo" : (s.stress > 50 ? "Alto" : "Bajo");
+
+                document.getElementById('time-bar').style.width = `${s.time}%`;
+            };
+            updateStyle('scalping');
+
+            // --- 3. Interactividad: Tabs Psicología ---
+            window.switchPsychTab = function (tab) {
+                document.querySelectorAll('.psych-tab').forEach(b => {
+                    b.classList.remove('active', 'border-kawn-base', 'text-kawn-base');
+                    if (b.innerText.toLowerCase().includes(tab)) b.classList.add('active', 'border-kawn-base', 'text-kawn-base');
+                });
+                document.querySelectorAll('.psych-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById(`psych-${tab}`).classList.remove('hidden');
+            };
+
+            // --- 4. Interactividad: Chart.js Evolución ---
+            const ctxEvo = document.getElementById('evolutionChart').getContext('2d');
+            // Nota: evolutionChart es estático y único, no necesitamos lógica de destrucción compleja aquí
+            new Chart(ctxEvo, {
+                type: 'line',
+                data: {
+                    labels: ['Ilusión', 'Choque', 'Reconstrucción', 'Consistencia', 'Maestría'],
+                    datasets: [{
+                        label: 'Confianza vs Realidad',
+                        data: [90, 10, 30, 60, 85],
+                        borderColor: '#14b8a6',
+                        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: ['#fcd34d', '#ef4444', '#3b82f6', '#14b8a6', '#0f766e'],
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { display: false, title: { display: true, text: 'Competencia / Confianza' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // --- 5. Calculadora Drawdown ---
+            const ddSlider = document.getElementById('drawdown-slider');
+            const lossDisplay = document.getElementById('loss-display');
+            const gainDisplay = document.getElementById('gain-display');
+
+            ddSlider.addEventListener('input', (e) => {
+                const loss = parseInt(e.target.value);
+                const recovery = (loss / (100 - loss)) * 100;
+
+                lossDisplay.textContent = `-${loss}%`;
+                gainDisplay.textContent = `+${Math.ceil(recovery)}%`;
+
+                if (loss >= 50) gainDisplay.classList.add('text-red-500');
+                else gainDisplay.classList.remove('text-red-500');
+            });
+
+            // --- 6. Glosario ---
+            const glossaryItems = [
+                { t: "Apalancamiento", d: "Uso de capital prestado para aumentar la exposición. Espada de doble filo." },
+                { t: "Break-Even", d: "Punto de equilibrio donde las ganancias igualan a las pérdidas." },
+                { t: "Drawdown", d: "Caída del capital desde su punto máximo hasta el mínimo. Medida de riesgo." },
+                { t: "Esperanza Matemática", d: "El resultado promedio (positivo o negativo) de un sistema de trading tras muchas operaciones." },
+                { t: "Margin Call", d: "Solicitud del bróker para depositar más fondos o cierre forzoso de posiciones." },
+                { t: "Overtrading", d: "Operar en exceso, a menudo impulsado por codicia o aburrimiento." },
+                { t: "Ratio R:R", d: "Relación entre el riesgo asumido (Stop Loss) y el beneficio potencial (Take Profit)." },
+                { t: "Revenge Trading", d: "Intentar recuperar pérdidas rápidamente operando de forma impulsiva." }
+            ];
+            const glosCont = document.getElementById('glossary-container');
+            glossaryItems.sort((a, b) => a.t.localeCompare(b.t));
+
+            glossaryItems.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "border border-slate-200 rounded-lg bg-white overflow-hidden";
+                div.innerHTML = `
+                    <button class="w-full px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-50 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-kawn-base" onclick="document.getElementById('glos-${idx}').classList.toggle('hidden')">
+                        ${item.t} <i data-lucide="chevron-down" class="w-4 h-4 text-kawn-base"></i>
+                    </button>
+                    <div id="glos-${idx}" class="hidden px-4 py-3 bg-slate-50 text-sm text-slate-600 border-t border-slate-100">${item.d}</div>
+                `;
+                glosCont.appendChild(div);
+            });
+
+            // --- 7. Quiz ---
+            const quizData = [
+                { q: "¿Cuál es una estadística realista de pérdidas en retail?", a: ["10%", "50%", "90%"], correct: 2, exp: "Más del 90% pierde dinero consistentemente." },
+                { q: "¿Qué es el 'Santo Grial' del trading?", a: ["Un indicador secreto", "La paciencia y gestión", "Un robot caro"], correct: 1, exp: "La paciencia y el control interno son la verdadera ventaja." },
+                { q: "¿Qué sucede si pierdes el 50% de tu cuenta?", a: ["Necesitas ganar 50% para recuperar", "Necesitas ganar 100% para recuperar", "Estás fuera del juego"], correct: 1, exp: "Matemáticamente, para volver de 50 a 100, necesitas doblar (100%)." },
+                { q: "Si tienes un R:R de 1:2, ¿qué tasa de acierto necesitas para empatar?", a: ["50%", "33%", "66%"], correct: 1, exp: "Con R:R 1:2, ganas el doble de lo que pierdes, por lo que solo necesitas acertar el 33%." },
+                { q: "¿Qué estilo de trading requiere cerrar operaciones el mismo día?", a: ["Swing Trading", "Position Trading", "Day Trading"], correct: 2, exp: "El Day Trading busca evitar riesgos nocturnos cerrando todo antes del cierre de sesión." },
+                { q: "Buscar solo noticias que confirmen tu operación es el sesgo de:", a: ["Confirmación", "Retrospectiva", "Aversión a pérdida"], correct: 0, exp: "El sesgo de confirmación nos hace ciegos a las señales de peligro." }
+            ];
+
+            const quizCont = document.getElementById('quiz-container');
+            let score = 0;
+
+            quizData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "quiz-item bg-white/10 p-6 rounded-xl border border-white/10 mb-4";
+                div.innerHTML = `
+                    <p class="font-bold text-lg mb-4 text-kawn-light">${idx + 1}. ${item.q}</p>
+                    <div class="space-y-2">
+                        ${item.a.map((opt, i) => `
+                            <button class="w-full text-left p-3 rounded bg-slate-800 hover:bg-slate-700 transition text-sm quiz-opt focus:ring-2 focus:ring-kawn-base" data-q="${idx}" data-i="${i}">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feed-${idx}" class="hidden mt-3 p-3 bg-slate-900 text-sm text-slate-300 rounded border-l-4 border-kawn-base">${item.exp}</div>
+                `;
+                quizCont.appendChild(div);
+            });
+
+            document.querySelectorAll('.quiz-opt').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const qIdx = e.target.getAttribute('data-q');
+                    const aIdx = parseInt(e.target.getAttribute('data-i'));
+                    const parent = e.target.parentElement;
+                    const feedback = document.getElementById(`feed-${qIdx}`);
+
+                    parent.querySelectorAll('button').forEach(b => b.disabled = true);
+                    feedback.classList.remove('hidden');
+
+                    if (aIdx === quizData[qIdx].correct) {
+                        e.target.classList.add('bg-green-600');
+                        score++;
+                    } else {
+                        e.target.classList.add('bg-red-600');
+                    }
+                    document.getElementById('quiz-score').textContent = `Score: ${score}/${quizData.length}`;
+                });
+            });
+
+            // --- 8. AI Proxy (Robustez mejorada) ---
+            const aiModal = document.getElementById('ai-modal');
+            const aiToggle = document.getElementById('ai-toggle');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            aiToggle.onclick = () => aiModal.classList.remove('hidden');
+            closeAi.onclick = () => aiModal.classList.add('hidden');
+
+            async function callGemini(prompt, type) {
+                try {
+                    const response = await fetch('/.netlify/functions/gemini-proxy', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: `Eres un mentor experto en trading institucional enfocado en ${type}.` }] }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error("API Error: " + response.status);
+
+                    const data = await response.json();
+                    return { reply: data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "Lo siento, no pude procesar la solicitud." };
+
+                } catch (error) {
+                    console.error("AI Error:", error);
+                    return { reply: "Error de conexión. Intenta más tarde." };
+                }
+            }
+
+            // Chat Mentor
+            async function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                // Sanitizar entrada usuario visualmente (opcional en chat local, pero buena práctica)
+                const safeText = DOMPurify.sanitize(text);
+
+                appendMsg(safeText, 'user');
+                userInput.value = '';
+                aiLoading.classList.remove('hidden');
+
+                const data = await callGemini(`Actúa como mentor de trading. Contexto: Cap 20. Pregunta: ${text}`, 'chat');
+
+                // Sanitizar respuesta AI antes de inyectar
+                const safeReply = DOMPurify.sanitize(data.reply);
+                appendMsg(safeReply, 'ai');
+
+                aiLoading.classList.add('hidden');
+            }
+
+            function appendMsg(text, sender) {
+                const div = document.createElement('div');
+                div.className = `message-bubble ${sender === 'user' ? 'user-msg' : 'ai-msg'} fade-in-up`;
+                div.innerHTML = text; // Seguro usar innerHTML aquí porque ya hemos sanitizado
+                chatHistory.appendChild(div);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            sendAi.onclick = sendMessage;
+            userInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage() };
+
+            // --- Tool 1: Sentiment Analyzer Logic ---
+            window.analyzeNews = async function () {
+                const input = document.getElementById('news-input').value;
+                if (!input.trim()) return;
+
+                const btn = document.getElementById('btn-analyze');
+                const spinner = document.getElementById('spin-analyze');
+                const resultArea = document.getElementById('news-result');
+
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                spinner.classList.remove('hidden');
+                resultArea.classList.add('hidden');
+
+                const prompt = `Analiza esta noticia financiera: "${input}". Devuelve un JSON con formato { "sentiment": (numero de -100 a 100), "explanation": "breve texto" }.`;
+                const data = await callGemini(prompt, 'news');
+
+                let result;
+                try {
+                    // Intento de parseo JSON. Si falla (alucinación AI), fallback seguro
+                    result = JSON.parse(data.reply);
+                } catch (e) {
+                    result = { sentiment: 0, explanation: data.reply };
+                }
+
+                // Update UI
+                const score = result.sentiment;
+                const bar = document.getElementById('sentiment-bar');
+                const scoreText = document.getElementById('sentiment-score');
+                const explText = document.getElementById('sentiment-text');
+
+                scoreText.textContent = score > 20 ? "ALCISTA" : (score < -20 ? "BAJISTA" : "NEUTRAL");
+                scoreText.className = `text-sm font-black ${score > 20 ? 'text-green-600' : (score < -20 ? 'text-red-600' : 'text-slate-600')}`;
+
+                const width = Math.max(0, Math.min(100, ((score + 100) / 200) * 100));
+                bar.style.width = `${width}%`;
+                bar.className = `h-full transition-all duration-1000 ${score > 20 ? 'bg-green-500' : (score < -20 ? 'bg-red-500' : 'bg-slate-400')}`;
+
+                // Sanitizar explicación
+                explText.textContent = DOMPurify.sanitize(result.explanation, { ALLOWED_TAGS: [] }); // Solo texto plano
+
+                resultArea.classList.remove('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                spinner.classList.add('hidden');
+            };
+
+            // --- Tool 2: Strategy Forge Logic ---
+            window.generateStrategy = async function () {
+                const btn = document.getElementById('btn-forge');
+                const spinner = document.getElementById('spin-forge');
+                const output = document.getElementById('strategy-output');
+
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                spinner.classList.remove('hidden');
+                output.classList.add('hidden');
+
+                const cap = document.getElementById('strat-cap').value;
+                const risk = document.getElementById('strat-risk').value;
+                const time = document.getElementById('strat-time').value;
+
+                const prompt = `Genera un plan de trading conciso en Markdown para: Capital ${cap}, Riesgo ${risk}, Tiempo ${time}. Incluye 3 reglas clave.`;
+                const data = await callGemini(prompt, 'strategy');
+
+                // Sanitizar Markdown renderizado
+                const rawHtml = marked.parse(data.reply);
+                const safeHtml = DOMPurify.sanitize(rawHtml);
+
+                output.innerHTML = safeHtml;
+                output.classList.remove('hidden');
+
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                spinner.classList.add('hidden');
+            };
+        });
+    </script>
+</body>
+
+</html>

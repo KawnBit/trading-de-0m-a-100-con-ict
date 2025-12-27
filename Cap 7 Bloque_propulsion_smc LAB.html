@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Capítulo 7: Bloques de Propulsión - Smart Money Concepts. Aprende a operar continuaciones de tendencia con precisión institucional.">
+    <title>KawnBit | Cap 7: Bloques de propulsión</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Librerías Externas -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind KawnBit -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kawn: {
+                            light: '#ccfbf1', // Teal 100
+                            base: '#14b8a6',  // Teal 500
+                            dark: '#0f766e',  // Teal 700
+                            deep: '#134e4a',  // Teal 900
+                        },
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(20, 184, 166, 0.1), 0 2px 4px -1px rgba(20, 184, 166, 0.06)',
+                        'glow': '0 0 15px rgba(20, 184, 166, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos Base y Utilidades */
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #14b8a6;
+        }
+
+        /* Logo Recreation CSS */
+        .kawn-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .kawn-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Representación abstracta del gráfico en el logo */
+        .kawn-logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-top: 3px solid white;
+            border-right: 3px solid white;
+            transform: rotate(-15deg);
+            top: 10px;
+            left: 10px;
+        }
+
+        .kawn-logo-icon::after {
+            content: 'K';
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* TOC Activo */
+        .toc-link.active {
+            color: #14b8a6;
+            border-left: 3px solid #14b8a6;
+            background-color: #ccfbf1;
+            padding-left: 0.75rem;
+            font-weight: 600;
+        }
+
+        .toc-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        /* Callouts y Tarjetas */
+        .card-concept {
+            background: white;
+            border-radius: 0.75rem;
+            /* rounded-xl */
+            border-left: 4px solid #14b8a6;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .blockquote-custom {
+            border-left: 4px solid #0f766e;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        /* Animaciones */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-msg {
+            background-color: #14b8a6;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            background-color: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Interactive Components Specifics */
+        .tab-btn.active {
+            background-color: #14b8a6;
+            color: white;
+            border-color: #14b8a6;
+        }
+
+        /* Quiz Specifics */
+        .quiz-option {
+            transition: all 0.2s;
+        }
+
+        .quiz-feedback {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Range Slider Customization */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #14b8a6;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #cbd5e1;
+        }
+
+        /* Disabled State */
+        .btn-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Navbar Sticky -->
+    <nav
+        class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="kawn-logo-wrapper select-none">
+                    <div class="kawn-logo-icon"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black text-slate-900 tracking-tight leading-none">KAWNBIT</span>
+                        <span
+                            class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                            Trading Community</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-600 hover:text-kawn-base"
+                    aria-label="Menú principal">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SMC Mastery Series</span>
+                    <div class="h-6 w-px bg-slate-200"></div>
+                    <a href="#" class="text-kawn-base font-bold border-b-2 border-kawn-base pb-1">Capítulo 7</a>
+                    <a href="#ejercicios"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Ejercicios</a>
+                    <a href="#glosario"
+                        class="text-slate-500 hover:text-kawn-base font-medium transition-colors">Glosario</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Layout Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col md:flex-row gap-12">
+
+            <!-- Sidebar TOC (Sticky) -->
+            <aside id="sidebar-toc" class="hidden md:block w-64 flex-shrink-0 transition-transform duration-300">
+                <div class="sticky top-28">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 border-b border-slate-200 pb-2">
+                        Contenido del capítulo</h3>
+                    <nav id="toc-container"
+                        class="flex flex-col space-y-1 text-sm max-h-[80vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Generado por JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="flex-1 max-w-4xl min-w-0">
+
+                <!-- Hero Section -->
+                <section class="mb-16 fade-in-up">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-kawn-light text-kawn-deep text-xs font-bold uppercase tracking-wider mb-4 border border-kawn-base/20">Capítulo
+                        7</span>
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
+                        Bloques de propulsión <br><span class="text-kawn-base">(Propulsion blocks - PB)</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed border-l-4 border-slate-300 pl-6">
+                        La herramienta refinada del Smart Money para capitalizar tendencias establecidas. Aprende a
+                        subirte al tren en marcha con precisión quirúrgica y gestión de riesgo institucional.
+                    </p>
+                </section>
+
+                <!-- Sección 1: Introducción -->
+                <section id="introduccion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="rocket" class="text-kawn-base mr-3"></i> Introducción al propulsion block
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7">
+                        <p class="mb-4">Los <strong>bloques de propulsión</strong> representan una de las herramientas
+                            más refinadas dentro del arsenal de Smart Money Concepts (ICT). Mientras que los order
+                            blocks inician movimientos, los PBs ofrecen la capacidad de unirse a una tendencia en curso
+                            de forma óptima, sin "perseguir" el precio.</p>
+
+                        <div class="card-concept bg-gradient-to-br from-white to-slate-50">
+                            <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="map"
+                                    class="w-5 h-5 text-kawn-dark"></i> La analogía de la autopista</h4>
+                            <p class="text-sm">Imagina el mercado como una autopista: los <strong>order blocks</strong>
+                                son las rampas de entrada principales. Los <strong>propulsion blocks</strong> son las
+                                incorporaciones adicionales más adelante. Permiten al Smart Money aumentar su exposición
+                                de manera segura.</p>
+                        </div>
+
+                        <p class="mb-4">Un propulsion block señala el inicio de un movimiento de alto <em>momentum</em>.
+                            Indica que el dinero inteligente ha inyectado agresivamente liquidez, dejando poco margen a
+                            los traders rezagados. Combinan agresividad institucional con gestión de riesgo superior.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Sección 2: Naturaleza Dinámica -->
+                <section id="naturaleza-dinamica" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="activity" class="text-kawn-base mr-3"></i> La naturaleza dinámica
+                    </h2>
+                    <p class="mb-4 text-slate-600 leading-7">¿Por qué existen? El Smart Money no siempre puede cargar
+                        toda su posición en una sola entrada. Necesitan distribuir órdenes para no impactar
+                        excesivamente el precio. Los retrocesos no son aleatorios; son orquestados para completar
+                        posiciones o permitir nuevos participantes institucionales.</p>
+                    <p class="blockquote-custom">
+                        "El propulsion block es la huella visible de que los grandes operadores han aprovechado un
+                        retroceso para impulsar de nuevo el mercado."
+                    </p>
+                </section>
+
+                <!-- NUEVA SECCIÓN: LA GASOLINA (Liquidez) -->
+                <section id="liquidez-gasolina" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="fuel" class="text-kawn-base mr-3"></i> La gasolina: Liquidez institucional
+                    </h2>
+                    <div class="prose max-w-none text-slate-600 leading-7 mb-8">
+                        <p class="mb-4">Un propulsion block no se forma en el vacío; necesita un objetivo. En SMC, el
+                            precio se mueve por dos razones: para reequilibrar ineficiencias (FVG) o para buscar
+                            liquidez. Los PBs actúan como el <strong>motor</strong>, pero la <strong>liquidez externa
+                                (BSL/SSL)</strong> es el <strong>imán</strong> que atrae al precio.</p>
+                        <p class="mb-4">Antes de operar un PB, debes identificar hacia dónde "apunta". ¿Hay máximos
+                            iguales (Equal Highs) cerca? ¿Hay un mínimo antiguo sin mitigar? Esas son las piscinas de
+                            liquidez que el algoritmo buscará atacar después de la propulsión.</p>
+                    </div>
+
+                    <!-- INTERACTIVO: VISUALIZADOR DE IMANES -->
+                    <div
+                        class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700 relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-6 relative z-10">
+                            <h3 class="text-white font-bold text-lg">Visualizador de imanes de liquidez</h3>
+                            <div class="flex gap-2">
+                                <button onclick="toggleMagnet('bullish', this)"
+                                    class="magnet-btn text-xs bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded transition-colors border border-transparent hover:border-white">Escenario
+                                    Alcista (BSL)</button>
+                                <button onclick="toggleMagnet('bearish', this)"
+                                    class="magnet-btn text-xs bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded transition-colors border border-transparent hover:border-white">Escenario
+                                    Bajista (SSL)</button>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Area -->
+                        <div class="relative h-64 w-full bg-slate-800 rounded-lg flex items-center justify-center border border-slate-600 overflow-hidden"
+                            id="magnet-container">
+                            <!-- PB Element -->
+                            <div id="pb-element"
+                                class="absolute w-16 h-16 bg-kawn-base flex items-center justify-center text-white font-bold rounded shadow-glow transition-all duration-1000 z-20"
+                                style="left: 10%; top: 50%; transform: translateY(-50%);">
+                                PB
+                            </div>
+
+                            <!-- Magnet Element -->
+                            <div id="liquidity-magnet"
+                                class="absolute w-24 h-24 border-2 border-dashed border-slate-400 rounded-full flex flex-col items-center justify-center transition-all duration-500"
+                                style="right: 10%; top: 20%;">
+                                <i data-lucide="magnet" class="text-slate-400 w-8 h-8 mb-1"></i>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold">Liquidez</span>
+                            </div>
+
+                            <!-- Arrow -->
+                            <div id="flow-arrow"
+                                class="absolute h-1 bg-gradient-to-r from-kawn-base to-transparent w-0 transition-all duration-1000"
+                                style="left: 10%; top: 50%;"></div>
+                        </div>
+
+                        <p id="magnet-desc" class="mt-4 text-sm text-slate-400 relative z-10">Selecciona un escenario
+                            para ver cómo la liquidez actúa como imán para el Propulsion Block.</p>
+                    </div>
+                </section>
+
+                <!-- Sección 3: Mecánica Profunda + COMPONENTE INTERACTIVO 1 -->
+                <section id="mecanica-profunda" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="layers" class="text-kawn-base mr-3"></i> La mecánica profunda
+                    </h2>
+                    <p class="mb-6 text-slate-600">Un PB no es solo una vela que penetra un OB antiguo. Es un cambio en
+                        el equilibrio. El OB inicial es el motor de arranque; el PB es la segunda etapa del cohete que
+                        acelera el movimiento.</p>
+
+                    <!-- COMPONENTE INTERACTIVO 1: VISUALIZADOR DE MOMENTUM -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-100 p-6 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-lg">Visualizador: La física del mercado</h3>
+                            <span
+                                class="bg-kawn-light text-kawn-deep text-xs px-2 py-1 rounded font-bold">Interactivo</span>
+                        </div>
+                        <p class="text-sm text-slate-500 mb-4">Observa la diferencia de velocidad (momentum) entre el
+                            inicio de la tendencia y la fase de propulsión.</p>
+
+                        <div class="relative h-64 w-full">
+                            <canvas id="momentumChart"></canvas>
+                        </div>
+                        <div class="mt-4 flex gap-4 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-slate-400"></span> Fase 1: Order block (Arranque)
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-kawn-base"></span> Fase 2: Propulsion block
+                                (Aceleración)
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 4: Identificación y Anatomía -->
+                <section id="identificacion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="search" class="text-kawn-base mr-3"></i> Identificación y anatomía
+                    </h2>
+
+                    <div class="space-y-6">
+                        <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-slate-800">
+                            <h3 class="font-bold text-slate-800 mb-4 text-lg">Formación paso a paso (alcista)</h3>
+                            <ol class="list-decimal pl-5 space-y-3 text-slate-700">
+                                <li><strong>Existencia de un order block (OB) previo:</strong> Debe haber un OB validado
+                                    en niveles inferiores. Sin esto, no hay PB.</li>
+                                <li><strong>Retroceso penetrante:</strong> El precio retrocede y penetra el cuerpo del
+                                    OB antiguo. <span class="text-red-500 font-semibold">Crucial:</span> No debe
+                                    invalidarlo (romperlo completamente). Idealmente, no excede el 50% del OB previo.
+                                </li>
+                                <li><strong>Reacción violenta:</strong> Reacción alcista contundente inmediata. Un
+                                    desplazamiento claro que supera el máximo de la vela de penetración.</li>
+                                <li><strong>Confirmación definitiva:</strong> El precio rompe con autoridad el máximo
+                                    del bloque de propulsión formado. Esto activa el PB.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 5: Checklist -->
+                <section id="checklist" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Checklist de validación</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                            <i data-lucide="check-circle-2" class="text-kawn-base w-6 h-6 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-800">OB previo identificado</h4>
+                                <p class="text-xs text-slate-500">Validado por desplazamiento.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                            <i data-lucide="check-circle-2" class="text-kawn-base w-6 h-6 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Penetración controlada</h4>
+                                <p class="text-xs text-slate-500">Toma liquidez sin romper el 50% del OB original.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                            <i data-lucide="check-circle-2" class="text-kawn-base w-6 h-6 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Rechazo con desplazamiento</h4>
+                                <p class="text-xs text-slate-500">Velas de salida rompen el extremo de la vela de
+                                    entrada.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                            <i data-lucide="check-circle-2" class="text-kawn-base w-6 h-6 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Ruptura confirmatoria</h4>
+                                <p class="text-xs text-slate-500">El precio rompe el máximo del PB en formación.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 6: Operativa + COMPONENTE INTERACTIVO 2 -->
+                <section id="operativa" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="crosshair" class="text-kawn-base mr-3"></i> Operativa estratégica
+                    </h2>
+
+                    <div class="prose max-w-none text-slate-600 mb-8">
+                        <p><strong>Timing de entrada:</strong> No persigas el precio. Coloca órdenes límite en el
+                            extremo del bloque (máximo del PB bajista o mínimo del PB alcista). Deja que el precio venga
+                            a ti.</p>
+                        <p><strong>Stop loss:</strong> Precisión milimétrica. Justo por debajo del 50% (mean threshold)
+                            del PB. Si pasa de ahí, la tesis falla. Ratios R:R de 1:5 a 1:15 son comunes.</p>
+                    </div>
+
+                    <!-- COMPONENTE INTERACTIVO 2: SIMULADOR DE TRADING (Plotly) -->
+                    <div class="bg-slate-900 rounded-xl p-6 shadow-2xl mb-8 border border-slate-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-white font-bold text-lg">Simulador: Ejecución de un PB alcista</h3>
+                            <button id="run-sim-btn"
+                                class="bg-kawn-base hover:bg-kawn-dark text-white text-xs px-3 py-1.5 rounded-full transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed">
+                                Iniciar simulación
+                            </button>
+                        </div>
+                        <p class="text-slate-400 text-sm mb-4">El gráfico muestra una tendencia alcista. Identifica el
+                            retroceso al OB y la formación del PB.</p>
+
+                        <div id="plotlySimulator" class="w-full h-80 bg-slate-800 rounded-lg overflow-hidden"></div>
+
+                        <div id="sim-feedback"
+                            class="mt-4 p-3 bg-slate-800 text-slate-300 text-sm rounded border border-slate-600 hidden">
+                            <!-- Feedback dinámico -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 7: Diferencias (Comparator) -->
+                <section id="diferencias" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="git-compare" class="text-kawn-base mr-3"></i> Diferencias estructurales
+                    </h2>
+
+                    <!-- COMPONENTE INTERACTIVO 3: COMPARADOR -->
+                    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                        <div class="flex border-b border-slate-200 bg-slate-50">
+                            <button onclick="switchTab('propulsion')"
+                                class="tab-btn active flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Propulsion
+                                block</button>
+                            <button onclick="switchTab('mitigation')"
+                                class="tab-btn flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Mitigation
+                                block</button>
+                            <button onclick="switchTab('breaker')"
+                                class="tab-btn flex-1 py-4 text-sm font-bold text-slate-600 hover:text-kawn-base border-b-2 border-transparent transition-colors">Breaker
+                                block</button>
+                        </div>
+
+                        <div class="p-8 min-h-[250px]">
+                            <!-- Contenido Propulsion -->
+                            <div id="content-propulsion" class="tab-content animate-fade-in">
+                                <h3 class="text-xl font-bold text-kawn-deep mb-2">Propulsion block (PB)</h3>
+                                <p class="text-slate-600 mb-4">Continúa la tendencia original con renovada fuerza.</p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-kawn-base"></i> <strong>Polaridad:</strong>
+                                        Mantiene la original.</li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-kawn-base"></i> <strong>Formación:</strong> Penetra
+                                        un OB anterior sin invalidarlo.</li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-kawn-base"></i> <strong>Intención:</strong> Alta.
+                                        Desplazamiento violento "propulsando" el precio.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Contenido Mitigation -->
+                            <div id="content-mitigation" class="tab-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-slate-700 mb-2">Mitigation block</h3>
+                                <p class="text-slate-600 mb-4">Pausa y continuación simple.</p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-slate-400"></i> <strong>Polaridad:</strong>
+                                        Continúa la tendencia.</li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-slate-400"></i> <strong>Formación:</strong>
+                                        Cualquier retroceso para rellenar ineficiencias (FVG). No requiere penetrar OB.
+                                    </li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-slate-400"></i> <strong>Intención:</strong>
+                                        Moderada. "Repostar combustible".</li>
+                                </ul>
+                            </div>
+
+                            <!-- Contenido Breaker -->
+                            <div id="content-breaker" class="tab-content hidden animate-fade-in">
+                                <h3 class="text-xl font-bold text-red-600 mb-2">Breaker block (BB)</h3>
+                                <p class="text-slate-600 mb-4">Reversión y cambio de polaridad.</p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-red-500"></i> <strong>Polaridad:</strong> Invierte
+                                        la tendencia (Soporte pasa a Resistencia).</li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-red-500"></i> <strong>Formación:</strong> Ruptura
+                                        de un OB anterior tras cazar liquidez (stop hunt).</li>
+                                    <li class="flex items-center text-sm text-slate-700"><i data-lucide="arrow-right"
+                                            class="w-4 h-4 mr-2 text-red-500"></i> <strong>Intención:</strong>
+                                        Manipulación y giro.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Time & Price -->
+                <section id="time-and-price" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="clock" class="text-kawn-base mr-3"></i> Sincronización: Time & Price
+                    </h2>
+                    <p class="text-slate-600 mb-6">"El precio es el anuncio, el tiempo es el contenido." Un PB perfecto
+                        en la sesión asiática (bajo volumen) probablemente falle. Necesitas alineación con las
+                        <strong>Killzones</strong> (aperturas de NY/Londres) donde el volumen institucional respalda la
+                        propulsión.
+                    </p>
+
+                    <!-- INTERACTIVO: RADAR DE SESIONES -->
+                    <div class="bg-white rounded-xl shadow-card border border-slate-200 p-6">
+                        <h3 class="font-bold text-slate-800 mb-4">Radar de probabilidad temporal (Hora NY)</h3>
+
+                        <div class="mb-8 px-4">
+                            <input type="range" min="0" max="23" value="12" id="time-slider" class="w-full"
+                                aria-label="Selector de hora del día">
+                            <div class="flex justify-between text-xs text-slate-400 mt-2 font-mono">
+                                <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:00</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <div>
+                                <p class="text-xs text-slate-400 uppercase tracking-wide">Hora Seleccionada</p>
+                                <p id="time-display" class="text-2xl font-black text-slate-900">12:00 NY</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-slate-400 uppercase tracking-wide">Probabilidad de PB</p>
+                                <div id="prob-badge"
+                                    class="inline-block px-3 py-1 rounded-full text-sm font-bold bg-gray-200 text-gray-600">
+                                    Baja</div>
+                            </div>
+                        </div>
+                        <p id="time-desc" class="mt-4 text-sm text-slate-600 italic">Mueve el slider para ver las zonas
+                            de alta probabilidad.</p>
+                    </div>
+                </section>
+
+                <!-- Sección 8: Contextos Ideales -->
+                <section id="contextos" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Confluencias macro</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div
+                            class="bg-white p-5 rounded-xl border-t-4 border-kawn-dark shadow-sm hover:-translate-y-1 transition-transform">
+                            <h4 class="font-bold text-slate-800 mb-2">Alineación H4/diario</h4>
+                            <p class="text-sm text-slate-600">Confluencia multi-temporal. Operar a favor de la
+                                estructura mayor asegura "viento de cola".</p>
+                        </div>
+                        <div
+                            class="bg-white p-5 rounded-xl border-t-4 border-slate-600 shadow-sm hover:-translate-y-1 transition-transform">
+                            <h4 class="font-bold text-slate-800 mb-2">Post-noticias</h4>
+                            <p class="text-sm text-slate-600">Tras la "sacudida" de una noticia de alto impacto, el
+                                precio retoma la tendencia dejando PBs claros.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 9: Errores Comunes -->
+                <section id="errores" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 text-red-700 flex items-center">
+                        <i data-lucide="alert-triangle" class="mr-3"></i> Errores comunes
+                    </h2>
+                    <ul class="space-y-4">
+                        <li class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <strong class="text-red-800 block mb-1">Operar sin confirmación (anticipación)</strong>
+                            <span class="text-sm text-red-700">Muchos entran antes de que el precio rompa el máximo del
+                                PB. <br><strong>Solución:</strong> Disciplina. Esperar la ruptura del alto/bajo del
+                                bloque.</span>
+                        </li>
+                        <li class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <strong class="text-red-800 block mb-1">Ignorar liquidez cercana (trampas)</strong>
+                            <span class="text-sm text-red-700">Un PB bajo máximos iguales puede ser un cebo para ser
+                                barrido. <br><strong>Solución:</strong> Revisar pools de liquidez evidentes.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Sección 10: Integración Avanzada -->
+                <section id="integracion" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Integración avanzada ICT</h2>
+                    <p class="mb-4 text-slate-600">Potencia tus PBs combinándolos con:</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-kawn-light flex items-center justify-center text-kawn-deep font-bold">
+                                1</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Fair value gaps (FVG)</h4>
+                                <p class="text-xs text-slate-500">Si el PB coincide con un FVG, la probabilidad se
+                                    dispara.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-kawn-light flex items-center justify-center text-kawn-deep font-bold">
+                                2</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Divergencias SMT</h4>
+                                <p class="text-xs text-slate-500">Divergencia entre activos correlacionados (ej. ES vs
+                                    NQ) + PB.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div
+                                class="w-10 h-10 rounded-full bg-kawn-light flex items-center justify-center text-kawn-deep font-bold">
+                                3</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Power of 3 (AMD)</h4>
+                                <p class="text-xs text-slate-500">Buscar PBs en la fase de distribución (expansión) tras
+                                    la manipulación.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NUEVA SECCIÓN: Calculadora Algorítmica con IA -->
+                <section id="validacion-algoritmica" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="calculator" class="text-kawn-base mr-3"></i> Calculadora de probabilidad
+                        algorítmica
+                    </h2>
+                    <p class="text-slate-600 mb-6">No adivines. Usa esta lista de verificación ponderada para obtener un
+                        "Score" objetivo sobre la calidad de tu setup de PB antes de arriesgar capital.</p>
+
+                    <div class="bg-slate-900 p-8 rounded-xl shadow-2xl border border-slate-700">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="prob-check w-5 h-5 rounded border-slate-500 text-kawn-base focus:ring-kawn-base bg-slate-800"
+                                        value="20">
+                                    <span>¿Estamos en Killzone (NY/Londres)? (+20)</span>
+                                </label>
+                                <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="prob-check w-5 h-5 rounded border-slate-500 text-kawn-base focus:ring-kawn-base bg-slate-800"
+                                        value="20">
+                                    <span>¿Alineado con estructura H4/D? (+20)</span>
+                                </label>
+                                <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="prob-check w-5 h-5 rounded border-slate-500 text-kawn-base focus:ring-kawn-base bg-slate-800"
+                                        value="15">
+                                    <span>¿Coincide con un FVG? (+15)</span>
+                                </label>
+                                <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="prob-check w-5 h-5 rounded border-slate-500 text-kawn-base focus:ring-kawn-base bg-slate-800"
+                                        value="15">
+                                    <span>¿Ha tomado liquidez previa? (+15)</span>
+                                </label>
+                                <label class="flex items-center space-x-3 text-slate-300 cursor-pointer">
+                                    <input type="checkbox"
+                                        class="prob-check w-5 h-5 rounded border-slate-500 text-kawn-base focus:ring-kawn-base bg-slate-800"
+                                        value="30">
+                                    <span>¿Ruptura de estructura confirmada? (+30)</span>
+                                </label>
+                            </div>
+
+                            <div
+                                class="flex flex-col items-center justify-center bg-slate-800 rounded-xl p-6 border border-slate-600">
+                                <span class="text-slate-400 uppercase text-xs font-bold tracking-widest mb-2">Score del
+                                    Setup</span>
+                                <div class="relative w-32 h-32 flex items-center justify-center">
+                                    <!-- Circular Progress SVG -->
+                                    <svg class="w-full h-full transform -rotate-90">
+                                        <circle cx="64" cy="64" r="56" stroke="#1e293b" stroke-width="8" fill="none">
+                                        </circle>
+                                        <circle id="score-circle" cx="64" cy="64" r="56" stroke="#14b8a6"
+                                            stroke-width="8" fill="none" stroke-dasharray="351" stroke-dashoffset="351"
+                                            class="transition-all duration-700 ease-out"></circle>
+                                    </svg>
+                                    <span id="total-score" class="absolute text-3xl font-black text-white">0%</span>
+                                </div>
+                                <p id="score-msg" class="text-sm font-bold mt-4 text-slate-500">Esperando datos...</p>
+
+                                <!-- NEW AI BUTTON -->
+                                <button id="ai-validate-btn"
+                                    class="mt-6 w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white text-xs font-bold py-2 px-4 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                    <i data-lucide="sparkles" class="w-4 h-4"></i> Opinión del Mentor IA
+                                </button>
+                            </div>
+                        </div>
+                        <!-- NEW AI RESULT CONTAINER -->
+                        <div id="ai-validation-result"
+                            class="hidden mt-6 p-4 bg-slate-800/50 border border-slate-600 rounded-lg text-sm text-slate-300 animate-fade-in-up">
+                            <!-- Content injected by JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección 11: Glosario (Acordeón) -->
+                <section id="glosario" class="mb-16 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">Glosario esencial</h2>
+                    <div class="space-y-3" id="glossary-container">
+                        <!-- JS inyectará contenido -->
+                    </div>
+                </section>
+
+                <!-- Sección 12: Ejercicios y Validación -->
+                <section id="ejercicios" class="mb-20 scroll-mt-28">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center">
+                        <i data-lucide="edit-3" class="text-kawn-base mr-3"></i> Práctica y validación
+                    </h2>
+
+                    <!-- Módulo de Reflexión -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Ejercicio de paper trading</h3>
+                            <!-- NEW SCENARIO BUTTON -->
+                            <button id="ai-scenario-btn"
+                                class="bg-kawn-light text-kawn-deep hover:bg-kawn-base hover:text-white text-xs font-bold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-2 border border-kawn-base disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i data-lucide="dices" class="w-4 h-4"></i> Generar Escenario IA
+                            </button>
+                        </div>
+
+                        <!-- NEW SCENARIO DISPLAY -->
+                        <div id="ai-scenario-display"
+                            class="hidden mb-4 p-4 bg-slate-50 border-l-4 border-indigo-500 text-slate-700 text-sm rounded-r-lg italic">
+                            <!-- Scenario injected by JS -->
+                        </div>
+
+                        <p class="text-sm text-slate-600 mb-4">Analiza el escenario generado o uno real. Describe el
+                            contexto aquí:</p>
+                        <textarea
+                            class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-kawn-base focus:border-transparent outline-none transition-all"
+                            rows="3"
+                            placeholder="Ej: PB alcista en EURUSD M15, tras barrer stops de Asia..."></textarea>
+                    </div>
+
+                    <!-- QUIZ MEJORADO Y EXTENDIDO -->
+                    <div class="bg-kawn-deep p-8 rounded-xl shadow-2xl text-white">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-bold">Validación del conocimiento (10 Preguntas)</h3>
+                            <span id="quiz-score" class="bg-white/20 px-3 py-1 rounded-full text-sm font-mono">Score:
+                                0/0</span>
+                        </div>
+
+                        <div id="quiz-container" class="space-y-6">
+                            <!-- El JS inyectará las preguntas aquí -->
+                        </div>
+
+                        <div id="quiz-complete" class="hidden text-center mt-6">
+                            <p class="text-2xl font-bold mb-2">¡Completado!</p>
+                            <p class="text-sm opacity-80 mb-4" id="final-msg">Has repasado todos los conceptos clave.
+                            </p>
+                            <button onclick="window.resetQuiz()"
+                                class="bg-white text-kawn-deep px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors">Reiniciar
+                                Test</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Mentor Float -->
+    <button id="ai-toggle"
+        class="fixed bottom-6 right-6 z-40 bg-slate-900 text-white p-4 rounded-full shadow-glow hover:scale-105 transition-transform flex items-center gap-2"
+        aria-label="Abrir mentor virtual">
+        <i data-lucide="bot" class="w-6 h-6 text-kawn-base"></i>
+        <span class="font-bold hidden md:inline">Mentor SMC IA</span>
+    </button>
+
+    <!-- AI Modal -->
+    <div id="ai-modal"
+        class="hidden fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 flex flex-col h-[500px]">
+        <div class="p-4 bg-slate-900 text-white rounded-t-xl flex justify-between items-center">
+            <h3 class="font-bold flex items-center gap-2"><i data-lucide="bot" class="text-kawn-base w-4 h-4"></i>
+                Mentor KawnBit</h3>
+            <button id="close-ai" class="hover:text-kawn-light" aria-label="Cerrar chat"><i data-lucide="x"
+                    class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-history" class="flex-1 overflow-y-auto p-4 bg-slate-50 flex flex-col chat-container">
+            <div class="ai-msg message-bubble shadow-sm">
+                Hola. Soy tu especialista en Smart Money Concepts. ¿Tienes dudas sobre cómo identificar un propulsion
+                block o dónde colocar tu stop loss?
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-white rounded-b-xl relative">
+            <div class="flex gap-2">
+                <input type="text" id="user-input"
+                    class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-kawn-base focus:ring-1 focus:ring-kawn-base transition-all"
+                    placeholder="Pregunta sobre PB...">
+                <button id="send-ai"
+                    class="bg-kawn-base text-white p-2 rounded-lg hover:bg-kawn-dark transition-colors disabled:opacity-50"
+                    aria-label="Enviar mensaje">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="ai-loading"
+                class="hidden absolute top-[-30px] left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-3 py-1 rounded-full shadow-lg">
+                Procesando...
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="kawn-logo-wrapper">
+                <div class="kawn-logo-icon"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black text-white tracking-tight leading-none">KAWNBIT</span>
+                    <span
+                        class="text-[0.6rem] font-bold text-kawn-base uppercase tracking-[0.2em] leading-none mt-1">Quantitative
+                        Trading Community</span>
+                </div>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-sm">© <span id="current-year"></span> KawnBit Community.</p>
+                <p class="text-xs opacity-50 mt-1">Material educativo sobre Trading Institucional.<br>No constituye
+                    asesoramiento financiero.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Funcionalidad Robustos -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Iconos de forma segura
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                console.warn('Lucide icons failed to load.');
+            }
+
+            const currentYearEl = document.getElementById('current-year');
+            if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+
+            // -------------------------------------------------------------------------
+            // 1. GENERACIÓN DE TOC DINÁMICO & ACTIVE STATE
+            // -------------------------------------------------------------------------
+            const tocContainer = document.getElementById('toc-container');
+            const sections = document.querySelectorAll('main section[id]');
+
+            if (tocContainer) {
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (h2) {
+                        const link = document.createElement('a');
+                        link.href = `#${section.id}`;
+                        link.textContent = h2.innerText;
+                        link.className = `toc-link block py-2 pl-3 border-l-2 border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-r-md transition-all`;
+
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            document.getElementById(section.id).scrollIntoView({ behavior: 'smooth' });
+                        });
+                        tocContainer.appendChild(link);
+                    }
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                            const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                            if (activeLink) activeLink.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -60% 0px' });
+                sections.forEach(section => observer.observe(section));
+            }
+
+            // Mobile Menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const sidebar = document.getElementById('sidebar-toc');
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('fixed');
+                    sidebar.classList.toggle('inset-0');
+                    sidebar.classList.toggle('z-40');
+                    sidebar.classList.toggle('bg-white');
+                    sidebar.classList.toggle('p-6');
+                    if (!sidebar.classList.contains('hidden')) {
+                        // Close button for mobile menu
+                        if (!sidebar.querySelector('.close-mobile')) {
+                            const closeBtn = document.createElement('button');
+                            closeBtn.className = 'close-mobile absolute top-4 right-4 text-slate-500 p-2';
+                            closeBtn.innerHTML = 'X'; // Simple close
+                            closeBtn.onclick = () => {
+                                sidebar.classList.add('hidden');
+                                sidebar.classList.remove('fixed', 'inset-0', 'z-40', 'bg-white', 'p-6');
+                            };
+                            sidebar.appendChild(closeBtn);
+                        }
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 2. CHART.JS: MOMENTUM (Con Fallback)
+            // -------------------------------------------------------------------------
+            const momentumCanvas = document.getElementById('momentumChart');
+            if (typeof Chart !== 'undefined' && momentumCanvas) {
+                const ctxMomentum = momentumCanvas.getContext('2d');
+                new Chart(ctxMomentum, {
+                    type: 'line',
+                    data: {
+                        labels: ['Inicio', 'Impulso OB', 'Retroceso', 'Contacto PB', 'Propulsión', 'Expansión'],
+                        datasets: [{
+                            label: 'Velocidad del Precio',
+                            data: [10, 40, 25, 30, 85, 95],
+                            borderColor: '#14b8a6',
+                            backgroundColor: (context) => {
+                                const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 400);
+                                gradient.addColorStop(0, 'rgba(20, 184, 166, 0.5)');
+                                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                                return gradient;
+                            },
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: ['#cbd5e1', '#0f766e', '#cbd5e1', '#14b8a6', '#ccfbf1', '#14b8a6'],
+                            pointRadius: [4, 6, 4, 8, 5, 5],
+                            pointHoverRadius: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        if (context.dataIndex === 3) return "Entrada institucional (PB)";
+                                        if (context.dataIndex === 4) return "Aceleración máxima";
+                                        return "Momentum: " + context.raw;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { display: false },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            } else if (momentumCanvas) {
+                // Fallback UI
+                momentumCanvas.parentElement.innerHTML = `<div class="flex items-center justify-center h-full text-slate-400 bg-slate-100 rounded-lg text-sm">Gráfico no disponible (Fallo de Red)</div>`;
+            }
+
+            // -------------------------------------------------------------------------
+            // 3. COMPARADOR INTERACTIVO
+            // -------------------------------------------------------------------------
+            window.switchTab = function (tabName) {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'border-kawn-base', 'text-kawn-base');
+                    if (btn.onclick.toString().includes(tabName)) {
+                        btn.classList.add('active');
+                    }
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                const target = document.getElementById(`content-${tabName}`);
+                if (target) target.classList.remove('hidden');
+            }
+
+            // -------------------------------------------------------------------------
+            // 4. PLOTLY: SIMULADOR DE TRADING (ROBUSTO)
+            // -------------------------------------------------------------------------
+            let simulationTimeouts = []; // Timeout Manager
+
+            function clearSimulation() {
+                simulationTimeouts.forEach(id => clearTimeout(id));
+                simulationTimeouts = [];
+            }
+
+            if (typeof Plotly !== 'undefined') {
+                const plotlyDiv = document.getElementById('plotlySimulator');
+                const feedbackDiv = document.getElementById('sim-feedback');
+                const runSimBtn = document.getElementById('run-sim-btn');
+
+                const initialData = {
+                    x: ['T1', 'T2', 'T3', 'T4', 'T5'],
+                    open: [1.1000, 1.1020, 1.1050, 1.1040, 1.1030],
+                    high: [1.1020, 1.1050, 1.1060, 1.1055, 1.1045],
+                    low: [1.0990, 1.1010, 1.1030, 1.1030, 1.1020],
+                    close: [1.1020, 1.1050, 1.1040, 1.1035, 1.1025],
+                    type: 'candlestick',
+                    name: 'EUR/USD',
+                    increasing: { line: { color: '#14b8a6' } },
+                    decreasing: { line: { color: '#ef4444' } }
+                };
+
+                const layout = {
+                    dragmode: false,
+                    showlegend: false,
+                    xaxis: { visible: false, rangeslider: { visible: false } },
+                    yaxis: { visible: true, gridcolor: '#334155' },
+                    paper_bgcolor: '#0f172a',
+                    plot_bgcolor: '#0f172a',
+                    font: { color: '#94a3b8' },
+                    margin: { l: 40, r: 20, t: 20, b: 20 }
+                };
+
+                if (plotlyDiv) {
+                    Plotly.newPlot(plotlyDiv, [initialData], layout, { staticPlot: true, responsive: true });
+
+                    // Resize handler for Plotly (Robust)
+                    const resizeObserver = new ResizeObserver(() => {
+                        Plotly.Plots.resize(plotlyDiv);
+                    });
+                    resizeObserver.observe(plotlyDiv);
+
+                    if (runSimBtn) {
+                        runSimBtn.addEventListener('click', () => {
+                            clearSimulation(); // Clear previous runs
+                            runSimBtn.disabled = true;
+                            runSimBtn.classList.add('btn-disabled');
+                            runSimBtn.textContent = "Simulando...";
+
+                            feedbackDiv.classList.remove('hidden');
+                            feedbackDiv.innerHTML = "<span class='text-yellow-400'>1. Identificando OB previo...</span>";
+
+                            simulationTimeouts.push(setTimeout(() => {
+                                feedbackDiv.innerHTML = "<span class='text-blue-400'>2. Retroceso penetra OB (Vela T5)... Entrando límite.</span>";
+                                const traceUpdate = {
+                                    x: [['T6']],
+                                    open: [[1.1025]],
+                                    high: [[1.1070]],
+                                    low: [[1.1020]],
+                                    close: [[1.1065]],
+                                    type: 'candlestick',
+                                    increasing: { line: { color: '#14b8a6' } },
+                                    decreasing: { line: { color: '#ef4444' } }
+                                };
+                                Plotly.extendTraces(plotlyDiv, traceUpdate, [0]);
+                            }, 1500));
+
+                            simulationTimeouts.push(setTimeout(() => {
+                                feedbackDiv.innerHTML = "<span class='text-kawn-base font-bold'>3. ¡BOOM! Ruptura confirmada. Entrada ejecutada con éxito.</span>";
+                                const traceUpdate2 = {
+                                    x: [['T7', 'T8']],
+                                    open: [[1.1065, 1.1090]],
+                                    high: [[1.1095, 1.1120]],
+                                    low: [[1.1060, 1.1085]],
+                                    close: [[1.1090, 1.1115]],
+                                    type: 'candlestick',
+                                    increasing: { line: { color: '#14b8a6' } },
+                                    decreasing: { line: { color: '#ef4444' } }
+                                };
+                                Plotly.extendTraces(plotlyDiv, traceUpdate2, [0]);
+
+                                simulationTimeouts.push(setTimeout(() => {
+                                    runSimBtn.textContent = "Simulación Completada";
+                                    runSimBtn.disabled = false; // Optionally re-enable to reset
+                                    runSimBtn.classList.remove('btn-disabled');
+                                }, 500));
+                            }, 3000));
+                        });
+                    }
+                }
+            } else if (document.getElementById('plotlySimulator')) {
+                document.getElementById('plotlySimulator').innerHTML = `<div class="flex items-center justify-center h-full text-slate-400 bg-slate-800 rounded-lg text-sm">Gráfico interactivo no disponible (Plotly Failed)</div>`;
+            }
+
+            // -------------------------------------------------------------------------
+            // 5. GLOSARIO & VISUALIZADOR IMANES (Robustez)
+            // -------------------------------------------------------------------------
+            window.toggleGlos = function (idx) {
+                const desc = document.getElementById(`desc-${idx}`);
+                const icon = document.getElementById(`icon-${idx}`);
+                if (desc && icon) {
+                    desc.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                }
+            }
+
+            // Populate Glossary
+            const glossaryItems = [
+                { term: "Order block (OB)", def: "Zona de acumulación institucional. El precio suele retornar para testear órdenes restantes." },
+                { term: "Propulsion block (PB)", def: "OB 'anidado' que se forma al retestear un OB previo sin invalidarlo, seguido de rechazo violento." },
+                { term: "Breaker block", def: "OB fallido que cambia de rol (soporte a resistencia) tras una manipulación de liquidez." },
+                { term: "Mean threshold", def: "El punto medio (50%) de un bloque de órdenes. Si se viola, el bloque suele invalidarse." },
+                { term: "Kill zones", def: "Franjas horarias de mayor volatilidad institucional (Londres/NY)." }
+            ];
+            const glosContainer = document.getElementById('glossary-container');
+            if (glosContainer) {
+                glossaryItems.forEach((item, idx) => {
+                    const div = document.createElement('div');
+                    div.className = "border border-slate-200 rounded-lg bg-white overflow-hidden";
+                    div.innerHTML = `
+                        <button class="w-full px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-50 flex justify-between items-center transition-colors" onclick="toggleGlos(${idx})">
+                            ${item.term}
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-kawn-base transition-transform" id="icon-${idx}"></i>
+                        </button>
+                        <div id="desc-${idx}" class="hidden px-4 py-3 bg-slate-50 text-sm text-slate-600 border-t border-slate-100">
+                            ${item.def}
+                        </div>
+                    `;
+                    glosContainer.appendChild(div);
+                });
+            }
+
+            // Magnet Visualizer Logic (Locked during animation)
+            let isAnimatingMagnet = false;
+            window.toggleMagnet = function (type, btnElement) {
+                if (isAnimatingMagnet) return;
+                isAnimatingMagnet = true;
+
+                // Disable all magnet buttons visually
+                document.querySelectorAll('.magnet-btn').forEach(b => {
+                    b.style.opacity = '0.5';
+                    b.style.cursor = 'wait';
+                });
+
+                const pb = document.getElementById('pb-element');
+                const mag = document.getElementById('liquidity-magnet');
+                const arrow = document.getElementById('flow-arrow');
+                const desc = document.getElementById('magnet-desc');
+
+                // Reset positions
+                pb.style.left = '10%';
+                pb.style.top = '50%';
+                mag.style.top = '20%';
+                arrow.style.width = '0';
+                arrow.style.transform = 'rotate(0deg)'; // Reset rotation
+
+                setTimeout(() => {
+                    if (type === 'bullish') {
+                        mag.style.top = '10%';
+                        mag.style.borderColor = '#22c55e';
+                        desc.textContent = "Escenario Alcista: El PB (abajo) impulsa el precio hacia la 'Buy Side Liquidity' (BSL).";
+                        arrow.style.width = '70%';
+                        arrow.style.transform = 'rotate(-25deg)';
+                        setTimeout(() => { pb.style.left = '75%'; pb.style.top = '15%'; }, 500);
+                    } else {
+                        mag.style.top = '80%';
+                        mag.style.borderColor = '#ef4444';
+                        desc.textContent = "Escenario Bajista: El PB (arriba) impulsa el precio hacia la 'Sell Side Liquidity' (SSL).";
+                        arrow.style.width = '70%';
+                        arrow.style.transform = 'rotate(25deg)';
+                        setTimeout(() => { pb.style.left = '75%'; pb.style.top = '75%'; }, 500);
+                    }
+
+                    // Release lock after animation
+                    setTimeout(() => {
+                        isAnimatingMagnet = false;
+                        document.querySelectorAll('.magnet-btn').forEach(b => {
+                            b.style.opacity = '1';
+                            b.style.cursor = 'pointer';
+                        });
+                    }, 1500);
+                }, 100);
+            }
+
+            // -------------------------------------------------------------------------
+            // 6. QUIZ LÓGICA (Datos)
+            // -------------------------------------------------------------------------
+            const quizData = [
+                {
+                    question: "1. ¿Cuál es la función principal de un propulsion block (PB)?",
+                    options: [
+                        { text: "Iniciar una nueva tendencia desde cero.", correct: false },
+                        { text: "Continuar y acelerar una tendencia ya establecida.", correct: true },
+                        { text: "Revertir el mercado cambiando la polaridad.", correct: false }
+                    ],
+                    explanation: "Correcto o no, recuerda: A diferencia de un OB primario que inicia movimientos o un Breaker que revierte, el PB está diseñado específicamente para reingresar y acelerar una tendencia que ya está en marcha (momentum)."
+                },
+                {
+                    question: "2. ¿Cuál es la regla crucial respecto a la penetración del OB previo?",
+                    options: [
+                        { text: "Debe penetrar profundamente, más allá del 70% del OB.", correct: false },
+                        { text: "No debe tocar el OB previo en absoluto.", correct: false },
+                        { text: "Debe penetrar para tomar liquidez, pero idealmente sin exceder el 50% del rango del OB.", correct: true }
+                    ],
+                    explanation: "La 'regla del 50%' es vital. Una penetración superficial valida la toma de liquidez, pero si cruza la mitad (Mean Threshold), sugiere debilidad y posible invalidación del soporte institucional."
+                },
+                {
+                    question: "3. ¿Qué evento técnico confirma definitivamente que un PB es válido?",
+                    options: [
+                        { text: "Cuando el precio toca el bloque.", correct: false },
+                        { text: "Cuando aparece una vela envolvente.", correct: false },
+                        { text: "Cuando el precio rompe con autoridad el máximo (o mínimo) de la estructura del bloque.", correct: true }
+                    ],
+                    explanation: "La anticipación es el error #1. Un PB solo se considera 'activo' cuando el mercado demuestra intención rompiendo la estructura que formó el propio bloque. Antes de eso, es solo un retroceso."
+                },
+                {
+                    question: "4. ¿Dónde se coloca idealmente la orden de entrada en un PB?",
+                    options: [
+                        { text: "A mercado, apenas rompe el máximo.", correct: false },
+                        { text: "Orden límite en el extremo (borde) del bloque.", correct: true },
+                        { text: "En el 50% del bloque.", correct: false }
+                    ],
+                    explanation: "La precisión institucional busca entrar en el re-test. Colocar una orden límite en el borde superior (PB alcista) permite un ratio riesgo-beneficio superior y evita el deslizamiento de entrar a mercado."
+                },
+                {
+                    question: "5. ¿Dónde debe ubicarse el stop loss para mantener la ventaja estadística?",
+                    options: [
+                        { text: "Debajo de todo el swing low anterior (muy holgado).", correct: false },
+                        { text: "Justo por debajo del 50% (Mean Threshold) del cuerpo del PB.", correct: true },
+                        { text: "Pegado al precio de entrada (Breakeven inmediato).", correct: false }
+                    ],
+                    explanation: "Si el precio viola el 50% del PB, la premisa de 'soporte institucional fuerte' falla. Poner el stop más lejos solo aumenta el riesgo innecesariamente en un setup que debería ser preciso."
+                },
+                {
+                    question: "6. ¿Qué diferencia a un PB de un breaker block?",
+                    options: [
+                        { text: "El PB mantiene la polaridad (continuación), el breaker la invierte (reversión).", correct: true },
+                        { text: "El breaker es más pequeño que el PB.", correct: false },
+                        { text: "No hay diferencia, son lo mismo.", correct: false }
+                    ],
+                    explanation: "Es fundamental no confundirlos. El PB se usa para seguir la tendencia (buy in uptrend). El Breaker ocurre cuando un OB falla, se rompe, y el precio regresa para usarlo en contra (soporte se vuelve resistencia)."
+                },
+                {
+                    question: "7. ¿Cuál es el mejor contexto temporal para buscar PBs (Kill zones)?",
+                    options: [
+                        { text: "Durante la sesión asiática (baja volatilidad).", correct: false },
+                        { text: "En cualquier momento del día.", correct: false },
+                        { text: "Aperturas de Londres y Nueva York.", correct: true }
+                    ],
+                    explanation: "El Smart Money requiere liquidez y volumen para mover el mercado. Las aperturas de Londres y NY proveen la 'gasolina' necesaria para que los PBs funcionen con movimientos explosivos."
+                },
+                {
+                    question: "8. ¿Qué error común cometen los traders novatos con los PBs?",
+                    options: [
+                        { text: "Usar stops muy ajustados.", correct: false },
+                        { text: "Entrar por anticipación antes de la ruptura confirmatoria.", correct: true },
+                        { text: "Esperar a que el precio llegue al bloque.", correct: false }
+                    ],
+                    explanation: "La impaciencia mata la cuenta. Entrar mientras el precio aún está cayendo hacia el OB (sin ver la reacción y ruptura posterior) es apostar, no hacer trading institucional."
+                },
+                {
+                    question: "9. ¿Qué factor de confluencia aumenta drásticamente la probabilidad de un PB?",
+                    options: [
+                        { text: "Que coincida con un fair value gap (FVG).", correct: true },
+                        { text: "Que el RSI esté en sobreventa.", correct: false },
+                        { text: "Que sea lunes.", correct: false }
+                    ],
+                    explanation: "Un FVG actúa como imán. Si un PB se forma alineado con un vacío de liquidez (FVG), el precio tiene una doble razón técnica para reaccionar en esa zona."
+                },
+                {
+                    question: "10. ¿Por qué las instituciones utilizan bloques de propulsión?",
+                    options: [
+                        { text: "Para confundir a los traders retail.", correct: false },
+                        { text: "Para agregar posiciones a una tendencia ganadora sin desestabilizar el precio prematuramente.", correct: true },
+                        { text: "Porque se les olvidó entrar al principio.", correct: false }
+                    ],
+                    explanation: "Las instituciones manejan tanto volumen que no pueden entrar todo de una vez. Los PBs son mecanismos de re-acumulación eficientes durante el camino."
+                }
+            ];
+
+            let quizStep = 0;
+            let score = 0;
+            const quizContainer = document.getElementById('quiz-container');
+            const scoreDisplay = document.getElementById('quiz-score');
+
+            // Render Quiz Function
+            window.renderQuiz = function () {
+                if (!quizContainer) return;
+                quizContainer.innerHTML = '';
+                quizData.forEach((q, index) => {
+                    const hiddenClass = index === 0 ? 'fade-in-up' : 'hidden';
+                    const html = `
+                        <div id="q-${index}" class="quiz-item ${hiddenClass} bg-white/10 p-6 rounded-xl border border-white/10">
+                            <p class="font-bold text-lg mb-4 text-kawn-light">${q.question}</p>
+                            <div class="space-y-3">
+                                ${q.options.map((opt, i) => `
+                                    <button onclick="handleAnswer(${index}, ${opt.correct}, this)" class="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-transparent hover:border-kawn-base/50 text-sm quiz-option" data-correct="${opt.correct}">
+                                        ${opt.text}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="feedback-${index}" class="hidden mt-4 p-4 rounded bg-slate-900 border-l-4 border-kawn-base quiz-feedback">
+                                <p class="text-sm text-slate-300 leading-relaxed"><strong class="text-white block mb-1">Explicación:</strong> ${q.explanation}</p>
+                                <button onclick="nextQuestion(${index})" class="mt-3 bg-kawn-base hover:bg-kawn-dark text-white px-4 py-2 rounded text-xs font-bold transition-colors">Siguiente</button>
+                            </div>
+                        </div>
+                    `;
+                    quizContainer.innerHTML += html;
+                });
+                if (scoreDisplay) scoreDisplay.textContent = `Score: 0/${quizData.length}`;
+            }
+
+            window.handleAnswer = function (index, isCorrect, btn) {
+                const parent = document.getElementById(`q-${index}`);
+                const buttons = parent.querySelectorAll('button.quiz-option');
+
+                buttons.forEach(b => {
+                    b.disabled = true;
+                    if (b.dataset.correct === "true") {
+                        b.classList.add('bg-green-600', 'border-green-500');
+                    }
+                });
+
+                if (isCorrect) {
+                    btn.innerHTML += ' ✅';
+                    score++;
+                } else {
+                    btn.classList.add('bg-red-600', 'border-red-500');
+                    btn.innerHTML += ' ❌';
+                }
+
+                if (scoreDisplay) scoreDisplay.textContent = `Score: ${score}/${quizData.length}`;
+                document.getElementById(`feedback-${index}`).classList.remove('hidden');
+            }
+
+            window.nextQuestion = function (currentIndex) {
+                const currentEl = document.getElementById(`q-${currentIndex}`);
+                const nextEl = document.getElementById(`q-${currentIndex + 1}`);
+
+                currentEl.classList.add('hidden');
+
+                if (nextEl) {
+                    nextEl.classList.remove('hidden');
+                    nextEl.classList.add('fade-in-up');
+                } else {
+                    const completeEl = document.getElementById('quiz-complete');
+                    completeEl.classList.remove('hidden');
+                    completeEl.classList.add('fade-in-up');
+
+                    const percentage = (score / quizData.length) * 100;
+                    const msgEl = document.getElementById('final-msg');
+                    if (percentage === 100) msgEl.textContent = "¡Perfecto! Tienes nivel institucional.";
+                    else if (percentage >= 70) msgEl.textContent = "Muy bien. Estás listo para practicar en demo.";
+                    else msgEl.textContent = "Te sugiero repasar la teoría antes de operar.";
+                }
+            }
+
+            window.resetQuiz = function () {
+                score = 0;
+                quizStep = 0;
+                document.getElementById('quiz-complete').classList.add('hidden');
+                window.renderQuiz();
+            }
+
+            // Initialize Quiz
+            window.renderQuiz();
+
+            // -------------------------------------------------------------------------
+            // 7. TIME & PRICE SLIDER
+            // -------------------------------------------------------------------------
+            const timeSlider = document.getElementById('time-slider');
+            if (timeSlider) {
+                timeSlider.addEventListener('input', (e) => {
+                    const hour = parseInt(e.target.value);
+                    document.getElementById('time-display').textContent = `${hour}:00 NY`;
+                    const probBadge = document.getElementById('prob-badge');
+                    const timeDesc = document.getElementById('time-desc');
+
+                    if (hour >= 7 && hour <= 10) {
+                        probBadge.textContent = "Muy Alta";
+                        probBadge.className = "inline-block px-3 py-1 rounded-full text-sm font-bold bg-kawn-base text-white";
+                        timeDesc.textContent = "Zona Premium: Superposición Londres/NY. Máximo volumen institucional.";
+                    } else if (hour >= 13 && hour <= 15) {
+                        probBadge.textContent = "Media";
+                        probBadge.className = "inline-block px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-700";
+                        timeDesc.textContent = "Zona Aceptable: Sesión de la tarde en NY (PM Session).";
+                    } else if (hour === 12) {
+                        probBadge.textContent = "Baja";
+                        probBadge.className = "inline-block px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700";
+                        timeDesc.textContent = "Precaución: Hora del almuerzo en NY. Algoritmos en pausa/consolidación.";
+                    } else {
+                        probBadge.textContent = "Nula";
+                        probBadge.className = "inline-block px-3 py-1 rounded-full text-sm font-bold bg-gray-200 text-gray-500";
+                        timeDesc.textContent = "Fuera de horario operativo institucional. Riesgo de baja liquidez.";
+                    }
+                });
+            }
+
+            // -------------------------------------------------------------------------
+            // 8. CALCULADORA ALGORÍTMICA
+            // -------------------------------------------------------------------------
+            const checks = document.querySelectorAll('.prob-check');
+            const circumference = 351; // Circle r=56
+
+            function calculateScore() {
+                let total = 0;
+                checks.forEach(c => {
+                    if (c.checked) total += parseInt(c.value);
+                });
+                if (total > 100) total = 100;
+
+                document.getElementById('total-score').textContent = `${total}%`;
+                const offset = circumference - (total / 100) * circumference;
+                const scoreCircle = document.getElementById('score-circle');
+                const scoreMsg = document.getElementById('score-msg');
+
+                scoreCircle.style.strokeDashoffset = offset;
+
+                if (total >= 80) {
+                    scoreCircle.style.stroke = '#22c55e'; // Green
+                    scoreMsg.textContent = "Setup de Alta Probabilidad (A+)";
+                    scoreMsg.className = "text-sm font-bold mt-4 text-green-500";
+                } else if (total >= 50) {
+                    scoreCircle.style.stroke = '#eab308'; // Yellow
+                    scoreMsg.textContent = "Setup Moderado (B)";
+                    scoreMsg.className = "text-sm font-bold mt-4 text-yellow-500";
+                } else {
+                    scoreCircle.style.stroke = '#ef4444'; // Red
+                    scoreMsg.textContent = "Baja Probabilidad - Evitar";
+                    scoreMsg.className = "text-sm font-bold mt-4 text-red-500";
+                }
+            }
+
+            checks.forEach(check => {
+                check.addEventListener('change', calculateScore);
+            });
+
+            // 9. INTEGRACIÓN IA (Gemini API)
+            // -------------------------------------------------------------------------
+            const aiModal = document.getElementById('ai-modal');
+            const aiToggle = document.getElementById('ai-toggle');
+            const closeAi = document.getElementById('close-ai');
+            const sendAi = document.getElementById('send-ai');
+            const userInput = document.getElementById('user-input');
+            const chatHistory = document.getElementById('chat-history');
+            const aiLoading = document.getElementById('ai-loading');
+
+            const proxyUrl = "/.netlify/functions/gemini-proxy";
+
+            if (aiToggle) aiToggle.addEventListener('click', () => aiModal.classList.remove('hidden'));
+            if (closeAi) closeAi.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+            async function callAI(prompt, systemInstruction = "Eres un mentor experto en SMC.") {
+                try {
+                    const response = await fetch(proxyUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: systemInstruction }] }
+                        })
+                    });
+
+                    if (!response.ok) throw new Error(`Proxy Error: ${response.status}`);
+
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || data.result || "Lo siento, no pude procesar la solicitud.";
+                } catch (error) {
+                    console.error("AI Error:", error);
+                    return "Error de conexión. Intenta más tarde.";
+                }
+            }
+
+            async function sendMessage() {
+                const text = userInput.value.trim();
+                if (!text) return;
+
+                appendMessage(text, 'user');
+                userInput.value = '';
+                aiLoading.classList.remove('hidden');
+                sendAi.disabled = true;
+
+                const reply = await callAI(text, "Actúa como un mentor experto en Trading Institucional (Smart Money Concepts). Responde brevemente y en español.");
+                appendMessage(reply, 'ai');
+
+                aiLoading.classList.add('hidden');
+                sendAi.disabled = false;
+            }
+
+            function appendMessage(text, sender) {
+                const div = document.createElement('div');
+                div.className = `message-bubble ${sender === 'user' ? 'user-msg' : 'ai-msg'} fade-in-up`;
+                div.innerHTML = typeof marked !== 'undefined' ? marked.parse(text) : text;
+                chatHistory.appendChild(div);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
+            if (sendAi) sendAi.addEventListener('click', sendMessage);
+            if (userInput) userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage() });
+
+            // A. AI Setup Validator
+            const aiValidateBtn = document.getElementById('ai-validate-btn');
+            const aiValResult = document.getElementById('ai-validation-result');
+
+            if (aiValidateBtn) {
+                aiValidateBtn.addEventListener('click', async () => {
+                    const activeChecks = [];
+                    document.querySelectorAll('.prob-check:checked').forEach(c => {
+                        activeChecks.push(c.nextElementSibling.innerText);
+                    });
+
+                    if (activeChecks.length === 0) {
+                        alert("Por favor, selecciona al menos un factor de confluencia.");
+                        return;
+                    }
+
+                    const score = document.getElementById('total-score').innerText;
+
+                    aiValidateBtn.disabled = true;
+                    aiValidateBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Analizando...`;
+                    aiValResult.classList.remove('hidden');
+                    aiValResult.innerHTML = "Analizando confluencias...";
+
+                    const promptText = `
+                        El usuario tiene un setup de Propulsion Block con un Score del ${score}.
+                        Confluencias: ${activeChecks.join(', ')}.
+                        Analiza brevemente la calidad de este trade.
+                    `;
+
+                    const reply = await callAI(promptText, "Eres un analista de riesgo institucional SMC.");
+                    aiValResult.innerHTML = `<strong class="text-indigo-400 block mb-2">Análisis de IA:</strong> ${reply}`;
+
+                    aiValidateBtn.disabled = false;
+                    aiValidateBtn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> Opinión del Mentor IA`;
+                });
+            }
+
+            // B. AI Scenario Generator
+            const aiScenarioBtn = document.getElementById('ai-scenario-btn');
+            const aiScenarioDisplay = document.getElementById('ai-scenario-display');
+
+            if (aiScenarioBtn) {
+                aiScenarioBtn.addEventListener('click', async () => {
+                    aiScenarioBtn.disabled = true;
+                    aiScenarioBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Generando...`;
+                    aiScenarioDisplay.classList.remove('hidden');
+                    aiScenarioDisplay.textContent = "Diseñando escenario...";
+
+                    const promptText = "Genera un escenario de trading breve (máximo 40 palabras) para identificar si es un Propulsion Block válido. No des la respuesta.";
+                    const reply = await callAI(promptText, "Eres un generador de ejercicios de trading SMC.");
+
+                    aiScenarioDisplay.innerHTML = `<span class="font-bold text-indigo-600">Escenario Práctico:</span> ${reply}`;
+
+                    aiScenarioBtn.disabled = false;
+                    aiScenarioBtn.innerHTML = `<i data-lucide="dices" class="w-4 h-4"></i> Generar Escenario IA`;
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
